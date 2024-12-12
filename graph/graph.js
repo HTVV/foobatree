@@ -210,6 +210,7 @@ main(treeUser)
 //graphs the first guy their parents and gets some data for some reason
 async function main(user) {
     data = await getData(user)
+    data = data.filter(n => n)
     if (data.length == 0) return 1
     //logic for selecting the person in focus
     let target = getCookie("target")
@@ -512,7 +513,8 @@ function toShowParentsButton(person) {
 
 async function checkGraphUpdates() {
     oldTree = data;
-    data = await getData(treeUser).filter(n => n)
+    data = await getData(treeUser)
+    data = data.filter(n => n)
 
     const oldIds = oldTree.map(a => a.id);
 
