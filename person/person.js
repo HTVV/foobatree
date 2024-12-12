@@ -456,6 +456,7 @@ async function main() {
     document.getElementById("popup1").innerHTML = addPersonPopup;
     document.getElementById("profile-pic").src = res.pic ? res.pic : document.getElementById("profile-pic").src
     tree = await getTree()
+    tree = tree.filter(n => n)
     relativeCheck();
     showRelatives();
 
@@ -475,7 +476,7 @@ async function main() {
 
 async function getTree() {
     let data = await fetch(`https://familytree.loophole.site/getTree?token=${token}${requestEnd}`)
-    return await data.json().filter(n => n)
+    return await data.json()
 }
 
 function idToName(id) {
