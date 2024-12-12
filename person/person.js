@@ -475,7 +475,7 @@ async function main() {
 
 async function getTree() {
     let data = await fetch(`https://familytree.loophole.site/getTree?token=${token}${requestEnd}`)
-    return await data.json()
+    return await data.json().filter(n => n)
 }
 
 function idToName(id) {

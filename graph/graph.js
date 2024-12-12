@@ -369,7 +369,7 @@ function graphParents(id) {
 //returns the tree
 async function getData() {
     res = await fetch(`https://familytree.loophole.site/getTree?token=${token}${requestEnd}`)
-    return await res.json()
+    return await res.json().filter(n => n)
 }
 async function graphChildren(id) {
     console.log(id)
