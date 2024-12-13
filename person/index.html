@@ -34,7 +34,10 @@
         <div class="name-row" id="name-row">
             <img src="https://media.istockphoto.com/id/1451587807/vector/user-profile-icon-vector-avatar-or-person-icon-profile-picture-portrait-symbol-vector.jpg?s=612x612&w=0&k=20&c=yDJ4ITX1cHMh25Lt1vI1zBn2cAKKAlByHBvPJ8gEiIg=" alt="" class="profile-pic" id="profile-pic">
             <div class="name-text" id="name-text" onclick="openDetailsPopup('name')"></div>
-            <img src="/img/foobatreeicon.png" class="logo">
+            <div class="name-row-right-side">
+                <button class="deleteButton" onclick="deletePersonPopup()">DELETE</button>
+                <img src="/img/foobatreeicon.png" class="logo" onclick="backToTree()">
+            </div>
         </div>
         <div class="details">
             <p class="details-header" style="grid-area: 1/1/2/2">Birth</p>
