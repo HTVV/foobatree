@@ -210,8 +210,9 @@ main(treeUser)
 //graphs the first guy their parents and gets some data for some reason
 async function main(user) {
     data = await getData(user)
-    data = data.filter(n => n)
     if (data.length == 0) return 1
+    console.log(data)
+    data = data.filter(n => n)
     //logic for selecting the person in focus
     let target = getCookie("target")
     if (!target) target = data[0].id
