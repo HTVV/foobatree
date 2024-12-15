@@ -382,36 +382,36 @@ function selectExisting() {
     document.getElementById("submitButton").style.display = 'none';
 }
 function existingSubmit() {
-    let person = tree.find((element) => element.id == document.getElementById("selectFocus").value);
-    console.log(person)
+    //dude is the one being addedd, person is the one whos page is currently being viewed. amazing system :thumb:
+    let dude = idToData(document.getElementById("selectFocus").value);
     if (type == "parents") {
-        if (person.parent1Id == null || person.paren1Id == "") {
-            person.parent1Id = person.id
+        if (person.parent1Id == null || person.parent1Id == "") {
+            person.parent1Id = dude.id
         } else {
-            person.parent2Id = person.id
+            person.parent2Id = dude.id
         }
-        person.children.push(person.id)
+        dude.children.push(person.id)
         //parent
-        fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${person.id}&content=${encodeURI(JSON.stringify(person))}${requestEnd}`)
+        fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${dude.id}&content=${encodeURI(JSON.stringify(dude))}${requestEnd}`)
         //child
         fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${person.id}&content=${encodeURI(JSON.stringify(person))}${requestEnd}`)
     }
     else if (type == "child") {
         person.children.push(person.id)
-        if (person.parent1Id == null || person.paren1Id == "") {
-            person.parent1Id = person.id
+        if (dude.parent1Id == null || dude.parent1Id == "") {
+            dude.parent1Id = person.id
         } else {
-            person.parent2Id = person.id;
+            dude.parent2Id = person.id;
         }
         //parent
-        fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${person.id}&content=${encodeURI(JSON.stringify(person))}${requestEnd}`)
+        fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${dude.id}&content=${encodeURI(JSON.stringify(dude))}${requestEnd}`)
         //child
         fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${person.id}&content=${encodeURI(JSON.stringify(person))}${requestEnd}`)
     }
     else if (type == "spouse") {
-        person.spouses.push(person.id)
-        person.spouses.push(person.id)
-        fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${person.id}&content=${encodeURI(JSON.stringify(person))}${requestEnd}`)
+        dude.spouses.push(person.id)
+        person.spouses.push(dude.id)
+        fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${dude.id}&content=${encodeURI(JSON.stringify(dude))}${requestEnd}`)
         fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${person.id}&content=${encodeURI(JSON.stringify(person))}${requestEnd}`)
     }
     document.getElementById("submitButton").style.display = 'block';
@@ -635,6 +635,12 @@ async function deleteConnection(id) {
         fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${spouse.id}&content=${encodeURI(JSON.stringify(spouse))}${requestEnd}`)
     }
     else if (person.children.includes(id)) {
+        if(person.id == id){
+            person.children.splice(person.children.indexOf(id), 1);
+            fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${person.id}&content=${encodeURI(JSON.stringify(person))}${requestEnd}`)
+            closePopupFunc()
+            return 0
+        }
         let child = idToData(id)
         if (child.parent1Id == person.id) child.parent1Id = null;
         if (child.parent2Id == person.id) child.parent2Id = null;
