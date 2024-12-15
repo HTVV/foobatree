@@ -3,6 +3,7 @@ svg {
     overflow-x: hidden;
     background-color: #fff8c4;
 }
+
 #navbar{
     display: flex;
     background-color: white;
@@ -16,7 +17,7 @@ svg {
     padding-right: 2vw;
     background-color: #fff;
 }
-#logo:hover{
+#logo:hover, .map-style:hover{
     background-color: #ddd;
 }
 .navbutton{
@@ -48,7 +49,9 @@ html *
 
 body {
     background-color: #fff8c4;
-    margin: 0   ;
+    margin: 0;
+    overflow: hidden;
+
 }
 
 .popup {
@@ -111,6 +114,10 @@ g.female > rect {
     fill: #ff72af;
 }
 
+g.info > rect {
+    fill: green;
+}
+
 g.marriage > rect {
     width: 0;
     height: 0;
@@ -125,3 +132,17 @@ g p {
     flex-direction: row;
 }
 
+.map-style {
+    position: absolute;
+    left: 95vw;
+    width: 5vw;
+}
+
+hr {
+    display: block;
+    height: 1vh;
+    border: 0;
+    border-top: 0.1vh solid black;
+    margin: 1em 0;
+    padding: 0;
+}

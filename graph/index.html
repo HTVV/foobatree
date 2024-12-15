@@ -74,17 +74,21 @@
             </div>
         </div>
     </div>
+    <div class="popup-overlay" id="popupOverlay4">
+        <div class="popup" id="popup4">
+        </div>
+    </div>
     <nav id="navbar">
         <a href="/"><img src="/img/foobatree.png" alt="logo" id="logo"></a>
 
-        <button type="button" class="navbutton" id="addperson" onclick=openPopupFunc()>Add person</button>
+        <button class="navbutton" id="addperson" onclick=openPopupFunc()>Add person</button>
         <button class="navbutton" id="focusperson" onclick=focusPopup()>Focus on person</button>
         <button class="navbutton" id="sharetree" onclick=shareTreePopup()>Share tree</button>
         <button class="navbutton" id="openshared" onclick=openSharedPopup()>Open shared tree</button>
         <button class="navbutton" id="openshared" onclick=ownTree()>Back to own tree</button>
         <button class="navbutton" id="openshared" onclick=checkGraphUpdates()>Check for updates</button>
     </nav>
-
+    <img class="map-style" src="/img/map_styles.png" onclick=changeStylePopup()></img>
     <svg id="graph">
         <g transform="translate(20,20)" />
     </svg>
@@ -92,6 +96,7 @@
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
 <script src=" https://cdn.jsdelivr.net/npm/dagre@0.8.5/dist/dagre.min.js "></script>
+<script src=" https://cdn.jsdelivr.net/npm/rainbowvis.js@1.1.1/rainbowvis.min.js "></script>
 <script src="/lib/dagre-d3.js"></script>
 <script src="/lib/utils.js"></script>
 <script src="graph.js"></script>

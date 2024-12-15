@@ -6,6 +6,11 @@ var treeUser = getCookie("treeUser")
 if (treeUser == username || !treeUser) treeUser = "empty"
 //thing to add to end of requests cuz sharing
 const requestEnd = treeUser == "empty" ? "" : `&username=${treeUser}`
+var treeStyle = localStorage.getItem("treeStyle") ? localStorage.getItem("treeStyle") : "normal"
+//for info tree style
+var rainbow = new Rainbow()
+rainbow.setNumberRange(0, localStorage.getItem("colorSens") ? localStorage.getItem("colorSens") : 2000);
+rainbow.setSpectrum(localStorage.getItem("fromColor") ? localStorage.getItem("fromColor") : "yellow", localStorage.getItem("toColor") ? localStorage.getItem("toColor") : "darkred");
 //kinda whack settings the size like this ngl
 document.getElementById("graph").setAttribute("width", screen.availWidth * 0.95)
 document.getElementById("graph").setAttribute("height", screen.availHeight * 0.8)
@@ -39,6 +44,8 @@ function closePopupFunc() {
     popupOverlay.style.display = 'none';
     document.getElementById("popupOverlay2").style.display = 'none';
     document.getElementById("popupOverlay3").style.display = 'none';
+    document.getElementById("popupOverlay4").style.display = 'none';
+
 
     document.getElementById("shareInput").value = ""
     document.getElementById("error").textContent = ""
@@ -171,14 +178,45 @@ function openSharedTree() {
     const treeUser = document.getElementById("sharedList").value
     console.log(treeUser)
     //document.cookie = `treeUser=${treeUser};path=/`
-    localStorage.setItem("treeUser",treeUser)
-    localStorage.setItem("path","/")
+    localStorage.setItem("treeUser", treeUser)
     location.reload()
 }
 //opens your own tree
 function ownTree() {
-    localStorage.setItem("treeUser","empty")
-    localStorage.setItem("path","/")
+    localStorage.setItem("treeUser", "empty")
+    location.reload()
+}
+
+function changeStylePopup() {
+    document.getElementById("popupOverlay4").style.display = "flex";
+    document.getElementById("popup4").innerHTML = `<div class="popup-content" style="min-width: 35vw;">
+    <button onclick=normalStyle()>Normal</button>
+    <hr></hr>
+    <button onclick="infoStyle()">Amount of info</button>
+    <br></br>
+    <input id="from-color-input" type="color" value=${localStorage.getItem("fromColor") ? localStorage.getItem("fromColor") : "#ffff00"}></input>
+    <p style="display: inline;"> To </p>
+    <input id="to-color-input" type="color" value=${localStorage.getItem("toColor") ? localStorage.getItem("toColor") : "#8b0000"}></input>
+    <p style="display: inline;"> Sensitivity </p>
+    <input id="color-sens-input" type=number placeholder=2000 value=${localStorage.getItem("colorSens") ? localStorage.getItem("colorSens") : 2000}></input>
+    </div>
+    `
+}
+
+function normalStyle() {
+    closePopupFunc()
+    if (treeStyle == "normal") return 0
+    localStorage.setItem("treeStyle", "normal")
+    location.reload()
+}
+
+function infoStyle() {
+    closePopupFunc()
+    if (treeStyle == "info") return 0
+    localStorage.setItem("colorSens", document.getElementById("color-sens-input").value)
+    localStorage.setItem("fromColor", document.getElementById("from-color-input").value)
+    localStorage.setItem("toColor", document.getElementById("to-color-input").value)
+    localStorage.setItem("treeStyle", "info")
     location.reload()
 }
 
@@ -231,13 +269,12 @@ async function main(user) {
     const parent1 = idToData(root.parent1Id)
     const parent2 = idToData(root.parent2Id)
     //
-    g.setNode(root.id, { labelType: "html", label: idToLabel(root.id), class: root.gender })
+    g.setNode(root.id, idToNode(root.id))
     //this thing cuz the first guys parents are rendered automatically
-    //Big code
-    g.setNode(root.id, { labelType: "html", label: Object.values(g._nodes)[Object.keys(g._nodes).indexOf(root.id)].label.replace(/<input type='button' id="parentButton"(.*?)>/, ""), class: root.gender })
+    removeButton(/<input type='button' id="parentButton"(.*?)>/, root.id)
     console.log(parent2)
-    if (parent1) g.setNode(parent1.id, { labelType: "html", label: idToLabel(parent1.id), class: parent1.gender })
-    if (parent2) g.setNode(parent2.id, { labelType: "html", label: idToLabel(parent2.id), class: parent2.gender })
+    if (parent1) g.setNode(parent1.id, idToNode(parent1.id))
+    if (parent2) g.setNode(parent2.id, idToNode(parent2.id))
     //if parents both exist
     if (parent1 && parent2) {
         g.setNode(`${(parent1.id + parent2.id).split('').sort().join('')}ParentMarriage`, { label: "", class: "marriage" })
@@ -289,10 +326,10 @@ function graphParents(id) {
     const parent2 = idToData(root.parent2Id)
 
     //that monstrosity removes the parentButton element
-    g.setNode(root.id, { labelType: "html", label: Object.values(g._nodes)[Object.keys(g._nodes).indexOf(id)].label.replace(/<input type='button' id="parentButton"(.*?)>/, "") })
+    removeButton(/<input type='button' id="parentButton"(.*?)>/, root.id)
 
-    if (parent1) g.setNode(parent1.id, { labelType: "html", label: idToLabel(parent1.id), class: parent1.gender })
-    if (parent2) g.setNode(parent2.id, { labelType: "html", label: idToLabel(parent2.id), class: parent2.gender })
+    if (parent1) g.setNode(parent1.id, idToNode(parent1.id))
+    if (parent2) g.setNode(parent2.id, idToNode(parent2.id))
     //if both parents exist
     if (parent1 && parent2) {
         console.log(1)
@@ -303,7 +340,7 @@ function graphParents(id) {
             console.log(2)
             //set a node for the parents' marriage
             g.setNode(`${(parent1.id + parent2.id).split('').sort().join('')}ParentMarriage`, { label: "", class: "marriage" })
-            if(parent1.gender == "male") {
+            if (parent1.gender == "male") {
                 g.setEdge(root.parent1Id, `${(parent1.id + parent2.id).split('').sort().join('')}ParentMarriage`, {
                     arrowhead: "undirected",
                     curve: d3.curveStepBefore
@@ -322,8 +359,8 @@ function graphParents(id) {
                     curve: d3.curveStepBefore
                 })
             }
-            
-            
+
+
             g.setEdge(`${(parent1.id + parent2.id).split('').sort().join('')}ParentMarriage`, root.id, {
                 arrowhead: "undirected",
                 curve: d3.curveStepBefore
@@ -377,7 +414,7 @@ async function graphChildren(id) {
     console.log(id)
     const root = idToData(id)
     //that monstrosity removes the childButton element from the root node
-    g.setNode(root.id, { labelType: "html", label: Object.values(g._nodes)[Object.keys(g._nodes).indexOf(id)].label.replace(/<input type='button' id="childButton"(.*?)>/, "") })
+    removeButton(/<input type='button' id="childButton"(.*?)>/, root.id)
     for (var i = 0; i < root.children.length; i++) {
         keepgoing = true
         child = idToData(root.children[i])
@@ -385,8 +422,8 @@ async function graphChildren(id) {
         if (nodeOnScreen(child)) {
             continue
         }
-        g.setNode(child.id, { labelType: "html", label: idToLabel(child.id), class: child.gender })
-        g.setNode(child.id, { labelType: "html", label: Object.values(g._nodes)[Object.keys(g._nodes).indexOf(child.id)].label.replace(/<input type='button' id="parentButton"(.*?)>/, ""), class: child.gender })
+        g.setNode(child.id, idToNode(child.id))
+        removeButton(/<input type='button' id="parentButton"(.*?)>/, child.id)
         //if child has both parents
         if (child.parent1Id && child.parent2Id) {
             //if parents are both on screen
@@ -403,12 +440,12 @@ async function graphChildren(id) {
                 //if parent 1 isnt a node add it
                 if (!nodeOnScreen(child.parent1Id)) {
                     parent1 = idToData(child.parent1Id)
-                    await g.setNode(child.parent1Id, { labelType: "html", label: idToLabel(child.parent1Id), class: parent1.gender })
+                    await g.setNode(child.parent1Id, idToNode(child.parent1Id))
                 }
                 //if parent 2 isnt a node add it
                 else if (!nodeOnScreen(child.parent2Id)) {
                     parent2 = idToData(child.parent2Id)
-                    await g.setNode(child.parent2Id, { labelType: "html", label: idToLabel(child.parent2Id), class: parent2.gender })
+                    await g.setNode(child.parent2Id, idToNode(child.parent2Id))
                 }
                 g.setNode(`${(child.parent1Id + child.parent2Id).split('').sort().join('')}ParentMarriage`, { label: "", class: "marriage" })
                 g.setEdge(child.parent1Id, `${(child.parent1Id + child.parent2Id).split('').sort().join('')}ParentMarriage`, {
@@ -459,9 +496,9 @@ function graphSpouse(id) {
     const person = idToData(id)
     const spouse = idToData(person.spouses[0])
     //removes the spouse button from the person who is being expanded
-    g.setNode(id, { labelType: "html", label: Object.values(g._nodes)[Object.keys(g._nodes).indexOf(id)].label.replace(/<input type='button' id="spouseButton"(.*?)>/, "") })
+    removeButton(/<input type='button' id="spouseButton"(.*?)>/, id)
     //set spouse node
-    g.setNode(spouse.id, { labelType: "html", label: idToLabel(spouse.id), class: spouse.gender })
+    g.setNode(spouse.id, idToNode(spouse.id))
     //set a marriage node so the spouses are on the same rank
     g.setNode(`${(id + spouse.id).split('').sort().join('')}ParentMarriage`, { label: "", class: "marriage" })
     g.setEdge(id, `${(id + spouse.id).split('').sort().join('')}ParentMarriage`, {
@@ -480,19 +517,31 @@ function nodeOnScreen(id) {
 }
 
 //returns the html label in the tree for a person based on their uuid
-function idToLabel(uuid) {
+function idToNode(uuid) {
     const person = idToData(uuid)
-    return `<div style="min-height: 200px; width: 160px;">
+    console.log(personToInfoScore(person))
+    return {
+        labelType: "html",
+        label:
+            `<div style="min-height: 200px; width: 160px;">
     <img style="width: 80%;  align-self: center; display: block; margin-left: auto;margin-right: auto;" src="${person.pic ? person.pic : "https://media.istockphoto.com/id/1451587807/vector/user-profile-icon-vector-avatar-or-person-icon-profile-picture-portrait-symbol-vector.jpg?s=612x612&w=0&k=20&c=yDJ4ITX1cHMh25Lt1vI1zBn2cAKKAlByHBvPJ8gEiIg="}"></img>
     <p onclick="openPerson('${person.id}', '${requestEnd}')">${person.name}</p> ${personToLifespan(person)} 
     ${person.lore ? `<p style="font-style: italic;">${person.lore}</p>` : ""}
     ${toShowParentsButton(person) ? `<input type='button' id="parentButton" onclick="graphParents('${person.id}')" value="P">` : ""} 
     ${(person.children.length > 1 ? true : !nodeOnScreen(person.children[0]) && person.children.length != 0) ? `<input type='button' id="childButton" onclick="graphChildren('${person.id}')" value="C">` : ""}
     ${person.children.length == 0 && person.spouses.length == 1 && !nodeOnScreen(person.spouses[0]) ? `<input type='button' id="spouseButton" onclick="graphSpouse('${person.id}')" value="S">` : ""}
-    </div>`
+    </div>`,
+        style: `fill: ${treeStyle == "normal" ? (person.gender == "male" ? "#00c4f3;" : "#ff72af") : (treeStyle = "info" ? ("#" + rainbow.colorAt(personToInfoScore(person))) : "pink")};`
+    }
 }
+
+function removeButton(regex, id) {
+    const person = idToData(id)
+    g.setNode(id, { labelType: "html", label: Object.values(g._nodes)[Object.keys(g._nodes).indexOf(id)].label.replace(regex, ""), style: `fill: ${treeStyle == "normal" ? (person.gender == "male" ? "#00c4f3;" : "#ff72af") : (treeStyle = "info" ? ("#" + rainbow.colorAt(personToInfoScore(person))) : "pink")};` })
+}
+
 //to show or not to show it
-//i mean it could be a switch case but that is really not important
+//i mean it could be a switch case but that is really not important whoever sees this is 100% free to change it if they so desire
 function toShowParentsButton(person) {
     if (!person.parent1Id && !person.parent2Id) {
         return false
@@ -533,12 +582,12 @@ async function checkGraphUpdates() {
                 spouseLabel = spouseLabel.slice(0, spouseLabel.length - 6) + `<input type='button' id="spouseButton" onclick="graphSpouse('${element.spouses[0]}')" value="S">` + "</div>"
                 g.setNode(element.spouses[0], { labelType: "html", label: spouseLabel })
             }
-            if(element.parent1Id){
+            if (element.parent1Id) {
                 parentLabel = Object.values(g._nodes)[Object.keys(g._nodes).indexOf(element.parent1Id)].label
                 parentLabel = parentLabel.slice(0, parentLabel.length - 6) + `<input type='button' id="parentButton" onclick="graphChildren('${element.parent1Id}')" value="C">` + "</div>"
                 g.setNode(element.parent1Id, { labelType: "html", label: parentLabel })
             }
-            if(element.parent2Id){
+            if (element.parent2Id) {
                 parentLabel = Object.values(g._nodes)[Object.keys(g._nodes).indexOf(element.parent2Id)].label
                 parentLabel = parentLabel.slice(0, parentLabel.length - 6) + `<input type='button' id="parentButton" onclick="graphChildren('${element.parent2Id}')" value="C">` + "</div>"
                 g.setNode(element.parent2Id, { labelType: "html", label: parentLabel })
@@ -547,4 +596,17 @@ async function checkGraphUpdates() {
         }
     });
     render(inner, g)
+}
+
+function personToInfoScore(dude) {
+    return dude.writing.length
+        + (dude.sources.length * 0.25)
+        + (dude.children.length * 10)
+        + (dude.birthDate ? 35 : 0)
+        + (dude.birthPlace ? 35 : 0)
+        + (dude.deathDate ? 35 : 0)
+        + (dude.deathPlace ? 35 : 0)
+        + (dude.deathCause ? 25 : 0)
+        + (dude.burialPlace ? 25 : 0)
+        + (dude.pic ? 100 : 0)
 }
