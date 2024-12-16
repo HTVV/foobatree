@@ -49,10 +49,9 @@ async function auth() {
         /* document.cookie = `token=${data}`
         document.cookie = `username=${username};`; */
         localStorage.setItem("token",data)
-        localStorage.setItem("userName",username)
+        localStorage.setItem("username",username)
         console.log(data)
         localStorage.setItem("treeUser","empty")
-        localStorage.setItem("path","/")
         /* document.cookie = `treeUser=empty;path=/` */
         window.location.href = "./graph/"
     }
@@ -98,9 +97,10 @@ async function register() {
         errorText2.textContent = "Error"
         return 0
     }
-    document.cookie = `token=${data}`
-    document.cookie = `username=${username};`;
-    document.cookie = `treeUser=empty;path=/`
+    localStorage.setItem("token", data)
+    localStorage.setItem("username", username)
+    localStorage.setItem("treeUser", "empty")
+
     window.location.href = "./graph/"
 }
 
