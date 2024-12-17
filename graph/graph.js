@@ -520,8 +520,6 @@ function nodeOnScreen(id) {
 function idSetNode(uuid) {
     if(typeof uuid == "object") {throw new Error('Thats not an id brother');}
     const person = idToData(uuid)
-    console.log(uuid)
-    console.log(person)
     console.log(personToInfoScore(person))
     g.setNode(uuid, {
         labelType: "html",
@@ -599,6 +597,13 @@ async function checkGraphUpdates() {
 
         }
     });
+    Object.keys(g._nodes).forEach(element => {
+        if(!(element.match(/childNode/) || element.match(/ParentMarriage/))){
+            console.log(element)
+            idSetNode(element)
+        }
+    })
+
     render(inner, g)
 }
 
