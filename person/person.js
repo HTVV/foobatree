@@ -403,9 +403,9 @@ function existingSubmit() {
         } else {
             dude.parent2Id = person.id;
         }
-        //parent
-        fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${dude.id}&content=${encodeURI(JSON.stringify(dude))}${requestEnd}`)
         //child
+        fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${dude.id}&content=${encodeURI(JSON.stringify(dude))}${requestEnd}`)
+        //parent
         fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${person.id}&content=${encodeURI(JSON.stringify(person))}${requestEnd}`)
     }
     else if (type == "spouse") {

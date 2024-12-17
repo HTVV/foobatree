@@ -269,12 +269,12 @@ async function main(user) {
     const parent1 = idToData(root.parent1Id)
     const parent2 = idToData(root.parent2Id)
     //
-    g.setNode(root.id, idToNode(root.id))
+    idSetNode(root.id)
     //this thing cuz the first guys parents are rendered automatically
     removeButton(/<input type='button' id="parentButton"(.*?)>/, root.id)
     console.log(parent2)
-    if (parent1) g.setNode(parent1.id, idToNode(parent1.id))
-    if (parent2) g.setNode(parent2.id, idToNode(parent2.id))
+    if (parent1) idSetNode(parent1.id)
+    if (parent2) idSetNode(parent2.id)
     //if parents both exist
     if (parent1 && parent2) {
         g.setNode(`${(parent1.id + parent2.id).split('').sort().join('')}ParentMarriage`, { label: "", class: "marriage" })
@@ -328,8 +328,8 @@ function graphParents(id) {
     //that monstrosity removes the parentButton element
     removeButton(/<input type='button' id="parentButton"(.*?)>/, root.id)
 
-    if (parent1) g.setNode(parent1.id, idToNode(parent1.id))
-    if (parent2) g.setNode(parent2.id, idToNode(parent2.id))
+    if (parent1) idSetNode(parent1.id)
+    if (parent2) idSetNode(parent2.id)
     //if both parents exist
     if (parent1 && parent2) {
         console.log(1)
@@ -422,7 +422,7 @@ async function graphChildren(id) {
         if (nodeOnScreen(child)) {
             continue
         }
-        g.setNode(child.id, idToNode(child.id))
+        idSetNode(child.id)
         removeButton(/<input type='button' id="parentButton"(.*?)>/, child.id)
         //if child has both parents
         if (child.parent1Id && child.parent2Id) {
@@ -440,12 +440,12 @@ async function graphChildren(id) {
                 //if parent 1 isnt a node add it
                 if (!nodeOnScreen(child.parent1Id)) {
                     parent1 = idToData(child.parent1Id)
-                    await g.setNode(child.parent1Id, idToNode(child.parent1Id))
+                    idSetNode(child.parent1Id)
                 }
                 //if parent 2 isnt a node add it
                 else if (!nodeOnScreen(child.parent2Id)) {
                     parent2 = idToData(child.parent2Id)
-                    await g.setNode(child.parent2Id, idToNode(child.parent2Id))
+                    idSetNode(child.parent2Id)
                 }
                 g.setNode(`${(child.parent1Id + child.parent2Id).split('').sort().join('')}ParentMarriage`, { label: "", class: "marriage" })
                 g.setEdge(child.parent1Id, `${(child.parent1Id + child.parent2Id).split('').sort().join('')}ParentMarriage`, {
@@ -498,7 +498,7 @@ function graphSpouse(id) {
     //removes the spouse button from the person who is being expanded
     removeButton(/<input type='button' id="spouseButton"(.*?)>/, id)
     //set spouse node
-    g.setNode(spouse.id, idToNode(spouse.id))
+    idSetNode(spouse.id)
     //set a marriage node so the spouses are on the same rank
     g.setNode(`${(id + spouse.id).split('').sort().join('')}ParentMarriage`, { label: "", class: "marriage" })
     g.setEdge(id, `${(id + spouse.id).split('').sort().join('')}ParentMarriage`, {
@@ -517,10 +517,13 @@ function nodeOnScreen(id) {
 }
 
 //returns the html label in the tree for a person based on their uuid
-function idToNode(uuid) {
+function idSetNode(uuid) {
+    if(typeof uuid == "object") {throw new Error('Thats not an id brother');}
     const person = idToData(uuid)
+    console.log(uuid)
+    console.log(person)
     console.log(personToInfoScore(person))
-    return {
+    g.setNode(uuid, {
         labelType: "html",
         label:
             `<div style="min-height: 200px; width: 160px;">
@@ -533,6 +536,7 @@ function idToNode(uuid) {
     </div>`,
         style: `fill: ${treeStyle == "normal" ? (person.gender == "male" ? "#00c4f3;" : "#ff72af") : (treeStyle = "info" ? ("#" + rainbow.colorAt(personToInfoScore(person))) : "pink")};`
     }
+    )
 }
 
 function removeButton(regex, id) {
@@ -599,6 +603,7 @@ async function checkGraphUpdates() {
 }
 
 function personToInfoScore(dude) {
+    console.log(dude)
     return dude.writing.length
         + (dude.sources.length * 0.25)
         + (dude.children.length * 10)
