@@ -397,7 +397,7 @@ function existingSubmit() {
         fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${person.id}&content=${encodeURI(JSON.stringify(person))}${requestEnd}`)
     }
     else if (type == "child") {
-        person.children.push(person.id)
+        person.children.push(dude.id)
         if (dude.parent1Id == null || dude.parent1Id == "") {
             dude.parent1Id = person.id
         } else {
