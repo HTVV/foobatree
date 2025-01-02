@@ -5,12 +5,13 @@
                 <p></p>
                 <h3 id="error" style="color: red;"></h3>
                 <div>
-                    <input type="radio" style="font-size: 200%;" value="male" name="maleFemale">Male</input>
+                    <input type="radio" value="male" name="maleFemale">Male</input>
                     <input type="radio" value="female" name="maleFemale">Female</input>
                 </div>
                 <div>
                     <input type="radio" value="alive" name="deadAlive" onclick="hideForm(this.value, 1)">Living</input>
-                    <input type="radio" value="dead" name="deadAlive" onclick="hideForm(this.value, 1)" checked="true">Dead</input>
+                    <input type="radio" value="dead" name="deadAlive" onclick="hideForm(this.value, 1)" checked>Dead</input>
+                    <input type="radio" value="unknown" name="deadAlive" onclick="hideForm(this.value, 1)">Unknown</input>
                 </div>
                 
                 <p class="tohide1">First name(s)</p>

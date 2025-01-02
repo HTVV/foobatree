@@ -599,7 +599,6 @@ async function checkGraphUpdates() {
     });
     Object.keys(g._nodes).forEach(element => {
         if(!(element.match(/childNode/) || element.match(/ParentMarriage/))){
-            console.log(element)
             idSetNode(element)
         }
     })

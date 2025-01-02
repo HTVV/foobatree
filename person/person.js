@@ -93,6 +93,7 @@ function openDetailsPopup(typeEdit) {
         <div>
             <input type="radio" value="alive" name="changeStatus" ${person.status == "living" ? "checked" : ""}>Living</input>
             <input type="radio" value="dead" name="changeStatus" ${person.status == "dead" ? "checked" : ""}>Dead</input>
+            <input type="radio" value="unknown" name="changeStatus" ${person.status == "unknown" ? "checked" : ""}>Unknown</input>
         </div>
         `
     }
