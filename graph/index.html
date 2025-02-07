@@ -23,7 +23,6 @@
     </div>
     <nav id="navbar">
         <a href="/"><img src="/img/foobatree.png" alt="logo" id="logo"></a>
-
         <button class="navbutton" id="addperson" onclick=openPopup(1)>Add person</button>
         <button class="navbutton" id="focusperson" onclick=openPopup(2)>Focus on person</button>
         <button class="navbutton" id="sharetree" onclick=openPopup(3)>Share tree</button>
@@ -31,7 +30,7 @@
         <button class="navbutton" id="openshared" onclick=ownTree()>Back to own tree</button>
         <button class="navbutton" id="openshared" onclick=checkGraphUpdates()>Check for updates</button>
     </nav>
-    <img class="map-style" src="/img/map_styles.png" onclick=changeStylePopup()></img>
+    <img class="map-style" src="/img/map_styles.png" onclick=openPopup(4)></img>
     <svg id="graph">
         <g transform="translate(20,20)" />
     </svg>

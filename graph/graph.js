@@ -33,6 +33,7 @@ console.log(token);
 const popupOverlay = document.getElementById("popupOverlay");
 const popup = document.getElementById("popup");
 
+//downoloads the popup variables
 setPopups();
 
 document.addEventListener("keydown", function (e) {
@@ -55,6 +56,7 @@ async function setPopups() {
   shareTreePopup = await (
     await fetch("../data/popup/shareTreePopup.html")
   ).text();
+  stylePopup = await (await fetch("../data/popup/stylePopup.html")).text();
 }
 //gets a random uuid cuz cant crypto doesnt like http
 function randomUUID() {
@@ -92,6 +94,34 @@ function openPopup(popupNum) {
       popupOverlay.style.display = "flex";
       popup.innerHTML = shareTreePopup;
       document.getElementById("submitButton").style.display = "none";
+    case 4:
+      popupOverlay.style.display = "flex";
+      popup.innerHTML = stylePopup;
+      document.getElementById("submitButton").style.display = "none";
+      var treeStyle = localStorage.getItem("treeStyle")
+        ? localStorage.getItem("treeStyle")
+        : "normal";
+      if (treeStyle == "normal") {
+        document.getElementById("info-style-button").style.backgroundColor =
+          "#d1d1d1";
+      } else if (treeStyle == "info") {
+        document.getElementById("normal-style-button").style.backgroundColor =
+          "#d1d1d1";
+      }
+
+      document.getElementById("from-color-input").value =
+        localStorage.getItem("fromColor")
+          ? localStorage.getItem("fromColor")
+          : "#8b0000";
+      document.getElementById("to-color-input").value =
+        localStorage.getItem("toColor")
+          ? localStorage.getItem("toColor")
+          : "#8b0000";
+      document.getElementById("color-sens-input").value = localStorage.getItem(
+        "colorSens"
+      )
+        ? localStorage.getItem("colorSens")
+        : 2000;
   }
 }
 //closes all popups
@@ -181,7 +211,6 @@ function focusPopup() {
   document.getElementById("popup2").style.display = "block";
   document.getElementById("popupOverlay2").style.display = "block";
 }
-
 //sets the trees focus to a person
 function setTarget() {
   const value = document.getElementById("selectFocus").value;
@@ -231,7 +260,6 @@ async function shareTree() {
     document.getElementById("error").textContent = "USER NOT FOUND";
   }
 }
-
 //opens the tree of another user
 function openSharedTree() {
   const treeUser = document.getElementById("sharedList").value;
@@ -245,47 +273,29 @@ function ownTree() {
   localStorage.setItem("treeUser", "empty");
   location.reload();
 }
-
 function changeStylePopup() {
   document.getElementById("popupOverlay4").style.display = "flex";
-  document.getElementById(
-    "popup4"
-  ).innerHTML = `<div class="popup-content" style="min-width: 35vw;">
-    <button onclick=normalStyle()>Normal</button>
-    <hr></hr>
-    <button onclick="infoStyle()">Amount of info</button>
-    <br></br>
-    <input id="from-color-input" type="color" value=${
-      localStorage.getItem("fromColor")
-        ? localStorage.getItem("fromColor")
-        : "#ffff00"
-    }></input>
-    <p style="display: inline;"> To </p>
-    <input id="to-color-input" type="color" value=${
-      localStorage.getItem("toColor")
-        ? localStorage.getItem("toColor")
-        : "#8b0000"
-    }></input>
-    <p style="display: inline;"> Sensitivity </p>
-    <input id="color-sens-input" type=number placeholder=2000 value=${
-      localStorage.getItem("colorSens")
-        ? localStorage.getItem("colorSens")
-        : 2000
-    }></input>
-    </div>
-    `;
+  document.getElementById("popup4").innerHTML = stylePopup;
 }
-
 function normalStyle() {
   closePopupFunc();
   if (treeStyle == "normal") return 0;
+  treeStyle = "normal";
   localStorage.setItem("treeStyle", "normal");
-  location.reload();
+
+  nodeNames = Object.keys(g._nodes);
+  nodeNames.forEach((node) => {
+    if (node.includes("ParentMarriage")) {
+      return 0;
+    }
+    idSetNode(node);
+  });
+
+  renderFixed();
 }
 
 function infoStyle() {
   closePopupFunc();
-  if (treeStyle == "info") return 0;
   localStorage.setItem(
     "colorSens",
     document.getElementById("color-sens-input").value
@@ -298,8 +308,29 @@ function infoStyle() {
     "toColor",
     document.getElementById("to-color-input").value
   );
+  treeStyle = "info";
   localStorage.setItem("treeStyle", "info");
-  location.reload();
+
+  rainbow.setNumberRange(
+    0,
+    localStorage.getItem("colorSens") ? localStorage.getItem("colorSens") : 2000
+  );
+  rainbow.setSpectrum(
+    localStorage.getItem("fromColor")
+      ? localStorage.getItem("fromColor")
+      : "yellow",
+    localStorage.getItem("toColor") ? localStorage.getItem("toColor") : "darkred"
+  );
+
+  nodeNames = Object.keys(g._nodes);
+  nodeNames.forEach((node) => {
+    if (node.includes("ParentMarriage")) {
+      return 0;
+    }
+    idSetNode(node);
+  });
+
+  renderFixed();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -321,9 +352,9 @@ var render = new dagreD3.render();
 
 // https://github.com/dagrejs/dagre-d3/issues/251#issuecomment-867115193
 function renderFixed() {
-    inner.attr('transform', d3.zoomIdentity);
-    render(inner, g);
-    inner.attr('transform', loc);
+  inner.attr("transform", d3.zoomIdentity);
+  render(inner, g);
+  inner.attr("transform", loc);
 }
 
 var svg = d3.select("svg"),
@@ -722,7 +753,6 @@ function graphSpouse(id) {
 function nodeOnScreen(id) {
   return Object.keys(g._nodes).includes(id);
 }
-
 //returns the html label in the tree for a person based on their uuid
 function idSetNode(uuid) {
   if (typeof uuid == "object") {
@@ -775,7 +805,6 @@ function idSetNode(uuid) {
     };`,
   });
 }
-
 function removeButton(regex, id) {
   const person = idToData(id);
   g.setNode(id, {
