@@ -15,9 +15,11 @@ rainbow.setSpectrum(localStorage.getItem("fromColor") ? localStorage.getItem("fr
 document.getElementById("graph").setAttribute("width", screen.availWidth * 0.95)
 document.getElementById("graph").setAttribute("height", screen.availHeight * 0.8)
 console.log(token)
-document.getElementById('focusInput').addEventListener('input', function (e) {
-    search(data)
-});
+
+const popupOverlay = document.getElementById("popupOverlay")
+const popup = document.getElementById("popup")
+
+setPopups()
 
 document.addEventListener('keydown', function (e) {
     if (e.key == "Escape") {
@@ -28,6 +30,13 @@ document.addEventListener('keydown', function (e) {
         render(inner, g)
     }
 })
+
+async function setPopups() {
+    addPersonPopup = await (await fetch("../data/popup/addPersonPopup.html")).text()
+    focusPersonPopup = await (await fetch("../data/popup/focusPersonPopup.html")).text()
+    shareTreePopup = await (await fetch("../data/popup/shareTreePopup.html")).text()
+
+}
 //gets a random uuid cuz cant crypto doesnt like http
 function randomUUID() {
     return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
@@ -35,20 +44,36 @@ function randomUUID() {
     );
 }
 //opens the add disconnected person form
-function openPopupFunc() {
-    popupOverlay.style.display = 'block';
-    hideForm(document.getElementById("status").value)
+function openPopup(popupNum) {
+    switch (popupNum) {
+        //add person
+        case 1:
+            popupOverlay.style.display = 'flex';
+            popup.innerHTML = addPersonPopup
+            document.getElementById('popupHeader').textContent = "Add disconnected person"
+            document.getElementById("submitButton").style.display = "block"
+            document.getElementById("select-existing").style.display = "none"
+        //focus person
+        case 2:
+            popupOverlay.style.display = 'flex';
+            popup.innerHTML = focusPersonPopup
+            document.getElementById('popupHeader').textContent = "Focus person"
+            document.getElementById('focusInput').addEventListener('input', function (e) {
+                search(data)
+            });
+            document.getElementById("submitButton").style.display = "none"
+        //share tree
+        case 3:
+            popupOverlay.style.display = 'flex';
+            popup.innerHTML = shareTreePopup
+            document.getElementById("submitButton").style.display = "none"
+    }
+
 }
 //closes all popups
 function closePopupFunc() {
     popupOverlay.style.display = 'none';
-    document.getElementById("popupOverlay2").style.display = 'none';
-    document.getElementById("popupOverlay3").style.display = 'none';
-    document.getElementById("popupOverlay4").style.display = 'none';
-
-
-    document.getElementById("shareInput").value = ""
-    document.getElementById("error").textContent = ""
+    if(document.getElementById("shareInput")) document.getElementById("shareInput").value = ""
 }
 //the submit button for all the things
 function submitForm() {
@@ -133,17 +158,6 @@ function getCookie(name) {
     /* const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift(); */
-}
-//opens the popup where you can share your tree to others
-function shareTreePopup() {
-    document.getElementById("popupOverlay3").style.display = "block"
-    document.getElementById("popup3").innerHTML = `<div class="popup-content">
-    <p>Input username of person to share tree to</p>
-    <h3 id="error"></h3>
-    <input class="popup-input" type="text" id="shareInput">
-    <p></p>i
-    <button type="button" id="sharetree" onclick=shareTree()>Share</button>
-</div>`
 }
 //opens the popup where you can open a tree that has been shared to you
 async function openSharedPopup() {
@@ -518,7 +532,7 @@ function nodeOnScreen(id) {
 
 //returns the html label in the tree for a person based on their uuid
 function idSetNode(uuid) {
-    if(typeof uuid == "object") {throw new Error('Thats not an id brother');}
+    if (typeof uuid == "object") { throw new Error('Thats not an id brother'); }
     const person = idToData(uuid)
     console.log(personToInfoScore(person))
     g.setNode(uuid, {
@@ -598,7 +612,7 @@ async function checkGraphUpdates() {
         }
     });
     Object.keys(g._nodes).forEach(element => {
-        if(!(element.match(/childNode/) || element.match(/ParentMarriage/))){
+        if (!(element.match(/childNode/) || element.match(/ParentMarriage/))) {
             idSetNode(element)
         }
     })

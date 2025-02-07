@@ -42,17 +42,15 @@ function getCookie(name) {
 
 //opens parent adding popup
 function openPopupFunc() {
-    livingCheck()
+    document.getElementById('popup1').innerHTML = addPersonPopup
     document.getElementById("submitButton").style.display = 'block';
     type = "parents"
     popupOverlay.style.display = 'flex';
-    document.getElementById('popup1').innerHTML = addPersonPopup
-    document.getElementById('popup1Header').textContent = "Add parent"
+    document.getElementById('popupHeader').textContent = "Add parent"
     document.getElementById("popup1").style.display = 'block'
 }
 //opens child adding popup
 async function openChildPopup() {
-    livingCheck()
     document.getElementById("submitButton").style.display = 'block';
     type = "child"
     popupOverlay.style.display = 'flex';
@@ -67,7 +65,6 @@ async function openChildPopup() {
 }
 //opens spouse adding popup
 function openSpousePopup() {
-    livingCheck()
     document.getElementById("submitButton").style.display = 'block';
     type = "spouse"
     popupOverlay.style.display = 'flex';
@@ -166,13 +163,6 @@ function closePopupFunc() {
     document.getElementById("popup1").style.display = 'none';
     document.getElementById("popup2").style.display = 'none';
     document.getElementById("popup3").style.display = 'none';
-}
-function livingCheck() {
-    if (document.querySelector('input[name="deadAlive"]:checked').value == "alive") {
-        hideForm("alive", 1)
-    } else {
-        hideForm("dead", 1)
-    }
 }
 async function submitForm() {
     if (type == "parents") {
@@ -440,7 +430,7 @@ async function main() {
     person = person[0];
     document.title = person.name;
 
-    addPersonPopup = await (await fetch("../data/addPersonPopup.html")).text()
+    addPersonPopup = await (await fetch("../data/popup/addPersonPopup.html")).text()
     document.getElementById("popup1").innerHTML = addPersonPopup;
     document.getElementById("profile-pic").src = person.pic ? person.pic : document.getElementById("profile-pic").src
     tree = await getTree()
