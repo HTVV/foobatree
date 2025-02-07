@@ -339,9 +339,10 @@ function infoStyle() {
 
   nodeNames = Object.keys(g._nodes);
   nodeNames.forEach((node) => {
-    if (node.includes("ParentMarriage")) {
+    if (node.includes("ParentMarriage") || node.includes("childNode")) {
       return 0;
     }
+    console.log(node)
     idSetNode(node);
   });
 
@@ -774,6 +775,7 @@ function idSetNode(uuid) {
     throw new Error("Thats not an id brother");
   }
   const person = idToData(uuid);
+  console.log(person)
   console.log(personToInfoScore(person));
   g.setNode(uuid, {
     labelType: "html",
