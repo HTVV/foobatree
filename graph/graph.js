@@ -57,6 +57,9 @@ async function setPopups() {
     await fetch("../data/popup/shareTreePopup.html")
   ).text();
   stylePopup = await (await fetch("../data/popup/stylePopup.html")).text();
+  openSharedPopup = await (
+    await fetch("../data/popup/openSharedPopup.html")
+  ).text();
 }
 //gets a random uuid cuz cant crypto doesnt like http
 function randomUUID() {
@@ -68,11 +71,10 @@ function randomUUID() {
   );
 }
 //opens the add disconnected person form
-function openPopup(popupNum) {
+async function openPopup(popupNum) {
   switch (popupNum) {
     //add person
     case 1:
-      console.log(1)
       popupOverlay.style.display = "flex";
       popup.innerHTML = addPersonPopup;
       document.getElementById("popupHeader").textContent =
@@ -98,8 +100,8 @@ function openPopup(popupNum) {
       popup.innerHTML = shareTreePopup;
       document.getElementById("submitButton").style.display = "none";
       break;
+    //change style
     case 4:
-      console.log(4)
       popupOverlay.style.display = "flex";
       popup.innerHTML = stylePopup;
       document.getElementById("submitButton").style.display = "none";
@@ -114,21 +116,38 @@ function openPopup(popupNum) {
           "#d1d1d1";
       }
 
-      document.getElementById("from-color-input").value =
-        localStorage.getItem("fromColor")
-          ? localStorage.getItem("fromColor")
-          : "#8b0000";
-      document.getElementById("to-color-input").value =
-        localStorage.getItem("toColor")
-          ? localStorage.getItem("toColor")
-          : "#8b0000";
+      document.getElementById("from-color-input").value = localStorage.getItem(
+        "fromColor"
+      )
+        ? localStorage.getItem("fromColor")
+        : "#8b0000";
+      document.getElementById("to-color-input").value = localStorage.getItem(
+        "toColor"
+      )
+        ? localStorage.getItem("toColor")
+        : "#8b0000";
       document.getElementById("color-sens-input").value = localStorage.getItem(
         "colorSens"
       )
         ? localStorage.getItem("colorSens")
         : 2000;
       break;
-  }
+    //open shared
+    case 5:
+      popupOverlay.style.display = "flex";
+      popup.innerHTML = openSharedPopup;
+      document.getElementById("submitButton").style.display = "none";
+      const res = await (
+        await fetch(`https://familytree.loophole.site/sharedToMe?token=${token}`)
+      ).json();
+      console.log(res);
+      for (var i = 0; i < res.length; i++) {
+        document.getElementById(
+          "sharedList"
+        ).innerHTML += `<option value="${res[i]}">${res[i]}</option>`;
+      }
+      break;
+    }
 }
 //closes all popups
 function closePopupFunc() {
@@ -234,20 +253,8 @@ function getCookie(name) {
 //opens the popup where you can open a tree that has been shared to you
 async function openSharedPopup() {
   document.getElementById("popupOverlay3").style.display = "block";
-  document.getElementById("popup3").innerHTML = `<div class="popup-content">
-    <select id="sharedList"></select>
-    <p></p>
-    <button type="button" id="sharetree" onclick=openSharedTree()>Open</button>
-</div>`;
-  const res = await (
-    await fetch(`https://familytree.loophole.site/sharedToMe?token=${token}`)
-  ).json();
-  console.log(res);
-  for (var i = 0; i < res.length; i++) {
-    document.getElementById(
-      "sharedList"
-    ).innerHTML += `<option value="${res[i]}">${res[i]}</option>`;
-  }
+  document.getElementById("popup3").innerHTML = ``;
+  
 }
 //shares your tree
 async function shareTree() {
@@ -325,7 +332,9 @@ function infoStyle() {
     localStorage.getItem("fromColor")
       ? localStorage.getItem("fromColor")
       : "yellow",
-    localStorage.getItem("toColor") ? localStorage.getItem("toColor") : "darkred"
+    localStorage.getItem("toColor")
+      ? localStorage.getItem("toColor")
+      : "darkred"
   );
 
   nodeNames = Object.keys(g._nodes);
