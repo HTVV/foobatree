@@ -115,6 +115,10 @@ g.female > rect {
     fill: #ff72af;
 }
 
+g.female > rect {
+    fill: #757575;
+}
+
 g.info > rect {
     fill: green;
 }
