@@ -72,12 +72,14 @@ function openPopup(popupNum) {
   switch (popupNum) {
     //add person
     case 1:
+      console.log(1)
       popupOverlay.style.display = "flex";
       popup.innerHTML = addPersonPopup;
       document.getElementById("popupHeader").textContent =
         "Add disconnected person";
       document.getElementById("submitButton").style.display = "block";
       document.getElementById("select-existing").style.display = "none";
+      break;
     //focus person
     case 2:
       popupOverlay.style.display = "flex";
@@ -89,12 +91,15 @@ function openPopup(popupNum) {
           search(data);
         });
       document.getElementById("submitButton").style.display = "none";
+      break;
     //share tree
     case 3:
       popupOverlay.style.display = "flex";
       popup.innerHTML = shareTreePopup;
       document.getElementById("submitButton").style.display = "none";
+      break;
     case 4:
+      console.log(4)
       popupOverlay.style.display = "flex";
       popup.innerHTML = stylePopup;
       document.getElementById("submitButton").style.display = "none";
@@ -122,6 +127,7 @@ function openPopup(popupNum) {
       )
         ? localStorage.getItem("colorSens")
         : 2000;
+      break;
   }
 }
 //closes all popups
