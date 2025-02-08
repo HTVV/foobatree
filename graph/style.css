@@ -1,11 +1,12 @@
 :root {
   --connector-color: #6ac975;
+  --bg-color: #fff8c4;
 }
 
 svg {
   overflow: hidden;
   overflow-x: hidden;
-  background-color: #fff8c4;
+  background-color: var(--bg-color);
 }
 
 #navbar {
@@ -237,15 +238,30 @@ hr {
   width: 2vw;
 }
 
-.connector-style-row {
+.row {
   display: flex;
   flex-direction: row;
 }
 
-#connector-default-button {
+#connector-default-button, #bg-default-button {
   margin: 0;
   margin-left: 0.5vw;
   border: 1px solid black;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.background-style {
+  grid-row: 2 / 3;
+  grid-column: 2 / 3;
+  border: 2px solid black;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.background-style h4 {
+  margin: 0;
 }

@@ -21,6 +21,13 @@ localStorage.getItem("connector-color")
     )
   : localStorage.setItem("connector-color", "#6ac975");
 
+localStorage.getItem("bg-color")
+  ? document.documentElement.style.setProperty(
+      "--bg-color",
+      localStorage.getItem("bg-color")
+    )
+  : localStorage.setItem("bg-color", "#fff8c4");
+
 //for info tree style
 var rainbow = new Rainbow();
 rainbow.setNumberRange(
@@ -53,7 +60,7 @@ document.addEventListener("keydown", function (e) {
     closePopupFunc();
   }
   if (e.key == "z") {
-    renderFixed()
+    renderFixed();
   }
 });
 
@@ -147,6 +154,8 @@ async function openPopup(popupNum) {
         localStorage.getItem("connector");
       document.getElementById("connector-color-picker").value =
         localStorage.getItem("connector-color");
+      document.getElementById("bg-color-input").value =
+        localStorage.getItem("bg-color");
 
       document
         .getElementById("connector-select")
@@ -162,6 +171,24 @@ async function openPopup(popupNum) {
             this.value
           );
         });
+      //change connector curve
+      document
+        .getElementById("connector-select")
+        .addEventListener("change", function () {
+          Object.keys(g._edgeLabels).forEach((element) => {
+            g._edgeLabels[element].curve =
+              d3[localStorage.getItem("connector")];
+          });
+          renderFixed();
+        });
+      //bg color
+      document
+        .getElementById("bg-color-input")
+        .addEventListener("change", function () {
+          localStorage.setItem("bg-color", this.value);
+          document.documentElement.style.setProperty("--bg-color", this.value);
+        });
+      //set connector style values to default
       document
         .getElementById("connector-default-button")
         .addEventListener("click", function () {
@@ -173,15 +200,20 @@ async function openPopup(popupNum) {
             "--connector-color",
             "#6ac975"
           );
-        });
-        document
-        .getElementById("connector-select")
-        .addEventListener("change", function () {
-          Object.keys(g._edgeLabels).forEach(element => {
-            g._edgeLabels[element].curve = d3[localStorage.getItem("connector")]
+          Object.keys(g._edgeLabels).forEach((element) => {
+            g._edgeLabels[element].curve =
+              d3[localStorage.getItem("connector")];
           });
-          renderFixed()
+          renderFixed();
         });
+      //set bg style values to default
+      document
+        .getElementById("bg-default-button")
+        .addEventListener("change", function () {
+          localStorage.setItem("bg-color", "#fff8c4");
+          document.documentElement.style.setProperty("--bg-color", "#fff8c4");
+        });
+
       break;
     //open shared
     case 5:
