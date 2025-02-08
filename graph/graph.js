@@ -28,6 +28,8 @@ localStorage.getItem("bg-color")
     )
   : localStorage.setItem("bg-color", "#fff8c4");
 
+handleDarkMode()
+
 //for info tree style
 var rainbow = new Rainbow();
 rainbow.setNumberRange(
@@ -43,7 +45,7 @@ rainbow.setSpectrum(
 //kinda whack settings the size like this ngl
 document
   .getElementById("graph")
-  .setAttribute("width", screen.availWidth * 0.95);
+  .setAttribute("width", screen.availWidth);
 document
   .getElementById("graph")
   .setAttribute("height", screen.availHeight * 0.8);
@@ -63,6 +65,10 @@ document.addEventListener("keydown", function (e) {
     renderFixed();
   }
 });
+document.getElementById("switch_toggle").addEventListener("click", function() {
+  localStorage.setItem("dark-mode", localStorage.getItem("dark-mode") == "false" ? "true" : "false")
+  handleDarkMode()
+})
 
 async function setPopups() {
   addPersonPopup = await (
@@ -87,6 +93,41 @@ function randomUUID() {
       (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
     ).toString(16)
   );
+}
+//read the functions name
+function handleDarkMode() {
+  console.log("handlin")
+  darkMode = localStorage.getItem("dark-mode")
+  console.log(darkMode)
+  if(!darkMode){
+    darkMode = "false"
+    localStorage.setItem("dark-mode", "false")
+  }
+  if(darkMode == "true"){
+    document.getElementById("logo").src="/img/foobatree_dark_mode.png"
+    document.getElementById("user").src="/img/user_dark_mode.png" 
+    document.documentElement.style.setProperty(
+      "--primary-color",
+      "black"
+    );
+    document.documentElement.style.setProperty(
+      "--secondary-color",
+      "white"
+    );
+
+  }
+  if(darkMode == "false"){
+    document.getElementById("logo").src="/img/foobatree.png" 
+    document.getElementById("user").src="/img/user.png" 
+    document.documentElement.style.setProperty(
+      "--primary-color",
+      "white"
+    );
+    document.documentElement.style.setProperty(
+      "--secondary-color",
+      "black"
+    );
+  }
 }
 //opens the add disconnected person form
 async function openPopup(popupNum) {
@@ -209,9 +250,10 @@ async function openPopup(popupNum) {
       //set bg style values to default
       document
         .getElementById("bg-default-button")
-        .addEventListener("change", function () {
+        .addEventListener("click", function () {
           localStorage.setItem("bg-color", "#fff8c4");
           document.documentElement.style.setProperty("--bg-color", "#fff8c4");
+          document.getElementById("bg-color-input").value = "#fff8c4"
         });
 
       break;
@@ -460,7 +502,7 @@ function renderFixed() {
   inner.attr("transform", loc);
 }
 
-var svg = d3.select("svg"),
+var svg = d3.select("#graph"),
   inner = svg.append("g");
 
 var zoom = d3.zoom().on("zoom", function () {

@@ -1,17 +1,24 @@
 :root {
   --connector-color: #6ac975;
   --bg-color: #fff8c4;
+  --primary-color: white;
+  --secondary-color: black;
+  --hover-color: #ddd;
+  --button-color: #6d6d6d;
 }
 
-svg {
+#graph {
   overflow: hidden;
   overflow-x: hidden;
   background-color: var(--bg-color);
 }
 
+#graph * {
+  color: black;
+}
 #navbar {
   display: flex;
-  background-color: white;
+  background-color: var(--primary-color);
   padding: 1vh;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -19,23 +26,36 @@ svg {
 #logo {
   height: 5vh;
   padding-right: 2vw;
-  background-color: #fff;
+  background-color: var(--primary-color);
 }
 #logo:hover,
 .map-style:hover {
-  background-color: #ddd;
+  background-color: var(--hover-color);
+}
+#user {
+  height: 5vh;
+  margin-left: 1vw;
+}
+#user:hover {
+  background-color: var(--hover-color);
 }
 .navbutton {
   padding: 1vh 0;
   flex-grow: 1;
-  background-color: white;
+  background-color: var(--primary-color);
   font-size: 2vh;
   border: 0px solid;
   border-radius: 0;
-  border-left: 2px solid black;
+  border-left: 2px solid var(--secondary-color);
 }
 .navbutton:hover {
-  background-color: #ddd;
+  background-color: var(--hover-color);
+}
+
+.navdiv{
+  padding: 0;
+  flex-grow: 1;
+  border-left: 2px solid var(--secondary-color);
 }
 
 .path {
@@ -50,10 +70,10 @@ svg {
 
 html * {
   font-family: Montserrat !important;
+  color: var(--secondary-color)  
 }
 
 body {
-  background-color: #fff8c4;
   margin: 0;
   overflow: hidden;
 }
@@ -62,7 +82,7 @@ body {
   min-width: 25%;
   max-height: 70%;
   font-family: Arial, sans-serif;
-  background: #fff;
+  background: var(--primary-color);
   padding: 25px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -88,8 +108,8 @@ body {
 }
 
 .popup button {
-  background-color: #6d6d6d;
-  color: #fff;
+  background-color: var(--button-color);
+  color: var(--primary-color);
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
@@ -151,7 +171,7 @@ hr {
   display: block;
   height: 1vh;
   border: 0;
-  border-top: 0.1vh solid black;
+  border-top: 0.1vh solid var(--secondary-color);
   margin: 1em 0;
   padding: 0;
 }
@@ -183,7 +203,7 @@ hr {
     padding-top: 0%;
     grid-row: 1 / 2;
     grid-column: 1 / 2;
-    border: 2px solid black;
+    border: 2px solid var(--secondary-color);
     border-radius: 20px;
 }
 
@@ -194,7 +214,7 @@ hr {
 .info-style-options {
     grid-row: 2 / 4;
     grid-column: 1 / 2;
-    border: 2px solid black;
+    border: 2px solid var(--secondary-color);
     border-radius: 20px;
 }
 
@@ -220,7 +240,7 @@ hr {
   align-items: center;
   grid-row: 3 / 4;
   grid-column: 2 / 3;
-  border: 2px solid black;
+  border: 2px solid var(--secondary-color);
   border-radius: 20px;
   padding-top: 5%;
   gap: 5%;
@@ -246,7 +266,7 @@ hr {
 #connector-default-button, #bg-default-button {
   margin: 0;
   margin-left: 0.5vw;
-  border: 1px solid black;
+  border: 1px solid var(--secondary-color);
   border-radius: 5px;
   cursor: pointer;
 }
@@ -254,7 +274,7 @@ hr {
 .background-style {
   grid-row: 2 / 3;
   grid-column: 2 / 3;
-  border: 2px solid black;
+  border: 2px solid var(--secondary-color);
   border-radius: 20px;
   display: flex;
   flex-direction: column;
