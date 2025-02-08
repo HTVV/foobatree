@@ -9,6 +9,18 @@ const requestEnd = treeUser == "empty" ? "" : `&username=${treeUser}`;
 var treeStyle = localStorage.getItem("treeStyle")
   ? localStorage.getItem("treeStyle")
   : "normal";
+
+localStorage.getItem("connector")
+  ? ""
+  : localStorage.setItem("connector", "curveStepBefore");
+
+localStorage.getItem("connector-color")
+  ? document.documentElement.style.setProperty(
+      "--connector-color",
+      localStorage.getItem("connector-color")
+    )
+  : localStorage.setItem("connector-color", "#6ac975");
+
 //for info tree style
 var rainbow = new Rainbow();
 rainbow.setNumberRange(
@@ -41,8 +53,7 @@ document.addEventListener("keydown", function (e) {
     closePopupFunc();
   }
   if (e.key == "z") {
-    svg.call(zoom.transform, d3.zoomIdentity);
-    render(inner, g);
+    renderFixed()
   }
 });
 
@@ -131,6 +142,46 @@ async function openPopup(popupNum) {
       )
         ? localStorage.getItem("colorSens")
         : 2000;
+
+      document.getElementById("connector-select").value =
+        localStorage.getItem("connector");
+      document.getElementById("connector-color-picker").value =
+        localStorage.getItem("connector-color");
+
+      document
+        .getElementById("connector-select")
+        .addEventListener("change", function () {
+          localStorage.setItem("connector", this.value);
+        });
+      document
+        .getElementById("connector-color-picker")
+        .addEventListener("change", function () {
+          localStorage.setItem("connector-color", this.value);
+          document.documentElement.style.setProperty(
+            "--connector-color",
+            this.value
+          );
+        });
+      document
+        .getElementById("connector-default-button")
+        .addEventListener("click", function () {
+          localStorage.setItem("connector-color", "#6ac975");
+          localStorage.setItem("connector", "curveStepBefore");
+          document.getElementById("connector-select").value = "curveStepBefore";
+          document.getElementById("connector-color-picker").value = "#6ac975";
+          document.documentElement.style.setProperty(
+            "--connector-color",
+            "#6ac975"
+          );
+        });
+        document
+        .getElementById("connector-select")
+        .addEventListener("change", function () {
+          Object.keys(g._edgeLabels).forEach(element => {
+            g._edgeLabels[element].curve = d3[localStorage.getItem("connector")]
+          });
+          renderFixed()
+        });
       break;
     //open shared
     case 5:
@@ -138,7 +189,9 @@ async function openPopup(popupNum) {
       popup.innerHTML = openSharedPopup;
       document.getElementById("submitButton").style.display = "none";
       const res = await (
-        await fetch(`https://familytree.loophole.site/sharedToMe?token=${token}`)
+        await fetch(
+          `https://familytree.loophole.site/sharedToMe?token=${token}`
+        )
       ).json();
       console.log(res);
       for (var i = 0; i < res.length; i++) {
@@ -146,8 +199,9 @@ async function openPopup(popupNum) {
           "sharedList"
         ).innerHTML += `<option value="${res[i]}">${res[i]}</option>`;
       }
+
       break;
-    }
+  }
 }
 //closes all popups
 function closePopupFunc() {
@@ -254,7 +308,6 @@ function getCookie(name) {
 async function openSharedPopup() {
   document.getElementById("popupOverlay3").style.display = "block";
   document.getElementById("popup3").innerHTML = ``;
-  
 }
 //shares your tree
 async function shareTree() {
@@ -298,7 +351,7 @@ function normalStyle() {
 
   nodeNames = Object.keys(g._nodes);
   nodeNames.forEach((node) => {
-    if (node.includes("ParentMarriage")) {
+    if (node.includes("ParentMarriage") || node.includes("childNode")) {
       return 0;
     }
     idSetNode(node);
@@ -324,6 +377,7 @@ function infoStyle() {
   treeStyle = "info";
   localStorage.setItem("treeStyle", "info");
 
+  // set the gradient
   rainbow.setNumberRange(
     0,
     localStorage.getItem("colorSens") ? localStorage.getItem("colorSens") : 2000
@@ -337,12 +391,13 @@ function infoStyle() {
       : "darkred"
   );
 
+  // update the nodes
   nodeNames = Object.keys(g._nodes);
   nodeNames.forEach((node) => {
     if (node.includes("ParentMarriage") || node.includes("childNode")) {
       return 0;
     }
-    console.log(node)
+    console.log(node);
     idSetNode(node);
   });
 
@@ -438,7 +493,7 @@ async function main(user) {
       `${(parent1.id + parent2.id).split("").sort().join("")}ParentMarriage`,
       {
         arrowhead: "undirected",
-        curve: d3.curveStepBefore,
+        curve: d3[localStorage.getItem("connector")],
       }
     );
     g.setEdge(
@@ -446,7 +501,7 @@ async function main(user) {
       `${(parent1.id + parent2.id).split("").sort().join("")}ParentMarriage`,
       {
         arrowhead: "undirected",
-        curve: d3.curveStepBefore,
+        curve: d3[localStorage.getItem("connector")],
       }
     );
     g.setEdge(
@@ -454,28 +509,28 @@ async function main(user) {
       root.id,
       {
         arrowhead: "undirected",
-        curve: d3.curveStepBefore,
+        curve: d3[localStorage.getItem("connector")],
       }
     );
   } else if (parent1) {
     g.setNode(`${parent1.id}childNode`, { class: "marriage", label: "" });
     g.setEdge(parent1.id, `${parent1.id}childNode`, {
       arrowhead: "undirected",
-      curve: d3.curveStepBefore,
+      curve: d3[localStorage.getItem("connector")],
     });
     g.setEdge(`${parent1.id}childNode`, root.id, {
       arrowhead: "undirected",
-      curve: d3.curveStepBefore,
+      curve: d3[localStorage.getItem("connector")],
     });
   } else if (parent2) {
     g.setNode(`${parent2.id}childNode`, { class: "marriage", label: "" });
     g.setEdge(parent2.id, `${parent2.id}childNode`, {
       arrowhead: "undirected",
-      curve: d3.curveStepBefore,
+      curve: d3[localStorage.getItem("connector")],
     });
     g.setEdge(`${parent2.id}childNode`, root.id, {
       arrowhead: "undirected",
-      curve: d3.curveStepBefore,
+      curve: d3[localStorage.getItem("connector")],
     });
   }
   renderFixed();
@@ -517,7 +572,7 @@ function graphParents(id) {
             .join("")}ParentMarriage`,
           {
             arrowhead: "undirected",
-            curve: d3.curveStepBefore,
+            curve: d3[localStorage.getItem("connector")],
           }
         );
         g.setEdge(
@@ -528,7 +583,7 @@ function graphParents(id) {
             .join("")}ParentMarriage`,
           {
             arrowhead: "undirected",
-            curve: d3.curveStepBefore,
+            curve: d3[localStorage.getItem("connector")],
           }
         );
       } else {
@@ -540,7 +595,7 @@ function graphParents(id) {
             .join("")}ParentMarriage`,
           {
             arrowhead: "undirected",
-            curve: d3.curveStepBefore,
+            curve: d3[localStorage.getItem("connector")],
           }
         );
         g.setEdge(
@@ -551,7 +606,7 @@ function graphParents(id) {
             .join("")}ParentMarriage`,
           {
             arrowhead: "undirected",
-            curve: d3.curveStepBefore,
+            curve: d3[localStorage.getItem("connector")],
           }
         );
       }
@@ -561,7 +616,7 @@ function graphParents(id) {
         root.id,
         {
           arrowhead: "undirected",
-          curve: d3.curveStepBefore,
+          curve: d3[localStorage.getItem("connector")],
         }
       );
       //if the parents dont have children together (wait what why is this a thing is this even possible)
@@ -569,13 +624,13 @@ function graphParents(id) {
       if (parent1) {
         g.setEdge(parent1.id, root.id, {
           arrowhead: "undirected",
-          curve: d3.curveStepBefore,
+          curve: d3[localStorage.getItem("connector")],
         });
       }
       if (parent2) {
         g.setEdge(parent2.id, root.id, {
           arrowhead: "undirected",
-          curve: d3.curveStepBefore,
+          curve: d3[localStorage.getItem("connector")],
         });
       }
     }
@@ -584,21 +639,21 @@ function graphParents(id) {
     g.setNode(`${parent1.id}childNode`, { class: "marriage", label: "" });
     g.setEdge(parent1.id, `${parent1.id}childNode`, {
       arrowhead: "undirected",
-      curve: d3.curveStepBefore,
+      curve: d3[localStorage.getItem("connector")],
     });
     g.setEdge(`${parent1.id}childNode`, root.id, {
       arrowhead: "undirected",
-      curve: d3.curveStepBefore,
+      curve: d3[localStorage.getItem("connector")],
     });
   } else if (parent2) {
     g.setNode(`${parent2.id}childNode`, { class: "marriage", label: "" });
     g.setEdge(parent2.id, `${parent2.id}childNode`, {
       arrowhead: "undirected",
-      curve: d3.curveStepBefore,
+      curve: d3[localStorage.getItem("connector")],
     });
     g.setEdge(`${parent2.id}childNode`, root.id, {
       arrowhead: "undirected",
-      curve: d3.curveStepBefore,
+      curve: d3[localStorage.getItem("connector")],
     });
   }
 
@@ -646,7 +701,7 @@ async function graphChildren(id) {
             child.id,
             {
               arrowhead: "undirected",
-              curve: d3.curveStepBefore,
+              curve: d3[localStorage.getItem("connector")],
             }
           );
         }
@@ -677,7 +732,7 @@ async function graphChildren(id) {
             .join("")}ParentMarriage`,
           {
             arrowhead: "undirected",
-            curve: d3.curveStepBefore,
+            curve: d3[localStorage.getItem("connector")],
           }
         );
         g.setEdge(
@@ -688,7 +743,7 @@ async function graphChildren(id) {
             .join("")}ParentMarriage`,
           {
             arrowhead: "undirected",
-            curve: d3.curveStepBefore,
+            curve: d3[localStorage.getItem("connector")],
           }
         );
         g.setEdge(
@@ -699,7 +754,7 @@ async function graphChildren(id) {
           child.id,
           {
             arrowhead: "undirected",
-            curve: d3.curveStepBefore,
+            curve: d3[localStorage.getItem("connector")],
           }
         );
       }
@@ -712,11 +767,11 @@ async function graphChildren(id) {
       });
       g.setEdge(child.parent1Id, `${child.parent1Id}childNode`, {
         arrowhead: "undirected",
-        curve: d3.curveStepBefore,
+        curve: d3[localStorage.getItem("connector")],
       });
       g.setEdge(`${child.parent1Id}childNode`, child.id, {
         arrowhead: "undirected",
-        curve: d3.curveStepBefore,
+        curve: d3[localStorage.getItem("connector")],
       });
     }
     //if parent 2 happens to exist
@@ -727,11 +782,11 @@ async function graphChildren(id) {
       });
       g.setEdge(child.parent2Id, `${child.parent2Id}childNode`, {
         arrowhead: "undirected",
-        curve: d3.curveStepBefore,
+        curve: d3[localStorage.getItem("connector")],
       });
       g.setEdge(`${child.parent2Id}childNode`, child.id, {
         arrowhead: "undirected",
-        curve: d3.curveStepBefore,
+        curve: d3[localStorage.getItem("connector")],
       });
     }
     //probably a lot of cases missing here
@@ -753,14 +808,14 @@ function graphSpouse(id) {
   });
   g.setEdge(id, `${(id + spouse.id).split("").sort().join("")}ParentMarriage`, {
     arrowhead: "undirected",
-    curve: d3.curveStepBefore,
+    curve: d3[localStorage.getItem("connector")],
   });
   g.setEdge(
     spouse.id,
     `${(id + spouse.id).split("").sort().join("")}ParentMarriage`,
     {
       arrowhead: "undirected",
-      curve: d3.curveStepBefore,
+      curve: d3[localStorage.getItem("connector")],
     }
   );
   renderFixed();
@@ -775,7 +830,7 @@ function idSetNode(uuid) {
     throw new Error("Thats not an id brother");
   }
   const person = idToData(uuid);
-  console.log(person)
+  console.log(person);
   console.log(personToInfoScore(person));
   g.setNode(uuid, {
     labelType: "html",

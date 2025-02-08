@@ -1,25 +1,45 @@
-<div class="popup-content stylepopup" style="min-width: 35vw;">
-      <div class="style-picker">
-        <h3>Mode</h3>
-        <button id="normal-style-button" onclick=normalStyle()>Normal</button>
-        <button id="info-style-button" onclick="infoStyle()">Amount of info</button>
-      </div>
-      <div class="info-style-options">
-        <h3 id="info-style-options-header">Info style options</h3>
-        <div class="info-style-options-content">
-        <div class="info-style-options-column">
-          <p style="display: inline;">From</p>
-          <input id="from-color-input" type="color"></input>
-        </div>
-  
-        <div class="info-style-options-column">
-          <p style="display: inline;">To</p>
-          <input id="to-color-input" type="color"></input>
-        </div>
-  
-        <div class="info-style-options-column">
-          <p style="display: inline;">Sensitivity</p>
-          <input id="color-sens-input" type=number placeholder=2000></input>
-        </div>
-        </div>
+<div class="popup-content stylepopup" style="min-width: 35vw">
+  <div class="style-picker">
+    <h3>Mode</h3>
+    <button id="normal-style-button" onclick="normalStyle()">Normal</button>
+    <button id="info-style-button" onclick="infoStyle()">Amount of info</button>
   </div>
+  <div class="info-style-options">
+    <h3 id="info-style-options-header">Info style options</h3>
+    <div class="info-style-options-content">
+      <div class="info-style-options-column">
+        <p style="display: inline">From</p>
+        <input id="from-color-input" type="color" />
+      </div>
+
+      <div class="info-style-options-column">
+        <p style="display: inline">To</p>
+        <input id="to-color-input" type="color" />
+      </div>
+
+      <div class="info-style-options-column">
+        <p style="display: inline">Sensitivity</p>
+        <input id="color-sens-input" type="number" placeholder="2000" />
+      </div>
+    </div>
+  </div>
+  <div class="connector-picker">
+    <div class="connector-style-row">
+      <h4>Connector style</h4>
+      <p id="connector-default-button">def</p>
+    </div>
+
+    <div class="connector-style-row">
+      <input type="color" id="connector-color-picker" />
+      <select name="connector" id="connector-select">
+        <option value="curveStepBefore">90 Degrees 1</option>
+        <option value="curveStepAfter">90 Degrees 2</option>
+        <option value="curveStep">90 Degrees 3</option>
+        <option value="curveLinear">Linear</option>
+        <option value="curveBasis">Curvy 1</option>
+        <option value="curveMonotoneX">Curvy 2</option>
+        <option value="curveMonotoneY">Curvy 3</option>
+      </select>
+    </div>
+  </div>
+</div>

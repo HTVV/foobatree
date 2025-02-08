@@ -1,3 +1,7 @@
+:root {
+  --connector-color: #6ac975;
+}
+
 svg {
   overflow: hidden;
   overflow-x: hidden;
@@ -32,9 +36,10 @@ svg {
 .navbutton:hover {
   background-color: #ddd;
 }
-path {
+
+.path {
   stroke-width: 8px;
-  stroke: #6ac975;
+  stroke: var(--connector-color);
   marker-end: none;
 }
 
@@ -206,4 +211,41 @@ hr {
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.connector-picker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  grid-row: 3 / 4;
+  grid-column: 2 / 3;
+  border: 2px solid black;
+  border-radius: 20px;
+  padding-top: 5%;
+  gap: 5%;
+}
+
+.connector-picker h4 {
+  margin: 0;
+}
+
+.connector-picker select {
+  width: fit-content;
+}
+
+.connector-picker input {
+  width: 2vw;
+}
+
+.connector-style-row {
+  display: flex;
+  flex-direction: row;
+}
+
+#connector-default-button {
+  margin: 0;
+  margin-left: 0.5vw;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
 }
