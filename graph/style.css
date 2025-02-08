@@ -22,6 +22,7 @@
   padding: 1vh;
   flex-wrap: wrap;
   justify-content: space-between;
+  align-items: center;
 }
 #logo {
   height: 5vh;
