@@ -28,9 +28,9 @@ localStorage.getItem("bg-color")
     )
   : localStorage.setItem("bg-color", "#fff8c4");
 
-
-document.getElementById("switch_toggle").checked = localStorage.getItem("dark-mode") == "true" ? true : false
-handleDarkMode()
+document.getElementById("switch_toggle").checked =
+  localStorage.getItem("dark-mode") == "true" ? true : false;
+handleDarkMode();
 
 //for info tree style
 var rainbow = new Rainbow();
@@ -45,9 +45,7 @@ rainbow.setSpectrum(
   localStorage.getItem("toColor") ? localStorage.getItem("toColor") : "darkred"
 );
 //kinda whack settings the size like this ngl
-document
-  .getElementById("graph")
-  .setAttribute("width", screen.availWidth);
+document.getElementById("graph").setAttribute("width", screen.availWidth);
 document
   .getElementById("graph")
   .setAttribute("height", screen.availHeight * 0.8);
@@ -66,13 +64,16 @@ document.addEventListener("keydown", function (e) {
     renderFixed();
   }
 });
-document.getElementById("switch_toggle").addEventListener("click", function() {
-  localStorage.setItem("dark-mode", localStorage.getItem("dark-mode") == "false" ? "true" : "false")
-  handleDarkMode()
-})
-popupOverlay.addEventListener("click", function(e) {
-  closePopupFunc()
-})
+document.getElementById("switch_toggle").addEventListener("click", function () {
+  localStorage.setItem(
+    "dark-mode",
+    localStorage.getItem("dark-mode") == "false" ? "true" : "false"
+  );
+  handleDarkMode();
+});
+popupOverlay.addEventListener("click", function (e) {
+  closePopupFunc();
+});
 
 async function setPopups() {
   addPersonPopup = await (
@@ -100,53 +101,26 @@ function randomUUID() {
 }
 //read the functions name
 function handleDarkMode() {
-  console.log("handlin")
-  darkMode = localStorage.getItem("dark-mode")
-  console.log(darkMode)
-  if(!darkMode){
-    darkMode = "false"
-    localStorage.setItem("dark-mode", "false")
+  darkMode = localStorage.getItem("dark-mode");
+  if (!darkMode) {
+    darkMode = "false";
+    localStorage.setItem("dark-mode", "false");
   }
-  if(darkMode == "true"){
-    document.getElementById("logo").src="/img/foobatree_dark_mode.png"
-    document.getElementById("user").src="/img/user_dark_mode.png" 
-    document.documentElement.style.setProperty(
-      "--primary-color",
-      "black"
-    );
-    document.documentElement.style.setProperty(
-      "--secondary-color",
-      "white"
-    );
-    document.documentElement.style.setProperty(
-      "--button-on-color",
-      "#d1d1d1"
-    )
-    document.documentElement.style.setProperty(
-      "--button-off-color",
-      "#6d6d6d"
-    )
-
+  if (darkMode == "true") {
+    document.getElementById("logo").src = "/img/foobatree_dark_mode.png";
+    document.getElementById("user").src = "/img/user_dark_mode.png";
+    document.documentElement.style.setProperty("--primary-color", "black");
+    document.documentElement.style.setProperty("--secondary-color", "white");
+    document.documentElement.style.setProperty("--button-on-color", "#d1d1d1");
+    document.documentElement.style.setProperty("--button-off-color", "#6d6d6d");
   }
-  if(darkMode == "false"){
-    document.getElementById("logo").src="/img/foobatree.png" 
-    document.getElementById("user").src="/img/user.png" 
-    document.documentElement.style.setProperty(
-      "--primary-color",
-      "white"
-    );
-    document.documentElement.style.setProperty(
-      "--secondary-color",
-      "black"
-    );
-    document.documentElement.style.setProperty(
-      "--button-off-color",
-      "#d1d1d1"
-    )
-    document.documentElement.style.setProperty(
-      "--button-on-color",
-      "#6d6d6d"
-    )
+  if (darkMode == "false") {
+    document.getElementById("logo").src = "/img/foobatree.png";
+    document.getElementById("user").src = "/img/user.png";
+    document.documentElement.style.setProperty("--primary-color", "white");
+    document.documentElement.style.setProperty("--secondary-color", "black");
+    document.documentElement.style.setProperty("--button-off-color", "#d1d1d1");
+    document.documentElement.style.setProperty("--button-on-color", "#6d6d6d");
   }
 }
 //opens the add disconnected person form
@@ -273,7 +247,7 @@ async function openPopup(popupNum) {
         .addEventListener("click", function () {
           localStorage.setItem("bg-color", "#fff8c4");
           document.documentElement.style.setProperty("--bg-color", "#fff8c4");
-          document.getElementById("bg-color-input").value = "#fff8c4"
+          document.getElementById("bg-color-input").value = "#fff8c4";
         });
 
       break;
@@ -287,7 +261,6 @@ async function openPopup(popupNum) {
           `https://familytree.loophole.site/sharedToMe?token=${token}`
         )
       ).json();
-      console.log(res);
       for (var i = 0; i < res.length; i++) {
         document.getElementById(
           "sharedList"
@@ -401,7 +374,6 @@ async function shareTree() {
       `https://familytree.loophole.site/shareTree?token=${token}&targetName=${usernameShare}`
     )
   ).json();
-  console.log(res);
   if (res.error == 200) {
     document.getElementById("error").style.color = "green";
     document.getElementById("error").textContent = "SUCCESS";
@@ -413,7 +385,6 @@ async function shareTree() {
 //opens the tree of another user
 function openSharedTree() {
   const treeUser = document.getElementById("sharedList").value;
-  console.log(treeUser);
   //document.cookie = `treeUser=${treeUser};path=/`
   localStorage.setItem("treeUser", treeUser);
   location.reload();
@@ -477,7 +448,6 @@ function infoStyle() {
     if (node.includes("ParentMarriage") || node.includes("childNode")) {
       return 0;
     }
-    console.log(node);
     idSetNode(node);
   });
 
@@ -535,7 +505,6 @@ function transform(translateX, transalteY, scale) {
 async function main(user) {
   data = await getData(user);
   if (data.length == 0) return 1;
-  console.log(data);
   data = data.filter((n) => n);
   //logic for selecting the person in focus
   let target = getCookie("target");
@@ -558,7 +527,6 @@ async function main(user) {
   idSetNode(root.id);
   //this thing cuz the first guys parents are rendered automatically
   removeButton(/<input type='button' id="parentButton"(.*?)>/, root.id);
-  console.log(parent2);
   if (parent1) idSetNode(parent1.id);
   if (parent2) idSetNode(parent2.id);
   //if parents both exist
@@ -622,8 +590,10 @@ function idToData(id) {
 //graohs a persons parents on click
 function graphParents(id) {
   const root = idToData(id);
-  const parent1 = idToData(root.parent1Id);
-  const parent2 = idToData(root.parent2Id);
+  parent1temp = idToData(root.parent1Id);
+  parent2temp = idToData(root.parent2Id);
+  const parent1 = parent1temp.gender == "male" ? parent1temp : parent2temp;
+  const parent2 = parent1temp.gender == "male" ? parent2temp : parent1temp;
 
   //that monstrosity removes the parentButton element
   removeButton(/<input type='button' id="parentButton"(.*?)>/, root.id);
@@ -632,67 +602,34 @@ function graphParents(id) {
   if (parent2) idSetNode(parent2.id);
   //if both parents exist
   if (parent1 && parent2) {
-    console.log(1);
+    console.log("both")
     //if the parents have children together
-    console.log(parent1);
-    console.log(parent2);
     if (parent1.spouses.includes(parent2.id)) {
-      console.log(2);
+      const marriageId = `${(parent1.id + parent2.id).split("").sort().join("")}ParentMarriage`
       //set a node for the parents' marriage
       g.setNode(
-        `${(parent1.id + parent2.id).split("").sort().join("")}ParentMarriage`,
+        marriageId,
         { label: "", class: "marriage" }
       );
-      if (parent1.gender == "male") {
-        g.setEdge(
-          root.parent1Id,
-          `${(parent1.id + parent2.id)
-            .split("")
-            .sort()
-            .join("")}ParentMarriage`,
-          {
-            arrowhead: "undirected",
-            curve: d3[localStorage.getItem("connector")],
-          }
-        );
-        g.setEdge(
-          root.parent2Id,
-          `${(parent1.id + parent2.id)
-            .split("")
-            .sort()
-            .join("")}ParentMarriage`,
-          {
-            arrowhead: "undirected",
-            curve: d3[localStorage.getItem("connector")],
-          }
-        );
-      } else {
-        g.setEdge(
-          root.parent2Id,
-          `${(parent1.id + parent2.id)
-            .split("")
-            .sort()
-            .join("")}ParentMarriage`,
-          {
-            arrowhead: "undirected",
-            curve: d3[localStorage.getItem("connector")],
-          }
-        );
-        g.setEdge(
-          root.parent1Id,
-          `${(parent1.id + parent2.id)
-            .split("")
-            .sort()
-            .join("")}ParentMarriage`,
-          {
-            arrowhead: "undirected",
-            curve: d3[localStorage.getItem("connector")],
-          }
-        );
-      }
-
       g.setEdge(
-        `${(parent1.id + parent2.id).split("").sort().join("")}ParentMarriage`,
+        parent1.id,
+        marriageId,
+        {
+          arrowhead: "undirected",
+          curve: d3[localStorage.getItem("connector")],
+        }
+      );
+      g.setEdge(
+        parent2.id,
+        marriageId,
+        {
+          arrowhead: "undirected",
+          curve: d3[localStorage.getItem("connector")],
+        }
+      );
+      console.log(root.id)
+      g.setEdge(
+        marriageId,
         root.id,
         {
           arrowhead: "undirected",
@@ -747,7 +684,6 @@ async function getData() {
   return await res.json();
 }
 async function graphChildren(id) {
-  console.log(id);
   const root = idToData(id);
   //that monstrosity removes the childButton element from the root node
   removeButton(/<input type='button' id="childButton"(.*?)>/, root.id);
@@ -911,7 +847,6 @@ function idSetNode(uuid) {
   }
   const person = idToData(uuid);
   console.log(person);
-  console.log(personToInfoScore(person));
   g.setNode(uuid, {
     labelType: "html",
     label: `<div style="min-height: 200px; width: 160px;">
@@ -956,6 +891,7 @@ function idSetNode(uuid) {
             : "pink")
     };`,
   });
+  renderFixed();
 }
 function removeButton(regex, id) {
   const person = idToData(id);
@@ -1006,7 +942,6 @@ async function checkGraphUpdates() {
 
   data.forEach((element) => {
     if (!oldIds.includes(element.id)) {
-      console.log(element);
       if (element.children.length != 0) {
         element.children.forEach((child) => {
           childLabel = Object.values(g._nodes)[
@@ -1063,7 +998,6 @@ async function checkGraphUpdates() {
 }
 
 function personToInfoScore(dude) {
-  console.log(dude);
   return (
     dude.writing.length +
     dude.sources.length * 0.25 +

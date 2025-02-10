@@ -114,11 +114,11 @@ body {
 }
 
 .popup select {
-  color: var(--primary-color);
+  color: var(--secondary-color);
 }
 
 .popup option {
-  color: var(--primary-color);
+  color: var(--secondary-color);
 }
 
 .popup button {
@@ -249,7 +249,7 @@ hr {
 }
 
 .info-style-options-column input {
-  color: var(--primary-color);
+  color: black;
 }
 
 .connector-picker {
@@ -270,14 +270,15 @@ hr {
 
 .connector-picker select {
   width: fit-content;
+  color: black;
+}
+
+.connector-picker option {
+  color: black;
 }
 
 .connector-picker input {
   width: 2vw;
-}
-
-.connector-picker select {
-  color: var(--primary-color);
 }
 
 .row {
