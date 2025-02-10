@@ -58,6 +58,9 @@
   padding: 0;
   flex-grow: 1;
   border-left: 2px solid var(--secondary-color);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 
 .path {

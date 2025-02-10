@@ -70,6 +70,9 @@ document.getElementById("switch_toggle").addEventListener("click", function() {
   localStorage.setItem("dark-mode", localStorage.getItem("dark-mode") == "false" ? "true" : "false")
   handleDarkMode()
 })
+popupOverlay.addEventListener("click", function(e) {
+  closePopupFunc()
+})
 
 async function setPopups() {
   addPersonPopup = await (
@@ -136,6 +139,14 @@ function handleDarkMode() {
       "--secondary-color",
       "black"
     );
+    document.documentElement.style.setProperty(
+      "--button-off-color",
+      "#d1d1d1"
+    )
+    document.documentElement.style.setProperty(
+      "--button-on-color",
+      "#6d6d6d"
+    )
   }
 }
 //opens the add disconnected person form
@@ -368,11 +379,6 @@ function hideForm(status) {
     ele[i].style.display = show;
   }
 }
-//self explanatory
-function focusPopup() {
-  document.getElementById("popup2").style.display = "block";
-  document.getElementById("popupOverlay2").style.display = "block";
-}
 //sets the trees focus to a person
 function setTarget() {
   const value = document.getElementById("selectFocus").value;
@@ -386,11 +392,6 @@ function getCookie(name) {
   /* const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift(); */
-}
-//opens the popup where you can open a tree that has been shared to you
-async function openSharedPopup() {
-  document.getElementById("popupOverlay3").style.display = "block";
-  document.getElementById("popup3").innerHTML = ``;
 }
 //shares your tree
 async function shareTree() {
@@ -421,10 +422,6 @@ function openSharedTree() {
 function ownTree() {
   localStorage.setItem("treeUser", "empty");
   location.reload();
-}
-function changeStylePopup() {
-  document.getElementById("popupOverlay4").style.display = "flex";
-  document.getElementById("popup4").innerHTML = stylePopup;
 }
 function normalStyle() {
   closePopupFunc();
