@@ -1010,3 +1010,10 @@ function personToInfoScore(dude) {
     (dude.pic ? 100 : 0)
   );
 }
+
+function logOut() {
+  localStorage.removeItem("token")
+  localStorage.removeItem("treeUser")
+  localStorage.removeItem("username")
+  window.location = "/"
+}
