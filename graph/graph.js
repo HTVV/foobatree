@@ -28,6 +28,8 @@ localStorage.getItem("bg-color")
     )
   : localStorage.setItem("bg-color", "#fff8c4");
 
+
+document.getElementById("switch_toggle").checked = localStorage.getItem("dark-mode") == "true" ? true : false
 handleDarkMode()
 
 //for info tree style
@@ -49,7 +51,6 @@ document
 document
   .getElementById("graph")
   .setAttribute("height", screen.availHeight * 0.8);
-console.log(token);
 
 const popupOverlay = document.getElementById("popupOverlay");
 const popup = document.getElementById("popup");
@@ -114,6 +115,14 @@ function handleDarkMode() {
       "--secondary-color",
       "white"
     );
+    document.documentElement.style.setProperty(
+      "--button-on-color",
+      "#d1d1d1"
+    )
+    document.documentElement.style.setProperty(
+      "--button-off-color",
+      "#6d6d6d"
+    )
 
   }
   if(darkMode == "false"){
@@ -169,10 +178,10 @@ async function openPopup(popupNum) {
         : "normal";
       if (treeStyle == "normal") {
         document.getElementById("info-style-button").style.backgroundColor =
-          "#d1d1d1";
+          "var(--button-off-color)";
       } else if (treeStyle == "info") {
         document.getElementById("normal-style-button").style.backgroundColor =
-          "#d1d1d1";
+          "var(--button-off-color)";
       }
 
       document.getElementById("from-color-input").value = localStorage.getItem(
