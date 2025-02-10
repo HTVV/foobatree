@@ -71,7 +71,7 @@ document.getElementById("switch_toggle").addEventListener("click", function () {
   );
   handleDarkMode();
 });
-popupOverlay.addEventListener("click", function (e) {
+popupOverlay.addEventListener("onMouseUp", function () {
   closePopupFunc();
 });
 
@@ -98,30 +98,6 @@ function randomUUID() {
       (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
     ).toString(16)
   );
-}
-//read the functions name
-function handleDarkMode() {
-  darkMode = localStorage.getItem("dark-mode");
-  if (!darkMode) {
-    darkMode = "false";
-    localStorage.setItem("dark-mode", "false");
-  }
-  if (darkMode == "true") {
-    document.getElementById("logo").src = "/img/foobatree_dark_mode.png";
-    document.getElementById("user").src = "/img/user_dark_mode.png";
-    document.documentElement.style.setProperty("--primary-color", "black");
-    document.documentElement.style.setProperty("--secondary-color", "white");
-    document.documentElement.style.setProperty("--button-on-color", "#d1d1d1");
-    document.documentElement.style.setProperty("--button-off-color", "#6d6d6d");
-  }
-  if (darkMode == "false") {
-    document.getElementById("logo").src = "/img/foobatree.png";
-    document.getElementById("user").src = "/img/user.png";
-    document.documentElement.style.setProperty("--primary-color", "white");
-    document.documentElement.style.setProperty("--secondary-color", "black");
-    document.documentElement.style.setProperty("--button-off-color", "#d1d1d1");
-    document.documentElement.style.setProperty("--button-on-color", "#6d6d6d");
-  }
 }
 //opens the add disconnected person form
 async function openPopup(popupNum) {

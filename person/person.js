@@ -1,5 +1,4 @@
 const token = getCookie("token")
-console.log(token)
 const queryString = window.location.search;
 const urlParams = new URLSearchParams(queryString);
 const uuid = urlParams.get('uuid')
@@ -11,6 +10,8 @@ if (urlParams.get('username')) {
     treeUser = "empty"
 }
 const requestEnd = treeUser == "empty" ? "" : `&username=${treeUser}`
+
+handleDarkMode()
 
 const popupOverlay = document.getElementById('popupOverlay');
 const popup = document.getElementById('popup');

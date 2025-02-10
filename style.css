@@ -1,3 +1,13 @@
+:root {
+    --connector-color: #6ac975;
+    --bg-color: #fff8c4;
+    --primary-color: white;
+    --secondary-color: black;
+    --hover-color: #ddd;
+    --button-on-color: #6d6d6d;
+    --button-off-color: #d1d1d1;
+}
+
 body {
     margin: 0;
 }
