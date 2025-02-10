@@ -601,6 +601,7 @@ function graphParents(id) {
   if (parent1) idSetNode(parent1.id);
   if (parent2) idSetNode(parent2.id);
   //if both parents exist
+  console.time("setRelations")
   if (parent1 && parent2) {
     console.log("both")
     //if the parents have children together
@@ -673,7 +674,6 @@ function graphParents(id) {
       curve: d3[localStorage.getItem("connector")],
     });
   }
-
   renderFixed();
 }
 //returns the tree
@@ -891,7 +891,6 @@ function idSetNode(uuid) {
             : "pink")
     };`,
   });
-  renderFixed();
 }
 function removeButton(regex, id) {
   const person = idToData(id);
