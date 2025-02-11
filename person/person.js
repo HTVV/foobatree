@@ -209,8 +209,9 @@ async function submitForm() {
       document.getElementById("popup1").scrollIntoView();
       return 1;
     }
-    const gender = document.getElementById("gender").value;
-    const status = document.getElementById("status").value;
+    const status = document.querySelector(
+      'input[name="deadAlive"]:checked'
+    ).value;
     const firstNames = document.getElementById("firstNameInput").value;
     const lastNames = document.getElementById("lastNameInput").value;
     const patronym = document.getElementById("patronymInput").value;
@@ -221,7 +222,7 @@ async function submitForm() {
     const placeBurial = document.getElementById("buriedPlaceInput").value;
     const ogName = document.getElementById("ogNameInput").value;
     const lore = document.getElementById("loreInput").value;
-    const uuid = randomUUID();
+    const newUuid = randomUUID();
 
     let parent = {
       status: status,
@@ -248,6 +249,7 @@ async function submitForm() {
       ),
       parent1Id: null,
       parent2Id: null,
+      lore: lore
     };
 
     if (person.parent1Id == null || person.parent1Id == "") {
@@ -373,18 +375,19 @@ async function submitForm() {
     const gender = document.querySelector(
       'input[name="maleFemale"]:checked'
     ).value;
-    var status = document.querySelector(
+    const status = document.querySelector(
       'input[name="deadAlive"]:checked'
     ).value;
-    const firstNames = document.getElementById("FirstNameInput1").value;
-    const lastNames = document.getElementById("LastNameInput1").value;
-    const patronym = document.getElementById("patronymInput1").value;
-    const dateBirth = document.getElementById("BornDateInput1").value;
-    const placeBirth = document.getElementById("BornPlaceInput1").value;
-    const dateDeath = document.getElementById("DiedDateInput1").value;
-    const placeDeath = document.getElementById("DiedPlaceInput1").value;
-    const placeBurial = document.getElementById("BuriedPlaceInput1").value;
-    const ogName = document.getElementById("OgNameInput1").value;
+    const firstNames = document.getElementById("firstNameInput").value;
+    const lastNames = document.getElementById("lastNameInput").value;
+    const patronym = document.getElementById("patronymInput").value;
+    const dateBirth = document.getElementById("bornDateInput").value;
+    const placeBirth = document.getElementById("bornPlaceInput").value;
+    const dateDeath = document.getElementById("diedDateInput").value;
+    const placeDeath = document.getElementById("diedPlaceInput").value;
+    const placeBurial = document.getElementById("buriedPlaceInput").value;
+    const ogName = document.getElementById("ogNameInput").value;
+    const lore = document.getElementById("loreInput").value;
     const newUuid = randomUUID();
 
     spouse = JSON.stringify({

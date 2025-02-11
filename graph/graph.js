@@ -14,6 +14,10 @@ localStorage.getItem("connector")
   ? ""
   : localStorage.setItem("connector", "curveStepBefore");
 
+localStorage.getItem("show-pics")
+  ? ""
+  : localStorage.setItem("show-pics", "true");
+
 localStorage.getItem("connector-color")
   ? document.documentElement.style.setProperty(
       "--connector-color",
@@ -172,6 +176,9 @@ async function openPopup(popupNum) {
         localStorage.getItem("connector-color");
       document.getElementById("bg-color-input").value =
         localStorage.getItem("bg-color");
+      console.log(localStorage.getItem("show-pics"));
+      document.getElementById("show-pics-input").checked =
+        localStorage.getItem("show-pics") === "true";
 
       document
         .getElementById("connector-select")
@@ -230,7 +237,12 @@ async function openPopup(popupNum) {
           document.documentElement.style.setProperty("--bg-color", "#fff8c4");
           document.getElementById("bg-color-input").value = "#fff8c4";
         });
-
+      //show pics
+      document
+        .getElementById("show-pics-input")
+        .addEventListener("change", function () {
+          localStorage.setItem("show-pics", this.checked);
+        });
       break;
     //open shared
     case 5:
@@ -268,8 +280,12 @@ function closePopupFunc() {
 function submitForm() {
   closePopupFunc();
 
-  const gender = document.getElementById("gender").value;
-  const status = document.getElementById("status").value;
+  const gender = document.querySelector(
+    'input[name="maleFemale"]:checked'
+  ).value;
+  const status = document.querySelector(
+    'input[name="deadAlive"]:checked'
+  ).value;
   const firstNames = document.getElementById("firstNameInput").value;
   const lastNames = document.getElementById("lastNameInput").value;
   const patronym = document.getElementById("patronymInput").value;
