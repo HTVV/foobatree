@@ -71,9 +71,11 @@ document.getElementById("switch_toggle").addEventListener("click", function () {
   );
   handleDarkMode();
 });
-/*popupOverlay.addEventListener("click", function () {
-  closePopupFunc();
-});*/
+popupOverlay.addEventListener("click", function (event) {
+  if (event.target === popupOverlay) {
+        closePopupFunc();
+    }
+});
 
 async function setPopups() {
   addPersonPopup = await (
