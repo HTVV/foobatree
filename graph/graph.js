@@ -270,8 +270,8 @@ function submitForm() {
   const dateDeath = document.getElementById("diedDateInput").value;
   const placeDeath = document.getElementById("diedPlaceInput").value;
   const placeBurial = document.getElementById("buriedPlaceInput").value;
-  const ogName = document.getElementById("OgNameInput1").value;
-  const lore = document.getElementById("LoreInput").value
+  const ogName = document.getElementById("ogNameInput").value;
+  const lore = document.getElementById("loreInput").value
   const uuid = randomUUID();
 
   const newPerson = JSON.stringify({
@@ -308,8 +308,8 @@ function submitForm() {
   for (var i = 0; i < ele.length; i++) {
     ele[i].value = "";
   }
-  document.getElementById("aliveSelection").selected = "false";
-  document.getElementById("deadSelection").selected = "true";
+  /*document.getElementById("aliveSelection").selected = "false";
+  document.getElementById("deadSelection").selected = "true";*/
   hideForm("dead");
   //fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=07dbf856-acda-4393-ae72-2073f6594b87&content=${encodeURI(JSON.stringify())}`)
   fetch(
