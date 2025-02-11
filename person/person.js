@@ -634,9 +634,9 @@ async function main() {
   document.getElementById("writingText").textContent = person.writing
     .replaceAll("%79", "+")
     .replaceAll("%89", "&");
-  document.getElementById("sourcesText").textContent = person.sources
+  document.getElementById("sourcesText").textContent = linkify(person.sources
     .replaceAll("%79", "+")
-    .replaceAll("%89", "&");
+    .replaceAll("%89", "&"))
   document.getElementById("gender").textContent =
     person.gender.charAt(0).toUpperCase() + person.gender.slice(1);
 }

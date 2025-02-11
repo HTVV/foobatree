@@ -63,7 +63,7 @@ html * {
     margin-top: 1vh;
     margin-right: 1vw;
     background-color: var(--button-on-color);
-    color: black;
+    color: white;
 }
 
 .details {

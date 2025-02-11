@@ -516,16 +516,24 @@ async function main(user) {
   const parent1temp = idToData(root.parent1Id);
   const parent2temp = idToData(root.parent2Id);
   console.log(parent1temp);
+  console.log(parent2temp)
   if (parent1temp) {
     parent1 = parent1temp.gender == "male" ? parent1temp : parent2temp;
   } else {
     parent1 = "";
   }
-  if (parent2temp) {
-    parent2 = parent1temp.gender == "male" ? parent2temp : parent1temp;
+  if(parent2temp) {
+    console.log("this shouldnt run")
+    if (parent2temp) {
+      parent2 = parent1temp.gender == "male" ? parent2temp : parent1temp;
+    } else {
+      parent2 = "";
+    }
   } else {
-    parent2 = "";
+    parent1 = parent1temp
+    parent2 = ""
   }
+  
 
   idSetNode(root.id);
   //this thing cuz the first guys parents are rendered automatically
