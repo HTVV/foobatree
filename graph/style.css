@@ -42,8 +42,6 @@
   border: 0px solid;
   border-radius: 0;
   border-left: 2px solid var(--secondary-color);
-  transition: background-color 0.2s;
-  transition: color 0.2s;
 }
 .navbutton:hover {
   background-color: var(--hover-color);
@@ -108,12 +106,14 @@ body {
 .popup-input {
   width: 90%;
   display: block;
-  color: var(--primary-color);
+  color: black;
+  background-color: white;
   transition: color 0.2s;
 }
 
 .popup select {
-  color: var(--secondary-color);
+  color: black;
+  background-color: white;
   transition: color 0.2s;
 }
 
