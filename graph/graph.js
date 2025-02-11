@@ -89,6 +89,9 @@ async function setPopups() {
   openSharedPopup = await (
     await fetch("../data/popup/openSharedPopup.html")
   ).text();
+  attributionPopup = await (
+    await fetch("../data/popup/attributionPopup.html")
+  ).text();
 }
 //gets a random uuid cuz cant crypto doesnt like http
 function randomUUID() {
@@ -244,9 +247,12 @@ async function openPopup(popupNum) {
       }
 
       break;
+    //attribution
     case 6:
       popupOverlay.style.display = "flex";
-      popup.innerHTML = openSharedPopup;
+      popup.innerHTML = attributionPopup;
+      document.getElementById("submitButton").style.display = "none";
+
       break;
     }
 }
@@ -392,7 +398,6 @@ function normalStyle() {
 
   renderFixed();
 }
-
 function infoStyle() {
   closePopupFunc();
   localStorage.setItem(
@@ -471,18 +476,6 @@ svg.call(zoom);
 
 main(treeUser);
 
-// https://github.com/dagrejs/dagre-d3/issues/251#issuecomment-867115193
-function transform(translateX, transalteY, scale) {
-  svg.call(
-    d3.zoom().transform,
-    d3.zoomIdentity.translate(translateX, transalteY).scale(scale)
-  ); // update internal graph transform
-  inner.attr(
-    "transform",
-    `translate(${translateX}, ${transalteY}) scale(${scale})`
-  ); // update DOM transform
-}
-
 //graphs the first guy their parents and gets some data for some reason
 async function main(user) {
   data = await getData(user);
@@ -503,9 +496,10 @@ async function main(user) {
   }
 
   const root = idToData(data[rootUser].id);
-  const parent1 = idToData(root.parent1Id);
-  const parent2 = idToData(root.parent2Id);
-  //
+  const parent1temp = idToData(root.parent1Id);
+  const parent2temp  = idToData(root.parent2Id);
+  const parent1 = parent1temp.gender == "male" ? parent1temp : parent2temp;
+  const parent2 = parent1temp.gender == "male" ? parent2temp : parent1temp;
   idSetNode(root.id);
   //this thing cuz the first guys parents are rendered automatically
   removeButton(/<input type='button' id="parentButton"(.*?)>/, root.id);
