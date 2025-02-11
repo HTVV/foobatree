@@ -70,7 +70,7 @@ function openSpousePopup() {
     type = "spouse"
     popupOverlay.style.display = 'flex';
     document.getElementById('popup1').innerHTML = addPersonPopup
-    document.getElementById('popup1Header').textContent = "Add spouse"
+    document.getElementById('popupHeader').textContent = "Add spouse"
     document.getElementById("popup1").style.display = 'block'
 }
 //opens the popup for name/birht/etc.
