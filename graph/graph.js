@@ -73,8 +73,8 @@ document.getElementById("switch_toggle").addEventListener("click", function () {
 });
 popupOverlay.addEventListener("click", function (event) {
   if (event.target === popupOverlay) {
-        closePopupFunc();
-    }
+    closePopupFunc();
+  }
 });
 
 async function setPopups() {
@@ -256,7 +256,7 @@ async function openPopup(popupNum) {
       document.getElementById("submitButton").style.display = "none";
 
       break;
-    }
+  }
 }
 //closes all popups
 function closePopupFunc() {
@@ -279,7 +279,7 @@ function submitForm() {
   const placeDeath = document.getElementById("diedPlaceInput").value;
   const placeBurial = document.getElementById("buriedPlaceInput").value;
   const ogName = document.getElementById("ogNameInput").value;
-  const lore = document.getElementById("loreInput").value
+  const lore = document.getElementById("loreInput").value;
   const uuid = randomUUID();
 
   const newPerson = JSON.stringify({
@@ -306,7 +306,7 @@ function submitForm() {
     ),
     parent1Id: null,
     parent2Id: null,
-    lore: lore
+    lore: lore,
   });
 
   //document.cookie = `target=${uuid};max-age=1431989812894908`
@@ -496,17 +496,26 @@ async function main(user) {
   } else {
     var rootUser = i;
   }
-
   const root = idToData(data[rootUser].id);
   const parent1temp = idToData(root.parent1Id);
-  const parent2temp  = idToData(root.parent2Id);
-  const parent1 = parent1temp.gender == "male" ? parent1temp : parent2temp;
-  const parent2 = parent1temp.gender == "male" ? parent2temp : parent1temp;
+  const parent2temp = idToData(root.parent2Id);
+  console.log(parent1temp);
+  if (parent1temp) {
+    parent1 = parent1temp.gender == "male" ? parent1temp : parent2temp;
+  } else {
+    parent1 = "";
+  }
+  if (parent2temp) {
+    parent2 = parent1temp.gender == "male" ? parent2temp : parent1temp;
+  } else {
+    parent2 = "";
+  }
+
   idSetNode(root.id);
   //this thing cuz the first guys parents are rendered automatically
   removeButton(/<input type='button' id="parentButton"(.*?)>/, root.id);
-  if (parent1) idSetNode(parent1.id);
-  if (parent2) idSetNode(parent2.id);
+  if (parent1temp) idSetNode(parent1.id);
+  if (parent2temp) idSetNode(parent2.id);
   //if parents both exist
   if (parent1 && parent2) {
     g.setNode(
@@ -579,42 +588,30 @@ function graphParents(id) {
   if (parent1) idSetNode(parent1.id);
   if (parent2) idSetNode(parent2.id);
   //if both parents exist
-  console.time("setRelations")
+  console.time("setRelations");
   if (parent1 && parent2) {
-    console.log("both")
+    console.log("both");
     //if the parents have children together
     if (parent1.spouses.includes(parent2.id)) {
-      const marriageId = `${(parent1.id + parent2.id).split("").sort().join("")}ParentMarriage`
+      const marriageId = `${(parent1.id + parent2.id)
+        .split("")
+        .sort()
+        .join("")}ParentMarriage`;
       //set a node for the parents' marriage
-      g.setNode(
-        marriageId,
-        { label: "", class: "marriage" }
-      );
-      g.setEdge(
-        parent1.id,
-        marriageId,
-        {
-          arrowhead: "undirected",
-          curve: d3[localStorage.getItem("connector")],
-        }
-      );
-      g.setEdge(
-        parent2.id,
-        marriageId,
-        {
-          arrowhead: "undirected",
-          curve: d3[localStorage.getItem("connector")],
-        }
-      );
-      console.log(root.id)
-      g.setEdge(
-        marriageId,
-        root.id,
-        {
-          arrowhead: "undirected",
-          curve: d3[localStorage.getItem("connector")],
-        }
-      );
+      g.setNode(marriageId, { label: "", class: "marriage" });
+      g.setEdge(parent1.id, marriageId, {
+        arrowhead: "undirected",
+        curve: d3[localStorage.getItem("connector")],
+      });
+      g.setEdge(parent2.id, marriageId, {
+        arrowhead: "undirected",
+        curve: d3[localStorage.getItem("connector")],
+      });
+      console.log(root.id);
+      g.setEdge(marriageId, root.id, {
+        arrowhead: "undirected",
+        curve: d3[localStorage.getItem("connector")],
+      });
       //if the parents dont have children together (wait what why is this a thing is this even possible)
     } else {
       if (parent1) {
@@ -829,9 +826,7 @@ function idSetNode(uuid) {
     labelType: "html",
     label: `<div style="min-height: 200px; width: 160px;">
     <img style="width: 80%;  align-self: center; display: block; margin-left: auto;margin-right: auto;" src="${
-      person.pic
-        ? person.pic
-        : "/img/default_pic.png"
+      person.pic ? person.pic : "/img/default_pic.png"
     }"></img>
     <p onclick="openPerson('${person.id}', '${requestEnd}')">${
       person.name
@@ -990,8 +985,8 @@ function personToInfoScore(dude) {
 }
 
 function logOut() {
-  localStorage.removeItem("token")
-  localStorage.removeItem("treeUser")
-  localStorage.removeItem("username")
-  window.location = "/"
+  localStorage.removeItem("token");
+  localStorage.removeItem("treeUser");
+  localStorage.removeItem("username");
+  window.location = "/";
 }
