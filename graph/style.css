@@ -200,6 +200,8 @@ hr {
   font-size: 150%;
   font-weight: bold;
   border-radius: 10px;
+  color: black;
+  background-color: var(--button-on-color);
 }
 
 .stylepopup {

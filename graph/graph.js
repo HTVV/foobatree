@@ -244,7 +244,11 @@ async function openPopup(popupNum) {
       }
 
       break;
-  }
+    case 6:
+      popupOverlay.style.display = "flex";
+      popup.innerHTML = openSharedPopup;
+      break;
+    }
 }
 //closes all popups
 function closePopupFunc() {
@@ -267,6 +271,7 @@ function submitForm() {
   const placeDeath = document.getElementById("diedPlaceInput").value;
   const placeBurial = document.getElementById("buriedPlaceInput").value;
   const ogName = document.getElementById("OgNameInput1").value;
+  const lore = document.getElementById("LoreInput").value
   const uuid = randomUUID();
 
   const newPerson = JSON.stringify({
@@ -293,6 +298,7 @@ function submitForm() {
     ),
     parent1Id: null,
     parent2Id: null,
+    lore: lore
   });
 
   //document.cookie = `target=${uuid};max-age=1431989812894908`
