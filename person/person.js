@@ -249,7 +249,7 @@ async function submitForm() {
       ),
       parent1Id: null,
       parent2Id: null,
-      lore: lore
+      lore: lore,
     };
 
     if (person.parent1Id == null || person.parent1Id == "") {
@@ -634,9 +634,11 @@ async function main() {
   document.getElementById("writingText").textContent = person.writing
     .replaceAll("%79", "+")
     .replaceAll("%89", "&");
-  document.getElementById("sourcesText").textContent = linkify(person.sources
-    .replaceAll("%79", "+")
-    .replaceAll("%89", "&"))
+  document.getElementById("sourcesText").innerHTML = linkify(
+    person.sources.replaceAll("%79", "+").replaceAll("%89", "&")
+  )
+    .replaceAll(/&lt;/g, "<")
+    .replaceAll(/&gt;/g, ">");
   document.getElementById("gender").textContent =
     person.gender.charAt(0).toUpperCase() + person.gender.slice(1);
 }

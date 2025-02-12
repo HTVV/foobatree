@@ -401,7 +401,6 @@ function ownTree() {
 }
 function normalStyle() {
   closePopupFunc();
-  if (treeStyle == "normal") return 0;
   treeStyle = "normal";
   localStorage.setItem("treeStyle", "normal");
 
@@ -514,20 +513,12 @@ async function main(user) {
   const root = idToData(data[rootUser].id);
   const parent1temp = idToData(root.parent1Id);
   const parent2temp = idToData(root.parent2Id);
-  if (parent1temp) {
-    parent1 = parent1temp.gender == "male" ? parent1temp : parent2temp;
+  if (parent1temp && parent2temp) {
+    parent1 = parent1temp.gender === "male" ? parent1temp : parent2temp;
+    parent2 = parent1temp.gender === "male" ? parent2temp : parent1temp;
   } else {
-    parent1 = "";
-  }
-  if (parent2temp) {
-    if (parent2temp) {
-      parent2 = parent1temp.gender == "male" ? parent2temp : parent1temp;
-    } else {
-      parent2 = "";
-    }
-  } else {
-    parent1 = parent1temp;
-    parent2 = "";
+    parent1 = parent1temp || "";
+    parent2 = parent2temp || "";
   }
 
   idSetNode(root.id);
@@ -587,8 +578,12 @@ async function main(user) {
       curve: d3[localStorage.getItem("connector")],
     });
   }
-  renderFixed();
+  renderFixed()
+  setTimeout(() => {
+    renderFixed()
+  }, 0);
 }
+
 //returns the person object from the tree based on id
 function idToData(id) {
   return data.find((element) => element.id == id);
