@@ -275,3 +275,11 @@ html * {
     flex-direction: row;
     gap: 2%;
 }
+
+.dateInput input {
+    width: 20%;
+  }
+  
+  .addPerson-popup {
+    width: 30vw;
+  }

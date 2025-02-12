@@ -49,6 +49,30 @@ function openPopupFunc() {
   popupOverlay.style.display = "flex";
   document.getElementById("popupHeader").textContent = "Add parent";
   document.getElementById("popup1").style.display = "block";
+
+  document
+    .getElementById("birth-date-modifier-select")
+    .addEventListener("change", function () {
+      if (this.value == "between") {
+        document.getElementsByClassName("birth2-inputs")[0].style.display =
+          "block";
+      } else {
+        document.getElementsByClassName("birth2-inputs")[0].style.display =
+          "none";
+      }
+    });
+
+  document
+    .getElementById("death-date-modifier-select")
+    .addEventListener("change", function () {
+      if (this.value == "between") {
+        document.getElementsByClassName("death2-inputs")[0].style.display =
+          "block";
+      } else {
+        document.getElementsByClassName("death2-inputs")[0].style.display =
+          "none";
+      }
+    });
 }
 //opens child adding popup
 async function openChildPopup() {
@@ -83,12 +107,53 @@ function openDetailsPopup(typeEdit) {
   popupOverlay.style.display = "flex";
   document.getElementById("popup3").style.display = "flex";
   if (typeEdit == "birth") {
+    document.getElementById("popup1").innerHTML = "";
     document.getElementById("popup3Content").innerHTML = `
         <h3>Change birth details</h3>
-        <p>Birth date</p>
-        <input class="popup-input" type="date" placeholder="" id="BirthDateInput" value="${
-          person.birthDate
-        }">
+        <div class="dateInput popup-input">
+    <p class="tohide1">Date of birth</p>
+    <select id="birth-date-modifier-select">
+      <option value="exact">Exact</option>
+      <option value="circa">Circa</option>
+      <option value="before">Before</option>
+      <option value="after">After</option>
+      <option value="between">Between</option>
+    </select>
+    <br /><br />
+    <input
+      type="number"
+      id="birthDayInput1"
+      min="1"
+      max="31"
+      placeholder="DD"
+    />
+    <input
+      type="number"
+      id="birthMonthInput1"
+      min="1"
+      max="12"
+      placeholder="MM"
+    />
+    <input type="number" id="birthYearInput1" min="0" placeholder="YYYY" />
+    <div class="birth2-inputs">
+      <p style="align-self: flex-start;">to</p>
+      <input
+        type="number"
+        id="birthDayInput2"
+        min="1"
+        max="31"
+        placeholder="DD"
+      />
+      <input
+        type="number"
+        id="birthMonthInput2"
+        min="1"
+        max="12"
+        placeholder="MM"
+      />
+      <input type="number" id="birthYearInput2" min="0" placeholder="YYYY" />
+    </div>
+  </div>
         <p>Birth place</p>
         <input class="popup-input" type="text" placeholder="" id="BirthPlaceInput" value="${
           person.birthPlace
@@ -110,17 +175,102 @@ function openDetailsPopup(typeEdit) {
             }>Unknown</input>
         </div>
         `;
+
+    requestAnimationFrame(() => {
+      document
+        .getElementById("birth-date-modifier-select")
+        ?.addEventListener("change", function () {
+          document.querySelector(".birth2-inputs").style.display =
+            this.value === "between" ? "block" : "none";
+        });
+    });
+
+    document.getElementById("birth-date-modifier-select").value = person.birthDate.modifier
+
+    document.getElementById("birthDayInput1").value = person.birthDate.day1;
+    document.getElementById("birthMonthInput1").value = person.birthDate.month1;
+    document.getElementById("birthYearInput1").value = person.birthDate.year1;
+
+    if (person.birthDate.modifier != "between") return 0;
+
+    document.getElementById("birthDayInput2").value = person.birthDate.day2;
+    document.getElementById("birthMonthInput2").value = person.birthDate.month2;
+    document.getElementById("birthYearInput2").value = person.birthDate.year2;
   }
   if (typeEdit == "death") {
+    document.getElementById("popup1").innerHTML = "";
     document.getElementById("popup3Content").innerHTML = `
         <h3>Change death details</h3>
-        <p>Death date</p>
-        <input class="popup-input" type="date" id="DeathDateInput" value="${person.deathDate}">
+        <div class="dateInput popup-input">
+    <p class="tohide1">Date of death</p>
+    <select id="death-date-modifier-select">
+      <option value="exact">Exact</option>
+      <option value="circa">Circa</option>
+      <option value="before">Before</option>
+      <option value="after">After</option>
+      <option value="between">Between</option>
+    </select>
+    <br /><br />
+    <input
+      type="number"
+      id="deathDayInput1"
+      min="1"
+      max="31"
+      placeholder="DD"
+    />
+    <input
+      type="number"
+      id="deathMonthInput1"
+      min="1"
+      max="12"
+      placeholder="MM"
+    />
+    <input type="number" id="deathYearInput1" min="0" placeholder="YYYY" />
+
+    <div class="death2-inputs">
+      <input
+        type="number"
+        id="deathDayInput2"
+        min="1"
+        max="31"
+        placeholder="DD"
+      />
+      <input
+        type="number"
+        id="deathMonthInput2"
+        min="1"
+        max="12"
+        placeholder="MM"
+      />
+      <input type="number" id="deathYearInput2" min="0" placeholder="YYYY" />
+    </div>
+  </div>
         <p>Death place</p>
         <input class="popup-input" type="text" id="DeathPlaceInput" value="${person.deathPlace}">
         <p>Cause of death</p>
         <input class="popup-input" type="text" id="DeathCauseInput" value="${person.causeOfDeath}">
         `;
+
+    requestAnimationFrame(() => {
+      document
+        .getElementById("death-date-modifier-select")
+        ?.addEventListener("change", function () {
+          document.querySelector(".death2-inputs").style.display =
+            this.value === "between" ? "block" : "none";
+        });
+    });
+
+    document.getElementById("death-date-modifier-select").value = person.deathDate.modifier
+
+    document.getElementById("deathDayInput1").value = person.deathDate.day1;
+    document.getElementById("deathMonthInput1").value = person.deathDate.month1;
+    document.getElementById("deathYearInput1").value = person.deathDate.year1;
+
+    if (person.deathDate.modifier != "between") return 0;
+
+    document.getElementById("deathDayInput2").value = person.deathDate.day2;
+    document.getElementById("deathMonthInput2").value = person.deathDate.month2;
+    document.getElementById("deathYearInput2").value = person.deathDate.year2;
   }
   if (typeEdit == "burial") {
     document.getElementById("popup3Content").innerHTML = `
@@ -136,6 +286,10 @@ function openDetailsPopup(typeEdit) {
         <input class="popup-input" type="text" id="FirstNameInput" value="${
           person.firstName
         }">
+        <p>Patronym</p>
+        <input class="popup-input" type="text" id="PatronymInput" value="${
+          person.patronym
+        }">
         <p>Last name(s)</p>
         <input class="popup-input" type="text" id="LastNameInput" value="${
           person.lastName
@@ -143,10 +297,6 @@ function openDetailsPopup(typeEdit) {
         <p>Birth last name(s)</p>
         <input class="popup-input" type="text" id="OgNameInput" value="${
           person.ogName
-        }">
-        <p>Patronym</p>
-        <input class="popup-input" type="text" id="PatronymInput" value="${
-          person.patronym
         }">
         <p>Lore</p>
         <input class="popup-input" type="text" id="LoreInput" value="${
@@ -204,6 +354,7 @@ function closePopupFunc() {
 }
 async function submitForm() {
   if (type == "parents") {
+    console.log("adding parent")
     if (!document.querySelector('input[name="maleFemale"]:checked')) {
       document.getElementById("error").textContent = "Please select gender";
       document.getElementById("popup1").scrollIntoView();
@@ -212,12 +363,31 @@ async function submitForm() {
     const status = document.querySelector(
       'input[name="deadAlive"]:checked'
     ).value;
+    const gender = document.querySelector(
+      'input[name="maleFemale"]:checked'
+    ).value;
     const firstNames = document.getElementById("firstNameInput").value;
     const lastNames = document.getElementById("lastNameInput").value;
     const patronym = document.getElementById("patronymInput").value;
-    const dateBirth = document.getElementById("bornDateInput").value;
+    const dateBirth = new FtDate(
+      (day1 = document.getElementById("birthDayInput1").value),
+      (month1 = document.getElementById("birthMonthInput1").value),
+      (year1 = document.getElementById("birthYearInput1").value),
+      (modifier = document.getElementById("birth-date-modifier-select").value),
+      (day2 = document.getElementById("birthDayInput2").value),
+      (month2 = document.getElementById("birthMonthInput2").value),
+      (year2 = document.getElementById("birthYearInput2").value)
+    );
+    const dateDeath = new FtDate(
+      (day1 = document.getElementById("deathDayInput1").value),
+      (month1 = document.getElementById("deathMonthInput1").value),
+      (year1 = document.getElementById("deathYearInput1").value),
+      (modifier = document.getElementById("death-date-modifier-select").value),
+      (day2 = document.getElementById("deathDayInput2").value),
+      (month2 = document.getElementById("deathMonthInput2").value),
+      (year2 = document.getElementById("deathYearInput2").value)
+    );
     const placeBirth = document.getElementById("bornPlaceInput").value;
-    const dateDeath = document.getElementById("diedDateInput").value;
     const placeDeath = document.getElementById("diedPlaceInput").value;
     const placeBurial = document.getElementById("buriedPlaceInput").value;
     const ogName = document.getElementById("ogNameInput").value;
@@ -289,16 +459,35 @@ async function submitForm() {
     );
   }
   if (type == "details") {
+    document.getElementById("popup1").innerHTML = ""
     //logic here is if the form exists, use it's vlaue, otherwise use the saved one
-    person.birthDate = document.getElementById("BirthDateInput")
-      ? document.getElementById("BirthDateInput").value
-      : person.birthDate;
-    person.birthPlace = document.getElementById("BirthPlaceInput")
+    if(document.getElementById("birthDayInput1")) {
+      person.birthDate = new FtDate(
+        (day1 = document.getElementById("birthDayInput1").value),
+        (month1 = document.getElementById("birthMonthInput1").value),
+        (year1 = document.getElementById("birthYearInput1").value),
+        (modifier = document.getElementById("birth-date-modifier-select").value),
+        (day2 = document.getElementById("birthDayInput2").value),
+        (month2 = document.getElementById("birthMonthInput2").value),
+        (year2 = document.getElementById("birthYearInput2").value)
+      );
+    }
+    
+    if(document.getElementById("deathDayInput1")) {
+      person.deathDate = new FtDate(
+        (day1 = document.getElementById("deathDayInput1").value),
+        (month1 = document.getElementById("deathMonthInput1").value),
+        (year1 = document.getElementById("deathYearInput1").value),
+        (modifier = document.getElementById("death-date-modifier-select").value),
+        (day2 = document.getElementById("deathDayInput2").value),
+        (month2 = document.getElementById("deathMonthInput2").value),
+        (year2 = document.getElementById("deathYearInput2").value)
+      );
+    }
+    
+      person.birthPlace = document.getElementById("BirthPlaceInput")
       ? document.getElementById("BirthPlaceInput").value
       : person.birthPlace;
-    person.deathDate = document.getElementById("DeathDateInput")
-      ? document.getElementById("DeathDateInput").value
-      : person.deathDate;
     person.deathPlace = document.getElementById("DeathPlaceInput")
       ? document.getElementById("DeathPlaceInput").value
       : person.deathPlace;
@@ -621,13 +810,49 @@ async function main() {
   //relativeCheck();
   showRelatives();
 
+  datesCheck();
+
   document.getElementById(
     "children-relation-header"
   ).textContent += ` (${person.children.length})`;
   document.getElementById("name-text").textContent = person.name;
-  document.getElementById("birthDate").textContent = person.birthDate;
+  birthDate = person.birthDate;
+  if (typeof person.birthDate == "object") {
+    birthModifier = person.birthDate.modifier + " ";
+    if (birthModifier == "exact ") birthModifier = "";
+    if (birthModifier == "between ") {
+      birthModifier = "";
+      document.getElementById(
+        "birthDate"
+      ).textContent = cleanDateString(`${birthModifier}${birthDate.day1}-${birthDate.month1}-${birthDate.year1} and ${birthDate.day2}-${birthDate.month2}-${birthDate.year2}`);
+    } else {
+      if (birthModifier == "circa ") birthModifier = "c. ";
+      document.getElementById(
+        "birthDate"
+      ).textContent = cleanDateString(`${birthModifier}${birthDate.day1}-${birthDate.month1}-${birthDate.year1}`);
+    }
+  } else {
+    document.getElementById("birthDate").textContent = birthDate;
+  }
+  deathDate = person.deathDate;
+  if (typeof person.deathDate == "object") {
+    deathModifier = person.deathDate.modifier + " ";
+    if (deathModifier == "exact ") deathModifier = "";
+    if (deathModifier == "between ") {
+      deathModifier = "";
+      document.getElementById(
+        "deathDate"
+      ).textContent = cleanDateString(`${deathModifier}${deathDate.day1}-${deathDate.month1}-${deathDate.year1} and ${deathDate.day2}-${deathDate.month2}-${deathDate.year2}`);
+    } else {
+      if (deathModifier == "circa ") deathModifier = "c. ";
+      document.getElementById(
+        "deathDate"
+      ).textContent = cleanDateString(`${deathModifier}${deathDate.day1}-${deathDate.month1}-${deathDate.year1}`);
+    }
+  } else {
+    document.getElementById("deathDate").textContent = deathDate;
+  }
   document.getElementById("birthPlace").textContent = person.birthPlace;
-  document.getElementById("deathDate").textContent = person.deathDate;
   document.getElementById("deathPlace").textContent = person.deathPlace;
   document.getElementById("deathCause").textContent = person.causeOfDeath;
   document.getElementById("burialPlace").textContent = person.burialPlace;
@@ -637,8 +862,6 @@ async function main() {
   document.getElementById("sourcesText").innerHTML = linkify(
     person.sources.replaceAll("%79", "+").replaceAll("%89", "&")
   )
-    .replaceAll(/&lt;/g, "<")
-    .replaceAll(/&gt;/g, ">");
   document.getElementById("gender").textContent =
     person.gender.charAt(0).toUpperCase() + person.gender.slice(1);
 }
@@ -752,6 +975,39 @@ async function relativeCheck() {
       }
     }
     console.log(person);
+    fetch(
+      `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${uuid}&content=${encodeURI(
+        JSON.stringify(person)
+      )}${requestEnd}`
+    );
+  }
+}
+async function datesCheck() {
+  if (typeof person.birthDate != "object") {
+    birthDateList = person.birthDate.split("-");
+    person.birthDate = new FtDate(
+      (day1 = birthDateList[2]),
+      (month1 = birthDateList[1]),
+      (year1 = birthDateList[0]),
+      (modifier = "exact")
+    );
+
+    fetch(
+      `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${uuid}&content=${encodeURI(
+        JSON.stringify(person)
+      )}${requestEnd}`
+    );
+  }
+
+  if (typeof person.deathDate != "object") {
+    deathDateList = person.deathDate.split("-");
+    person.deathDate = new FtDate(
+      (day1 = deathDateList[2]),
+      (month1 = deathDateList[1]),
+      (year1 = deathDateList[0]),
+      (modifier = "exact")
+    );
+
     fetch(
       `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${uuid}&content=${encodeURI(
         JSON.stringify(person)

@@ -119,6 +119,30 @@ async function openPopup(popupNum) {
         "Add disconnected person";
       document.getElementById("submitButton").style.display = "block";
       document.getElementById("select-existing").style.display = "none";
+
+      document
+        .getElementById("birth-date-modifier-select")
+        .addEventListener("change", function () {
+          if (this.value == "between") {
+            document.getElementsByClassName("birth2-inputs")[0].style.display =
+              "block";
+          } else {
+            document.getElementsByClassName("birth2-inputs")[0].style.display =
+              "none";
+          }
+        });
+
+      document
+        .getElementById("death-date-modifier-select")
+        .addEventListener("change", function () {
+          if (this.value == "between") {
+            document.getElementsByClassName("death2-inputs")[0].style.display =
+              "block";
+          } else {
+            document.getElementsByClassName("death2-inputs")[0].style.display =
+              "none";
+          }
+        });
       break;
     //focus person
     case 2:
@@ -288,9 +312,25 @@ function submitForm() {
   const firstNames = document.getElementById("firstNameInput").value;
   const lastNames = document.getElementById("lastNameInput").value;
   const patronym = document.getElementById("patronymInput").value;
-  const dateBirth = document.getElementById("bornDateInput").value;
+  const dateBirth = new FtDate(
+    (day1 = document.getElementById("birthDayInput1").value),
+    (month1 = document.getElementById("birthMonthInput1").value),
+    (year1 = document.getElementById("birthYearInput1").value),
+    (modifier = document.getElementById("birth-date-modifier-select").value),
+    (day2 = document.getElementById("birthDayInput2").value),
+    (month2 = document.getElementById("birthMonthInput2").value),
+    (year2 = document.getElementById("birthYearInput2").value)
+  );
+  const dateDeath = new FtDate(
+    (day1 = document.getElementById("deathDayInput1").value),
+    (month1 = document.getElementById("deathMonthInput1").value),
+    (year1 = document.getElementById("deathYearInput1").value),
+    (modifier = document.getElementById("death-date-modifier-select").value),
+    (day2 = document.getElementById("deathDayInput2").value),
+    (month2 = document.getElementById("deathMonthInput2").value),
+    (year2 = document.getElementById("deathYearInput2").value)
+  );
   const placeBirth = document.getElementById("bornPlaceInput").value;
-  const dateDeath = document.getElementById("diedDateInput").value;
   const placeDeath = document.getElementById("diedPlaceInput").value;
   const placeBurial = document.getElementById("buriedPlaceInput").value;
   const ogName = document.getElementById("ogNameInput").value;
@@ -335,6 +375,7 @@ function submitForm() {
   document.getElementById("deadSelection").selected = "true";*/
   hideForm("dead");
   //fetch(`https://familytree.loophole.site/setProfile?token=${token}&profileUuid=07dbf856-acda-4393-ae72-2073f6594b87&content=${encodeURI(JSON.stringify())}`)
+  console.log(newPerson);
   fetch(
     `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${uuid}&content=${encodeURI(
       newPerson
@@ -578,9 +619,9 @@ async function main(user) {
       curve: d3[localStorage.getItem("connector")],
     });
   }
-  renderFixed()
+  renderFixed();
   setTimeout(() => {
-    renderFixed()
+    renderFixed();
   }, 0);
 }
 
@@ -832,6 +873,7 @@ function idSetNode(uuid) {
     throw new Error("Thats not an id brother");
   }
   const person = idToData(uuid);
+
   g.setNode(uuid, {
     labelType: "html",
     label: `<div style="min-height: 90px; width: 160px;">
@@ -1006,12 +1048,12 @@ function logOut() {
 }
 
 async function openAll(id) {
-  person = idToData(id);
+  const person = idToData(id);
   console.log(person);
   if (person.parent1Id || person.parent2Id) {
     graphParents(id);
-    if (person.parent1Id) openAll(person.parent1Id);
-    if (person.parent2Id) openAll(person.parent2Id);
+    if (person.parent1Id) await openAll(person.parent1Id);
+    if (person.parent2Id) await openAll(person.parent2Id);
   }
-  return 0
+  return 0;
 }

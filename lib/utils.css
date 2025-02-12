@@ -7,3 +7,13 @@
     --button-on-color: #6d6d6d;
     --button-off-color: #d1d1d1;
 }
+
+.birth2-inputs {
+    display: none;
+
+}
+
+.death2-inputs {
+    display: none;
+    justify-content: center;
+}

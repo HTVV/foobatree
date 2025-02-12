@@ -1,52 +1,197 @@
-<div class="popup-content">
-                <h3 id="popupHeader"></h3>
-                <p></p>
-                <button id="select-existing" onclick="selectExisting()">Select an existing person</button>
-                <p></p>
-                <h3 id="error" style="color: red;"></h3>
-                <div id="gender">
-                    <input type="radio" value="male" name="maleFemale">Male</input>
-                    <input type="radio" value="female" name="maleFemale">Female</input>
-                    <input type="radio" value="unknown" name="maleFemale">Unknown</input>
-                </div>
-                <div id="status">
-                    <input type="radio" value="alive" name="deadAlive" onclick="hideForm(this.value, 1)">Living</input>
-                    <input type="radio" value="dead" name="deadAlive" onclick="hideForm(this.value, 1)" checked>Dead</input>
-                    <input type="radio" value="unknown" name="deadAlive" onclick="hideForm(this.value, 1)">Unknown</input>
-                </div>
-                
-                <p class="tohide1">First name(s)</p>
-                <input class="popup-input tohide1" type="text" placeholder="Jukka-Pekka Tapani" id="firstNameInput">
+<div class="popup-content addPerson-popup">
+  <h3 id="popupHeader"></h3>
+  <p></p>
+  <button id="select-existing" onclick="selectExisting()">
+    Select an existing person
+  </button>
+  <p></p>
+  <h3 id="error" style="color: red"></h3>
+  <div id="gender">
+    <input type="radio" value="male" name="maleFemale" />Male
+    <input type="radio" value="female" name="maleFemale" />Female
+    <input type="radio" value="unknown" name="maleFemale" />Unknown
+  </div>
+  <div id="status">
+    <input
+      type="radio"
+      value="alive"
+      name="deadAlive"
+      onclick="hideForm(this.value, 1)"
+    />Living
+    <input
+      type="radio"
+      value="dead"
+      name="deadAlive"
+      onclick="hideForm(this.value, 1)"
+      checked
+    />Dead
+    <input
+      type="radio"
+      value="unknown"
+      name="deadAlive"
+      onclick="hideForm(this.value, 1)"
+    />Unknown
+  </div>
 
-                <p class="tohide1">Patronym</p>
-                <input class="popup-input tohide1" type="text" placeholder="Johansson" id="patronymInput">
+  <p class="tohide1">First name(s)</p>
+  <input
+    class="popup-input tohide1"
+    type="text"
+    placeholder="Jukka-Pekka Tapani"
+    id="firstNameInput"
+  />
 
-                <p>Latest last name(s)</p>
-                <input class="popup-input" type="text" placeholder="Virtanen" id="lastNameInput">
+  <p class="tohide1">Patronym</p>
+  <input
+    class="popup-input tohide1"
+    type="text"
+    placeholder="Johansson"
+    id="patronymInput"
+  />
 
-                <p>Birth last name(s)</p>
-                <input class="popup-input" type="text" placeholder="Kylänen" id="ogNameInput">
+  <p>Latest last name(s)</p>
+  <input
+    class="popup-input"
+    type="text"
+    placeholder="Virtanen"
+    id="lastNameInput"
+  />
 
-                <p class="tohide1">Date of birth</p>
-                <input class="popup-input tohide1" type="date" placeholder="1776.11.4" id="bornDateInput">
+  <p>Birth last name(s)</p>
+  <input
+    class="popup-input"
+    type="text"
+    placeholder="Kylänen"
+    id="ogNameInput"
+  />
 
-                <p class="popup-input tohide1">Place of birth</p>
-                <input class="popup-input tohide1" type="text" placeholder="Chicago, Illinois" id="bornPlaceInput">
+  <div class="dateInput popup-input">
+    <p class="tohide1">Date of birth</p>
+    <select id="birth-date-modifier-select">
+      <option value="exact">Exact</option>
+      <option value="circa">Circa</option>
+      <option value="before">Before</option>
+      <option value="after">After</option>
+      <option value="between">Between</option>
+    </select>
+    <br /><br />
+    <input
+      type="number"
+      id="birthDayInput1"
+      min="1"
+      max="31"
+      placeholder="DD"
+    />
+    <input
+      type="number"
+      id="birthMonthInput1"
+      min="1"
+      max="12"
+      placeholder="MM"
+    />
+    <input type="number" id="birthYearInput1" min="0" placeholder="YYYY" />
+    <div class="birth2-inputs">
+      <p style="align-self: flex-start;">to</p>
+      <input
+        type="number"
+        id="birthDayInput2"
+        min="1"
+        max="31"
+        placeholder="DD"
+      />
+      <input
+        type="number"
+        id="birthMonthInput2"
+        min="1"
+        max="12"
+        placeholder="MM"
+      />
+      <input type="number" id="birthYearInput2" min="0" placeholder="YYYY" />
+    </div>
+  </div>
 
-                <p class="popup-input tohide1">Date of death</p>
-                <input class="popup-input tohide1" type="date" placeholder="1796.11.4" id="diedDateInput">
+  <div class="dateInput popup-input">
+    <p class="tohide1">Date of death</p>
+    <select id="death-date-modifier-select">
+      <option value="exact">Exact</option>
+      <option value="circa">Circa</option>
+      <option value="before">Before</option>
+      <option value="after">After</option>
+      <option value="between">Between</option>
+    </select>
+    <br /><br />
+    <input
+      type="number"
+      id="deathDayInput1"
+      min="1"
+      max="31"
+      placeholder="DD"
+    />
+    <input
+      type="number"
+      id="deathMonthInput1"
+      min="1"
+      max="12"
+      placeholder="MM"
+    />
+    <input type="number" id="deathYearInput1" min="0" placeholder="YYYY" />
 
-                <p class="popup-input tohide1">Place of death</p>
-                <input class="popup-input tohide1" type="text" placeholder="Buffalo, New York" id="diedPlaceInput">
+    <div class="death2-inputs">
+      <input
+        type="number"
+        id="deathDayInput2"
+        min="1"
+        max="31"
+        placeholder="DD"
+      />
+      <input
+        type="number"
+        id="deathMonthInput2"
+        min="1"
+        max="12"
+        placeholder="MM"
+      />
+      <input type="number" id="deathYearInput2" min="0" placeholder="YYYY" />
+    </div>
+  </div>
 
-                <p class="popup-input tohide1">Cause of death</p>
-                <input class="popup-input tohide1" type="text" placeholder="Spontaneous combustion" id="causeDiedInput">
+  <p class="popup-input tohide1">Place of birth</p>
+  <input
+    class="popup-input tohide1"
+    type="text"
+    placeholder="Chicago, Illinois"
+    id="bornPlaceInput"
+  />
 
-                <p class="popup-input tohide1">Place of burial</p>
-                <input class="popup-input tohide1" type="text"
-                    placeholder="Merituulentie 17, Finnoo, Espoo, Uusimaa, Finland" id="buriedPlaceInput">
+  <p class="popup-input tohide1">Place of death</p>
+  <input
+    class="popup-input tohide1"
+    type="text"
+    placeholder="Buffalo, New York"
+    id="diedPlaceInput"
+  />
 
-                <p class="popup-input tohide1">Lore</p>
-                <input class="popup-input tohide1" type="text"
-                    placeholder="Great fisherman" id="loreInput">
-            </div>
+  <p class="popup-input tohide1">Cause of death</p>
+  <input
+    class="popup-input tohide1"
+    type="text"
+    placeholder="Spontaneous combustion"
+    id="causeDiedInput"
+  />
+
+  <p class="popup-input tohide1">Place of burial</p>
+  <input
+    class="popup-input tohide1"
+    type="text"
+    placeholder="Merituulentie 17, Finnoo, Espoo, Uusimaa, Finland"
+    id="buriedPlaceInput"
+  />
+
+  <p class="popup-input tohide1">Lore</p>
+  <input
+    class="popup-input tohide1"
+    type="text"
+    placeholder="Great fisherman"
+    id="loreInput"
+  />
+</div>
