@@ -176,7 +176,6 @@ async function openPopup(popupNum) {
         localStorage.getItem("connector-color");
       document.getElementById("bg-color-input").value =
         localStorage.getItem("bg-color");
-      console.log(localStorage.getItem("show-pics"));
       document.getElementById("show-pics-input").checked =
         localStorage.getItem("show-pics") === "true";
 
@@ -515,25 +514,21 @@ async function main(user) {
   const root = idToData(data[rootUser].id);
   const parent1temp = idToData(root.parent1Id);
   const parent2temp = idToData(root.parent2Id);
-  console.log(parent1temp);
-  console.log(parent2temp)
   if (parent1temp) {
     parent1 = parent1temp.gender == "male" ? parent1temp : parent2temp;
   } else {
     parent1 = "";
   }
-  if(parent2temp) {
-    console.log("this shouldnt run")
+  if (parent2temp) {
     if (parent2temp) {
       parent2 = parent1temp.gender == "male" ? parent2temp : parent1temp;
     } else {
       parent2 = "";
     }
   } else {
-    parent1 = parent1temp
-    parent2 = ""
+    parent1 = parent1temp;
+    parent2 = "";
   }
-  
 
   idSetNode(root.id);
   //this thing cuz the first guys parents are rendered automatically
@@ -612,9 +607,7 @@ function graphParents(id) {
   if (parent1) idSetNode(parent1.id);
   if (parent2) idSetNode(parent2.id);
   //if both parents exist
-  console.time("setRelations");
   if (parent1 && parent2) {
-    console.log("both");
     //if the parents have children together
     if (parent1.spouses.includes(parent2.id)) {
       const marriageId = `${(parent1.id + parent2.id)
@@ -631,7 +624,6 @@ function graphParents(id) {
         arrowhead: "undirected",
         curve: d3[localStorage.getItem("connector")],
       });
-      console.log(root.id);
       g.setEdge(marriageId, root.id, {
         arrowhead: "undirected",
         curve: d3[localStorage.getItem("connector")],
@@ -845,13 +837,16 @@ function idSetNode(uuid) {
     throw new Error("Thats not an id brother");
   }
   const person = idToData(uuid);
-  console.log(person);
   g.setNode(uuid, {
     labelType: "html",
-    label: `<div style="min-height: 200px; width: 160px;">
-    <img style="width: 80%;  align-self: center; display: block; margin-left: auto;margin-right: auto;" src="${
-      person.pic ? person.pic : "/img/default_pic.png"
-    }"></img>
+    label: `<div style="min-height: 90px; width: 160px;">
+    ${
+      localStorage.getItem("show-pics") === "true"
+        ? `<img style="width: 80%;  align-self: center; display: block; margin-left: auto;margin-right: auto;" src="${
+            person.pic ? person.pic : "/img/default_pic.png"
+          }"></img>`
+        : ""
+    }
     <p onclick="openPerson('${person.id}', '${requestEnd}')">${
       person.name
     }</p> ${personToLifespan(person)} 
@@ -1013,4 +1008,15 @@ function logOut() {
   localStorage.removeItem("treeUser");
   localStorage.removeItem("username");
   window.location = "/";
+}
+
+async function openAll(id) {
+  person = idToData(id);
+  console.log(person);
+  if (person.parent1Id || person.parent2Id) {
+    graphParents(id);
+    if (person.parent1Id) openAll(person.parent1Id);
+    if (person.parent2Id) openAll(person.parent2Id);
+  }
+  return 0
 }
