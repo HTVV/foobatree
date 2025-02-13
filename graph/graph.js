@@ -634,8 +634,13 @@ function graphParents(id) {
   const root = idToData(id);
   parent1temp = idToData(root.parent1Id);
   parent2temp = idToData(root.parent2Id);
-  const parent1 = parent1temp.gender == "male" ? parent1temp : parent2temp;
-  const parent2 = parent1temp.gender == "male" ? parent2temp : parent1temp;
+  if (parent1temp && parent2temp) {
+    parent1 = parent1temp.gender === "male" ? parent1temp : parent2temp;
+    parent2 = parent1temp.gender === "male" ? parent2temp : parent1temp;
+  } else {
+    parent1 = parent1temp || "";
+    parent2 = parent2temp || "";
+  }
 
   //that monstrosity removes the parentButton element
   removeButton(/<input type='button' id="parentButton"(.*?)>/, root.id);

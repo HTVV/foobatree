@@ -36,7 +36,7 @@
             <div class="name-text" id="name-text" onclick="openDetailsPopup('name')"></div>
             <div class="name-row-right-side">
                 <button class="deleteButton" onclick="deletePersonPopup()">DELETE</button>
-                <img src="/img/foobatreeicon.png" class="logo" onclick="backToTree()">
+                <a href="/"><img src="/img/foobatreeicon.png" class="logo"></a>
             </div>
         </div>
         <div class="details">
@@ -82,7 +82,7 @@
         </div>
     </div>
 </body>
-<link rel="stylesheet" href="./style.css">
+<link rel="preload" href="style.css" as="style" onload="this.rel='stylesheet'">
 <link href='/lib/utils.css' rel='stylesheet'>
 <script src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
 <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
