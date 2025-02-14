@@ -89,7 +89,7 @@ async function openChildPopup() {
       person.spouses[i]
     }">${await idToName(person.spouses[i])}</option>`;
   }
-  document.getElementById("popup1Header").textContent = "Add child";
+  document.getElementById("popupHeader").textContent = "Add child";
   document.getElementById("popup1").style.display = "block";
 }
 //opens spouse adding popup
