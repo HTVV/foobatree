@@ -13,13 +13,13 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  transition: background-color 0.2s;
+  
 }
 #logo {
   height: 5vh;
   padding-right: 2vw;
   background-color: var(--primary-color);
-  transition: background-color 0.2s;
+  
 }
 #logo:hover,
 .map-style:hover {
@@ -55,7 +55,7 @@
   border: 0px solid;
   border-radius: 0;
   border-left: 2px solid var(--secondary-color);
-  transition: background-color 0.2s;
+  
 }
 
 .path {
@@ -71,7 +71,7 @@
 html * {
   font-family: Montserrat !important;
   color: var(--secondary-color);
-  transition: color 0.2s;
+  
 }
 
 body {
@@ -88,7 +88,7 @@ body {
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   overflow-y: scroll;
-  transition: background-color 0.2s;
+  
 }
 
 .popup-content {
@@ -109,18 +109,18 @@ body {
   display: block;
   color: black;
   background-color: white;
-  transition: color 0.2s;
+  
 }
 
 .popup select {
   color: black;
   background-color: white;
-  transition: color 0.2s;
+  
 }
 
 .popup option {
   color: var(--secondary-color);
-  transition: color 0.2s;
+  
 }
 
 .popup button {
@@ -130,7 +130,7 @@ body {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: color 0.2s;
+  
 }
 
 .popup-overlay {
@@ -191,7 +191,7 @@ hr {
   border-top: 0.1vh solid var(--secondary-color);
   margin: 1em 0;
   padding: 0;
-  transition: border-top 0.2s;
+  
 }
 
 .submit {
@@ -225,7 +225,7 @@ hr {
     grid-column: 1 / 2;
     border: 2px solid var(--secondary-color);
     border-radius: 20px;
-    transition: border 0.2s;
+    
   }
 
 
@@ -238,7 +238,7 @@ hr {
     grid-column: 1 / 2;
     border: 2px solid var(--secondary-color);
     border-radius: 20px;
-    transition: border 0.2s;
+    
 }
 
 #info-style-options-header {
