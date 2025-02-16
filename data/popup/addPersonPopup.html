@@ -7,30 +7,41 @@
   <p></p>
   <h3 id="error" style="color: red"></h3>
   <div id="gender">
-    <input type="radio" value="male" name="maleFemale" />Male
-    <input type="radio" value="female" name="maleFemale" />Female
-    <input type="radio" value="unknown" name="maleFemale" />Unknown
+    <input type="radio" value="male" name="maleFemale" id="male" />
+    <label for="male">Male</label>
+    <input type="radio" value="female" name="maleFemale" id="female" />
+    <label for="female">Female</label>
+    <input type="radio" value="unknown" name="maleFemale" id="unknown" />
+    <label for="unknown">Unknown</label>
   </div>
   <div id="status">
     <input
       type="radio"
       value="alive"
       name="deadAlive"
+      id="alive"
       onclick="hideForm(this.value, 1)"
-    />Living
+    />
+    <label for="alive">Living</label>
+
     <input
       type="radio"
       value="dead"
       name="deadAlive"
+      id="dead"
       onclick="hideForm(this.value, 1)"
       checked
-    />Dead
+    />
+    <label for="dead">Dead</label>
+
     <input
       type="radio"
       value="unknown"
       name="deadAlive"
+      id="unknownStatus"
       onclick="hideForm(this.value, 1)"
-    />Unknown
+    />
+    <label for="unknownStatus">Unknown</label>
   </div>
 
   <p class="tohide1">First name(s)</p>
@@ -65,7 +76,7 @@
     id="ogNameInput"
   />
 
-  <div class="dateInput popup-input">
+  <div class="dateInput">
     <p class="tohide1">Date of birth</p>
     <select id="birth-date-modifier-select">
       <option value="exact">Exact</option>
@@ -91,7 +102,7 @@
     />
     <input type="number" id="birthYearInput1" min="0" placeholder="YYYY" />
     <div class="birth2-inputs">
-      <p style="align-self: flex-start;">to</p>
+      <p style="align-self: flex-start">to</p>
       <input
         type="number"
         id="birthDayInput2"
@@ -110,7 +121,7 @@
     </div>
   </div>
 
-  <div class="dateInput popup-input">
+  <div class="dateInput">
     <p class="tohide1">Date of death</p>
     <select id="death-date-modifier-select">
       <option value="exact">Exact</option>

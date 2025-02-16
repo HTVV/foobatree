@@ -13,18 +13,18 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  
+  transition: color 0.3s ease, background-color 0.3s ease;
 }
 #logo {
   height: 5vh;
   padding-right: 2vw;
   background-color: var(--primary-color);
-  
+  transition: color 0.3s ease, background-color 0.3s ease;
 }
-#logo:hover,
-.map-style:hover {
+#logo:hover {
   background-color: var(--hover-color);
 }
+
 #user {
   height: 5vh;
   margin-left: 1vw;
@@ -42,7 +42,7 @@
   border: 0px solid;
   border-radius: 0;
   border-left: 2px solid var(--secondary-color);
-  animation: 0.2s;
+  transition: color 0.3s ease, background-color 0.3s ease;
 }
 .navbutton:hover {
   background-color: var(--hover-color);
@@ -55,7 +55,7 @@
   border: 0px solid;
   border-radius: 0;
   border-left: 2px solid var(--secondary-color);
-  
+  transition: color 0.3s ease, background-color 0.3s ease;
 }
 
 .path {
@@ -179,11 +179,15 @@ g p {
 }
 
 .map-style {
+  height: auto;
+  max-width: 3vw;
   position: absolute;
-  left: 95vw;
+  right: 1vw;
   width: 5vw;
+  z-index: 4;
+  cursor: pointer;
+  padding: 1vw;
 }
-
 hr {
   display: block;
   height: 1vh;
@@ -202,7 +206,7 @@ hr {
   font-weight: bold;
   border-radius: 10px;
   color: white;
-  background-color: var(--button-on-color);
+  background-color: var(--button-base-color);
 }
 
 .stylepopup {
