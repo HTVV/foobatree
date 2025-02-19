@@ -1068,7 +1068,7 @@ async function showRelatives() {
     childArray.push(idToData(person.children[i]));
   }
   console.log(childArray);
-  childArray.sort((a, b) => a.birthDate.slice(0, 4) - b.birthDate.slice(0, 4));
+  //childArray.sort((a, b) => a.birthDate.slice(0, 4) - b.birthDate.slice(0, 4));
   console.log(childArray);
   for (var i = 0; i < childArray.length; i++) {
     document.getElementById("children-container").innerHTML +=

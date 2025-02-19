@@ -98,6 +98,9 @@ async function setPopups() {
   attributionPopup = await (
     await fetch("../data/popup/attributionPopup.html")
   ).text();
+  birthDaysPopup = await (
+    await fetch("../data/popup/birthDaysPopup.html")
+  ).text();
 }
 //gets a random uuid cuz cant crypto doesnt like http
 function randomUUID() {
@@ -291,7 +294,13 @@ async function openPopup(popupNum) {
       document.getElementById("submitButton").style.display = "none";
 
       break;
-  }
+    //birthdays
+    case 7:
+      popupOverlay.style.display = "flex";
+      popup.innerHTML = birthDaysPopup;
+      document.getElementById("submitButton").style.display = "none";
+      break;
+    }
 }
 //closes all popups
 function closePopupFunc() {
@@ -496,6 +505,33 @@ function infoStyle() {
   });
 
   renderFixed();
+}
+function getBirthDays() {
+  const today = new Date();
+
+  let filtered = data.filter(dude => dude.birthDate.modifier == "exact")
+  const  birthDayBoys = filtered.filter(dude => dude.birthDate.day1 == padDateString(today.getDate()) && dude.birthDate.month1 == today.getMonth())
+  console.log(birthDayBoys);
+
+  years = [100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000]
+  const anniversaries = filtered.filter(dude => years.includes(today.getFullYear() - parseInt(dude.birthDate.year1)))
+  console.log(anniversaries)
+
+  if(birthDayBoys.length != 0) {
+    document.getElementById("birthDaysPopup").innerHTML += `<p>Today, the following people from your tree are celebrating their birthdays:</p>`
+    birthDayBoys.forEach(boy => {
+      document.getElementById("birthDaysPopup").innerHTML +=`<h4>${boy.name}</h4><p>${personToLifespan(boy)}</p>`
+    })
+  } else if(anniversaries.length != 0) {
+    document.getElementById("birthDaysPopup").innerHTML += `<p>Today, no one from your tree is celebrating their birthday.</p>
+    <p>However, the following people are celebrating their anniversaries this year:`
+    anniversaries.forEach(dude => {
+      document.getElementById("birthDaysPopup").innerHTML +=`<h4>${dude.name}</h4><p>${personToLifespan(dude)}</p>`
+    })
+  } else {
+    document.getElementById("birthDaysPopup").innerHTML += `<p>No one from your tree is having an important date right now.</p>`
+  }
+  
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
