@@ -458,7 +458,8 @@ async function submitForm() {
       `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=test&content=${requestEnd}`
     );
 
-    document.getElementById("parents-container").innerHTML += personToRelativeLabel(parent)
+    document.querySelector("#parents-container").querySelector('.add-button').insertAdjacentHTML("beforebegin", personToRelativeLabel(parent))
+
   }
   if (type == "details") {
     document.getElementById("popup1").innerHTML = ""
@@ -648,7 +649,8 @@ async function submitForm() {
       )}${requestEnd}`
     );
 
-    document.getElementById("spouses-container").innerHTML += personToRelativeLabel(spouse)
+    document.querySelector("#spouses-container").querySelector('.add-button').insertAdjacentHTML("beforebegin", personToRelativeLabel(spouse))
+
   }
   if (type == "child") {
     if (!document.querySelector('input[name="maleFemale"]:checked')) {
@@ -693,6 +695,7 @@ async function submitForm() {
     const placeBurial = document.getElementById("buriedPlaceInput").value;
     const ogName = document.getElementById("ogNameInput").value;
     const lore = document.getElementById("loreInput").value;
+    const parent2 = document.getElementById("otherParentSelect").value;
     const newUuid = randomUUID();
 
     child = {
@@ -738,7 +741,6 @@ async function submitForm() {
     //the other parent
     if (parent2) {
       const parent2Data = idToData(parent2);
-      parent2Data = parent[0];
       parent2Data.children.push(newUuid);
       fetch(
         `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${parent2}&content=${encodeURI(
@@ -753,7 +755,7 @@ async function submitForm() {
       )}${requestEnd}`
     );
 
-    document.getElementById("children-container").innerHTML += personToRelativeLabel(child)
+    document.querySelector("#children-container").querySelector('.add-button').insertAdjacentHTML("beforebegin", personToRelativeLabel(child))
   }
   closePopupFunc();
 }
