@@ -457,6 +457,8 @@ async function submitForm() {
     fetch(
       `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=test&content=${requestEnd}`
     );
+
+    document.getElementById("parents-container").innerHTML += personToRelativeLabel(parent)
   }
   if (type == "details") {
     document.getElementById("popup1").innerHTML = ""
@@ -561,18 +563,39 @@ async function submitForm() {
       document.getElementById("popup1").scrollIntoView();
       return 1;
     }
-    const gender = document.querySelector(
-      'input[name="maleFemale"]:checked'
-    ).value;
+    if (!document.querySelector('input[name="maleFemale"]:checked')) {
+      document.getElementById("error").textContent = "Please select gender";
+      document.getElementById("popup1").scrollIntoView();
+      return 1;
+    }
     const status = document.querySelector(
       'input[name="deadAlive"]:checked'
+    ).value;
+    const gender = document.querySelector(
+      'input[name="maleFemale"]:checked'
     ).value;
     const firstNames = document.getElementById("firstNameInput").value;
     const lastNames = document.getElementById("lastNameInput").value;
     const patronym = document.getElementById("patronymInput").value;
-    const dateBirth = document.getElementById("bornDateInput").value;
+    const dateBirth = new FtDate(
+      (day1 = document.getElementById("birthDayInput1").value),
+      (month1 = document.getElementById("birthMonthInput1").value),
+      (year1 = document.getElementById("birthYearInput1").value),
+      (modifier = document.getElementById("birth-date-modifier-select").value),
+      (day2 = document.getElementById("birthDayInput2").value),
+      (month2 = document.getElementById("birthMonthInput2").value),
+      (year2 = document.getElementById("birthYearInput2").value)
+    );
+    const dateDeath = new FtDate(
+      (day1 = document.getElementById("deathDayInput1").value),
+      (month1 = document.getElementById("deathMonthInput1").value),
+      (year1 = document.getElementById("deathYearInput1").value),
+      (modifier = document.getElementById("death-date-modifier-select").value),
+      (day2 = document.getElementById("deathDayInput2").value),
+      (month2 = document.getElementById("deathMonthInput2").value),
+      (year2 = document.getElementById("deathYearInput2").value)
+    );
     const placeBirth = document.getElementById("bornPlaceInput").value;
-    const dateDeath = document.getElementById("diedDateInput").value;
     const placeDeath = document.getElementById("diedPlaceInput").value;
     const placeBurial = document.getElementById("buriedPlaceInput").value;
     const ogName = document.getElementById("ogNameInput").value;
@@ -604,6 +627,7 @@ async function submitForm() {
       ),
       parent1Id: null,
       parent2Id: null,
+      lore: lore
     });
 
     if (person.spouses == null) person.spouses = [];
@@ -623,6 +647,8 @@ async function submitForm() {
         spouse
       )}${requestEnd}`
     );
+
+    document.getElementById("spouses-container").innerHTML += personToRelativeLabel(spouse)
   }
   if (type == "child") {
     if (!document.querySelector('input[name="maleFemale"]:checked')) {
@@ -630,23 +656,44 @@ async function submitForm() {
       document.getElementById("popup1").scroll({ top: 0, behavior: "smooth" });
       return 1;
     }
+    if (!document.querySelector('input[name="maleFemale"]:checked')) {
+      document.getElementById("error").textContent = "Please select gender";
+      document.getElementById("popup1").scrollIntoView();
+      return 1;
+    }
+    const status = document.querySelector(
+      'input[name="deadAlive"]:checked'
+    ).value;
     const gender = document.querySelector(
       'input[name="maleFemale"]:checked'
     ).value;
-    var status = document.querySelector(
-      'input[name="deadAlive"]:checked'
-    ).value;
-    const firstNames = document.getElementById("FirstNameInput1").value;
-    const lastNames = document.getElementById("LastNameInput1").value;
-    const patronym = document.getElementById("patronymInput1").value;
-    const dateBirth = document.getElementById("BornDateInput1").value;
-    const placeBirth = document.getElementById("BornPlaceInput1").value;
-    const dateDeath = document.getElementById("DiedDateInput1").value;
-    const placeDeath = document.getElementById("DiedPlaceInput1").value;
-    const placeBurial = document.getElementById("BuriedPlaceInput1").value;
-    const ogName = document.getElementById("OgNameInput1").value;
+    const firstNames = document.getElementById("firstNameInput").value;
+    const lastNames = document.getElementById("lastNameInput").value;
+    const patronym = document.getElementById("patronymInput").value;
+    const dateBirth = new FtDate(
+      (day1 = document.getElementById("birthDayInput1").value),
+      (month1 = document.getElementById("birthMonthInput1").value),
+      (year1 = document.getElementById("birthYearInput1").value),
+      (modifier = document.getElementById("birth-date-modifier-select").value),
+      (day2 = document.getElementById("birthDayInput2").value),
+      (month2 = document.getElementById("birthMonthInput2").value),
+      (year2 = document.getElementById("birthYearInput2").value)
+    );
+    const dateDeath = new FtDate(
+      (day1 = document.getElementById("deathDayInput1").value),
+      (month1 = document.getElementById("deathMonthInput1").value),
+      (year1 = document.getElementById("deathYearInput1").value),
+      (modifier = document.getElementById("death-date-modifier-select").value),
+      (day2 = document.getElementById("deathDayInput2").value),
+      (month2 = document.getElementById("deathMonthInput2").value),
+      (year2 = document.getElementById("deathYearInput2").value)
+    );
+    const placeBirth = document.getElementById("bornPlaceInput").value;
+    const placeDeath = document.getElementById("diedPlaceInput").value;
+    const placeBurial = document.getElementById("buriedPlaceInput").value;
+    const ogName = document.getElementById("ogNameInput").value;
+    const lore = document.getElementById("loreInput").value;
     const newUuid = randomUUID();
-    const parent2 = document.getElementById("otherParentSelect").value;
 
     child = {
       status: status,
@@ -666,6 +713,7 @@ async function submitForm() {
       causeOfDeath: "",
       writing: "",
       sources: "",
+      lore: lore,
       name: btrim(
         `${firstNames} ${patronym} ${lastNames}${
           ogName != "" ? ` (${ogName})` : ""
@@ -704,6 +752,8 @@ async function submitForm() {
         JSON.stringify(child)
       )}${requestEnd}`
     );
+
+    document.getElementById("children-container").innerHTML += personToRelativeLabel(child)
   }
   closePopupFunc();
 }

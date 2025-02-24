@@ -166,7 +166,27 @@ html * {
   padding: 0;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: visible;
 }
+
+.relative-hover {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  color: #333;
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 100;
+}
+
+.relative:hover .relative-hover {
+  display: block;
+}
+
 
 .relative p {
   color: black;
