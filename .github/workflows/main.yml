@@ -1,5 +1,9 @@
-on: [push]
-name: Upload to infinityfree on push
+on: 
+  push:
+    branches:
+      - "main"
+
+name: Deploy to foobatree main website
 jobs:
   web-deploy:
     name: deploy thumbsup
