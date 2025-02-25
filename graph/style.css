@@ -328,10 +328,10 @@ hr {
 
 .account-popup {
   z-index: 11;
-  top: 8vh;
   display: none;
   background-color: var(--primary-color);
   padding: 1vw;
+  padding-top: 6vh;
   border-radius: 1vh;
   position: absolute;
   flex-direction: column;
@@ -383,4 +383,9 @@ hr {
 
 #birthDaysPopup {
   width: 25vw;
+}
+
+.img-container {
+  position: relative;
+  display: inline-block;
 }
