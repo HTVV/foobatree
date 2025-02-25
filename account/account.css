@@ -1,0 +1,119 @@
+:root {
+    --bg-color: red;
+    --text-color: red;
+    --primary-color: red;
+    --secondary-text-color:red;
+    --hover-color: red;
+    --button-base-hover-color: red;
+    --button-off-hover-color: red;
+    --button-on-hover-color: red;
+
+}
+body {
+    background-color: var(--bg-color);
+    margin: 0;
+    font-family: Montserrat !important;
+    color: var(--text-color);
+}
+#logo {
+    height: 5vh;
+    padding-right: 100vw;
+    background-color: var(--primary-color);
+    transition: color 0.3s ease, background-color 0.3s ease;
+    border-bottom: 2px solid var(--secondary-color);
+    
+}
+#logo:hover {
+    background-color: var(--hover-color);
+}
+  
+ul {
+   list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 15%;
+    background-color: var(--primary-color);
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hoverable {
+    display: block;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-bottom: 2px solid var(--secondary-color);
+    transition: color 0.3s ease, background-color 0.3s ease;
+    font-size: 2vh;
+}
+  
+.hoverable.active {
+    background-color: black;
+    color: white;
+}
+  
+.hoverable:hover:not(.active) {
+    background-color: var(--hover-color);
+    color: white;
+}
+
+.setting {
+    margin-left:15%;
+    padding:1px 16px;
+    height:1000px;
+}
+
+
+.container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 10px;
+    padding-top: 10px;
+    width: 25%;
+  }
+  .container > div {
+    padding: 10px;
+    font-size: 30px;
+    text-align: center;
+  }
+.noShow{display: none;}
+
+.button {
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--text-color);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+
+
+.selection{
+    appearance: none;
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--text-color);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+
+
+.checkbox {
+    width: 50px;
+    height: 30px;
+}
