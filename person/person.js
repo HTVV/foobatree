@@ -185,7 +185,8 @@ function openDetailsPopup(typeEdit) {
         });
     });
 
-    document.getElementById("birth-date-modifier-select").value = person.birthDate.modifier
+    document.getElementById("birth-date-modifier-select").value =
+      person.birthDate.modifier;
 
     document.getElementById("birthDayInput1").value = person.birthDate.day1;
     document.getElementById("birthMonthInput1").value = person.birthDate.month1;
@@ -260,7 +261,8 @@ function openDetailsPopup(typeEdit) {
         });
     });
 
-    document.getElementById("death-date-modifier-select").value = person.deathDate.modifier
+    document.getElementById("death-date-modifier-select").value =
+      person.deathDate.modifier;
 
     document.getElementById("deathDayInput1").value = person.deathDate.day1;
     document.getElementById("deathMonthInput1").value = person.deathDate.month1;
@@ -354,7 +356,7 @@ function closePopupFunc() {
 }
 async function submitForm() {
   if (type == "parents") {
-    console.log("adding parent")
+    console.log("adding parent");
     if (!document.querySelector('input[name="maleFemale"]:checked')) {
       document.getElementById("error").textContent = "Please select gender";
       document.getElementById("popup1").scrollIntoView();
@@ -458,37 +460,43 @@ async function submitForm() {
       `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=test&content=${requestEnd}`
     );
 
-    document.querySelector("#parents-container").querySelector('.add-button').insertAdjacentHTML("beforebegin", personToRelativeLabel(parent))
-
+    document
+      .querySelector("#parents-container")
+      .querySelector(".add-button")
+      .insertAdjacentHTML("beforebegin", personToRelativeLabel(parent));
   }
   if (type == "details") {
-    document.getElementById("popup1").innerHTML = ""
+    document.getElementById("popup1").innerHTML = "";
     //logic here is if the form exists, use it's vlaue, otherwise use the saved one
-    if(document.getElementById("birthDayInput1")) {
+    if (document.getElementById("birthDayInput1")) {
       person.birthDate = new FtDate(
         (day1 = document.getElementById("birthDayInput1").value),
         (month1 = document.getElementById("birthMonthInput1").value),
         (year1 = document.getElementById("birthYearInput1").value),
-        (modifier = document.getElementById("birth-date-modifier-select").value),
+        (modifier = document.getElementById(
+          "birth-date-modifier-select"
+        ).value),
         (day2 = document.getElementById("birthDayInput2").value),
         (month2 = document.getElementById("birthMonthInput2").value),
         (year2 = document.getElementById("birthYearInput2").value)
       );
     }
-    
-    if(document.getElementById("deathDayInput1")) {
+
+    if (document.getElementById("deathDayInput1")) {
       person.deathDate = new FtDate(
         (day1 = document.getElementById("deathDayInput1").value),
         (month1 = document.getElementById("deathMonthInput1").value),
         (year1 = document.getElementById("deathYearInput1").value),
-        (modifier = document.getElementById("death-date-modifier-select").value),
+        (modifier = document.getElementById(
+          "death-date-modifier-select"
+        ).value),
         (day2 = document.getElementById("deathDayInput2").value),
         (month2 = document.getElementById("deathMonthInput2").value),
         (year2 = document.getElementById("deathYearInput2").value)
       );
     }
-    
-      person.birthPlace = document.getElementById("BirthPlaceInput")
+
+    person.birthPlace = document.getElementById("BirthPlaceInput")
       ? document.getElementById("BirthPlaceInput").value
       : person.birthPlace;
     person.deathPlace = document.getElementById("DeathPlaceInput")
@@ -628,7 +636,7 @@ async function submitForm() {
       ),
       parent1Id: null,
       parent2Id: null,
-      lore: lore
+      lore: lore,
     });
 
     if (person.spouses == null) person.spouses = [];
@@ -649,8 +657,10 @@ async function submitForm() {
       )}${requestEnd}`
     );
 
-    document.querySelector("#spouses-container").querySelector('.add-button').insertAdjacentHTML("beforebegin", personToRelativeLabel(spouse))
-
+    document
+      .querySelector("#spouses-container")
+      .querySelector(".add-button")
+      .insertAdjacentHTML("beforebegin", personToRelativeLabel(spouse));
   }
   if (type == "child") {
     if (!document.querySelector('input[name="maleFemale"]:checked')) {
@@ -755,7 +765,10 @@ async function submitForm() {
       )}${requestEnd}`
     );
 
-    document.querySelector("#children-container").querySelector('.add-button').insertAdjacentHTML("beforebegin", personToRelativeLabel(child))
+    document
+      .querySelector("#children-container")
+      .querySelector(".add-button")
+      .insertAdjacentHTML("beforebegin", personToRelativeLabel(child));
   }
   closePopupFunc();
 }
@@ -874,14 +887,14 @@ async function main() {
     if (birthModifier == "exact ") birthModifier = "";
     if (birthModifier == "between ") {
       birthModifier = "";
-      document.getElementById(
-        "birthDate"
-      ).textContent = cleanDateString(`${birthModifier}${birthDate.day1}-${birthDate.month1}-${birthDate.year1} and ${birthDate.day2}-${birthDate.month2}-${birthDate.year2}`);
+      document.getElementById("birthDate").textContent = cleanDateString(
+        `${birthModifier}${birthDate.day1}-${birthDate.month1}-${birthDate.year1} and ${birthDate.day2}-${birthDate.month2}-${birthDate.year2}`
+      );
     } else {
       if (birthModifier == "circa ") birthModifier = "c. ";
-      document.getElementById(
-        "birthDate"
-      ).textContent = cleanDateString(`${birthModifier}${birthDate.day1}-${birthDate.month1}-${birthDate.year1}`);
+      document.getElementById("birthDate").textContent = cleanDateString(
+        `${birthModifier}${birthDate.day1}-${birthDate.month1}-${birthDate.year1}`
+      );
     }
   } else {
     document.getElementById("birthDate").textContent = birthDate;
@@ -892,14 +905,14 @@ async function main() {
     if (deathModifier == "exact ") deathModifier = "";
     if (deathModifier == "between ") {
       deathModifier = "";
-      document.getElementById(
-        "deathDate"
-      ).textContent = cleanDateString(`${deathModifier}${deathDate.day1}-${deathDate.month1}-${deathDate.year1} and ${deathDate.day2}-${deathDate.month2}-${deathDate.year2}`);
+      document.getElementById("deathDate").textContent = cleanDateString(
+        `${deathModifier}${deathDate.day1}-${deathDate.month1}-${deathDate.year1} and ${deathDate.day2}-${deathDate.month2}-${deathDate.year2}`
+      );
     } else {
       if (deathModifier == "circa ") deathModifier = "c. ";
-      document.getElementById(
-        "deathDate"
-      ).textContent = cleanDateString(`${deathModifier}${deathDate.day1}-${deathDate.month1}-${deathDate.year1}`);
+      document.getElementById("deathDate").textContent = cleanDateString(
+        `${deathModifier}${deathDate.day1}-${deathDate.month1}-${deathDate.year1}`
+      );
     }
   } else {
     document.getElementById("deathDate").textContent = deathDate;
@@ -913,7 +926,7 @@ async function main() {
     .replaceAll("%89", "&");
   document.getElementById("sourcesText").innerHTML = linkify(
     person.sources.replaceAll("%79", "+").replaceAll("%89", "&")
-  )
+  );
   document.getElementById("gender").textContent =
     person.gender.charAt(0).toUpperCase() + person.gender.slice(1);
 }
@@ -1282,11 +1295,13 @@ async function deletePerson() {
       } else if (child.parent2Id == person.id) {
         child.parent2Id = null;
       }
-      await fetch(
-        `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${
-          child.id
-        }&content=${encodeURI(JSON.stringify(child))}${requestEnd}`
-      );
+      if (child != null) {
+        await fetch(
+          `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${
+            child.id
+          }&content=${encodeURI(JSON.stringify(child))}${requestEnd}`
+        );
+      }
     });
   }
   if (person.spouses.length != 0) {
@@ -1296,11 +1311,13 @@ async function deletePerson() {
         spouse.spouses.indexOf(person.id),
         1
       );
-      await fetch(
-        `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${
-          spouse.id
-        }&content=${encodeURI(JSON.stringify(spouse))}${requestEnd}`
-      );
+      if(spouse != null) {
+        await fetch(
+          `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${
+            spouse.id
+          }&content=${encodeURI(JSON.stringify(spouse))}${requestEnd}`
+        );
+      }
     });
   }
   await fetch(

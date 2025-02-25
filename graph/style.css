@@ -329,7 +329,6 @@ hr {
 .account-popup {
   z-index: 11;
   top: 8vh;
-  right: 4vw;
   display: none;
   background-color: var(--primary-color);
   padding: 1vw;
