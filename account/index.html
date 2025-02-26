@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+    <link rel="stylesheet" href="account.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat"
+      rel="stylesheet"
+    />
+</head>
+<body>
+  <div class="all">
+    <div class="panel">
+        <ul>
+            <a href="/"><img src="/img/foobatree_dark_mode.png" alt="logo" id="logo" /></a>
+            <li><a class="hoverable" onclick="setPanel('general')" >General</a></li>
+            <li><a class="hoverable" onclick="setPanel('customization')" >Customization</a></li>
+            <li><a class="hoverable" onclick="setPanel('privacy')" >Privacy</a></li>
+            <li><a class="hoverable" onclick="setPanel('account')" >Account</a></li>
+        </ul>
+    </div>
+    <div class="setting" id="general"> 
+      <!--^No noShow there cuz it's the default --> 
+        <h2>Generak</h2>
+        <h3>Yo like options are important</h3>
+        <p>To whom do you wanna sell your data</p>
+         <div id="gender">
+            <input type="radio" value="male" name="maleFemale" id="male" />
+         <label for="male">Unto</label>
+            <input type="radio" value="female" name="maleFemale" id="female" />
+            <label for="female">China</label>
+            <input type="radio" value="unknown" name="maleFemale" id="unknown" />
+            <label for="unknown">'Murica</label>
+            </div>
+            <p>To whom do you wanna sell your data</p>
+            <div id="gender">
+            <input type="radio" value="male" name="maleFemale2" id="male" />
+            <label for="male">Unto</label>
+            <input type="radio" value="female" name="maleFemale2" id="female" />
+            <label for="female">China</label>
+            <input type="radio" value="unknown" name="maleFemale2" id="unknown" />
+            <label for="unknown">'Murica</label>
+          </div>
+        <p>To whom do you wanna sell your data</p>
+        <div id="gender">
+            <input type="radio" value="male" name="maleFemale3" id="male" />
+            <label for="male">Unto</label>
+            <input type="radio" value="female" name="maleFemale3" id="female" />
+            <label for="female">China</label>
+            <input type="radio" value="unknown" name="maleFemale3" id="unknown" />
+            <label for="unknown">'Murica</label>
+          </div>
+        <p>Some text..</p>
+        <p>Some text..</p>
+        <p>Some text..</p>
+        <p>Some text..</p>
+        <p>Some text..</p>
+        <p>Some text..</p>
+        <p>Some text..</p>
+      </div>
+      <div class="setting noShow" id="customization">
+        <h2>Customization</h2>
+        <h3>Themes</h3>
+        <div>
+          <select class="selection">
+            <option onclick="setToClassic()" value="1">Classic</option>
+            <option onclick="setToNight()" value="2">Night</option>
+            <option onclick="setToHyvisian()" value="3">Hyvisian</option>
+            <option onclick="" value="4">Custom</option>
+          </select>
+        </div>
+        <div class="container">
+            <div>
+              <input type="color" id="bg-color-input" >
+              <p>Backround Color</p>
+            </div>    
+            <div>
+              <input type="color" id="primary-color-input">
+              <p>UI Primary Color</p>
+            </div>   
+            <div>
+              <input type="color" id="secondary-color-input">
+              <p>UI Secondary Color</p>
+            </div>   
+            <div>
+              <input type="color" id="text-color-input">
+              <p>Text Color</p>
+            </div>   
+            <div>
+              <input type="color" id="hover-color-input">
+              <p>Hover Color</p>
+            </div>   
+            <div>
+                <input type="checkbox" class="checkbox" onclick="toggleDark()" id="darkModeCheckbox" checked="checked" >
+                <p>Dark Mode Images</p>
+            </div>
+            <div>
+              <input type="color" id="button-base-color-input">
+              <p>Button Base Color</p>
+            </div>  
+            <div>
+              <input type="color" id="button-off-color-input">
+              <p>Button Off Color</p>
+            </div>  
+            <div>
+              <input type="color" id="button-on-color-input">
+              <p>Button On Color</p>
+            </div>  
+        </div>
+          
+        <div>
+          <button class="button"  onclick="save()">Save Changes</button> 
+          <!-- <button class="button"  onclick="reset()">Reset</button> -->
+
+        </div>
+      </div>
+
+
+
+      <div class="setting noShow" id="privacy">C</div>
+      <div class="setting noShow" id="account">D</div>
+    </div>
+</body>
+<script src="account.js"></script>
+</html>
