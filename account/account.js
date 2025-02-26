@@ -84,11 +84,19 @@ document.getElementById("darkModeCheckbox").checked = localStorage.getItem("dark
 console.log("d:"+localStorage.getItem("dark-mode"));
 darkModeLogo= localStorage.getItem("dark-mode");
 if (darkModeLogo) {
-    document.getElementById("logo").src = "img/foobatree_dark_mode.png";
+    document.getElementById("logo").src = "/img/foobatree_dark_mode.png";
 }else{
-    document.getElementById("logo").src = "img/foobatree.png";
+    document.getElementById("logo").src = "/img/foobatree.png";
 }
 
+
+
+
+document.addEventListener("keydown", async function (e) {
+  if (e.key == "Escape") {
+    closePopups();
+  }
+});
 function reset() {
     r.style.setProperty('--bg-color', '#232323');
     r.style.setProperty('--text-color', '#ffffff');
@@ -103,10 +111,10 @@ function reset() {
 function toggleDark(){
     if (document.getElementById("darkModeCheckbox").checked == true){
         darkModeLogo=true
-        document.getElementById("logo").src = "img/foobatree_dark_mode.png";
+        document.getElementById("logo").src = "/img/foobatree_dark_mode.png";
       } else {
         darkModeLogo=false
-        document.getElementById("logo").src = "img/foobatree.png";
+        document.getElementById("logo").src = "/img/foobatree.png";
       }
 }
 
@@ -140,9 +148,9 @@ function setToClassic(){
     darkModeLogo=false;
     document.getElementById("darkModeCheckbox").checked=false;
     if (darkModeLogo==true) {
-        document.getElementById("logo").src = "img/foobatree_dark_mode.png";
+        document.getElementById("logo").src = "/img/foobatree_dark_mode.png";
     }else{
-        document.getElementById("logo").src = "img/foobatree.png";
+        document.getElementById("logo").src = "/img/foobatree.png";
     }
 
 
@@ -160,9 +168,9 @@ function setToNight(){
     darkModeLogo=true;
     document.getElementById("darkModeCheckbox").checked=true;
     if (darkModeLogo==true) {
-        document.getElementById("logo").src = "img/foobatree_dark_mode.png";
+        document.getElementById("logo").src = "/img/foobatree_dark_mode.png";
     }else{
-        document.getElementById("logo").src = "img/foobatree.png";
+        document.getElementById("logo").src = "/img/foobatree.png";
     }
 
 
@@ -181,9 +189,9 @@ function setToHyvisian(){
     darkModeLogo=true;
     document.getElementById("darkModeCheckbox").checked=true;
     if (darkModeLogo==true) {
-        document.getElementById("logo").src = "img/foobatree_dark_mode.png";
+        document.getElementById("logo").src = "/img/foobatree_dark_mode.png";
     }else{
-        document.getElementById("logo").src = "img/foobatree.png";
+        document.getElementById("logo").src = "/img/foobatree.png";
     }
 
     propertyToValue();
@@ -230,3 +238,28 @@ function setPanel(new_panel) {
 }
 
 
+
+
+function closePopups() {
+  location.href = "#";
+}
+
+async function resetPassword(){
+  if(document.getElementById("new_password").value==document.getElementById("new_password_confirm").value){
+    console.log("match");
+    document.getElementById("password_error").textContent ="";
+    res = await fetch(
+      "https://familytree.loophole.site/resetPassword?token="+token+"&password="+document.getElementById("new_password").value+"&newPassword="+document.getElementById("new_password").value
+    );
+    data = await res.text();
+
+    
+  }else{
+    console.log("no match");
+    document.getElementById("password_error").textContent ="Passwords Don't Match";
+  }
+}
+
+function getCookie(name) {
+  return localStorage.getItem(name);
+}
