@@ -145,6 +145,7 @@ html * {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  overflow-x: hidden;
   outline: solid var(--secondary-color) 2px;
 }
 
@@ -323,4 +324,9 @@ html * {
 
 #otherParentSelect {
     color: black;
+}
+
+.text-edit-button {
+  cursor: pointer;
+  width: fit-content;
 }

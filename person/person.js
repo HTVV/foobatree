@@ -545,7 +545,6 @@ async function submitForm() {
     );
   }
   if (type == "text") {
-    console.log("YES");
     person.writing = (
       document.getElementById("WritingInput")
         ? document.getElementById("WritingInput").value
@@ -565,6 +564,18 @@ async function submitForm() {
         JSON.stringify(person)
       )}${requestEnd}`
     );
+
+    console.log("YEPCOG");
+    console.log();
+    document.getElementById("writingText").textContent =
+      document.getElementById("WritingInput")
+        ? document.getElementById("WritingInput").value
+        : document.getElementById("writingText").textContent;
+
+    document.getElementById("sourcesText").textContent =
+      document.getElementById("SourcesInput")
+        ? document.getElementById("SourcesInput").value
+        : document.getElementById("sourcesText").textContent;
   }
   if (type == "spouse") {
     if (!document.querySelector('input[name="maleFemale"]:checked')) {
@@ -857,9 +868,20 @@ function randomUUID() {
 
 async function main() {
   console.log(treeUser);
-  person = await fetch(
-    `https://familytree.loophole.site/getProfile?token=${token}&profileUuid=${uuid}${requestEnd}`
-  ).then((personponse) => personponse.json());
+  try {
+    const response = await fetch(
+      `https://familytree.loophole.site/getProfile?token=${token}&profileUuid=${uuid}${requestEnd}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    person = await response.json();
+  } catch (error) {
+    showError(error);
+    return;
+  }
   person = person[0];
   document.title = person.name;
 
@@ -1311,7 +1333,7 @@ async function deletePerson() {
         spouse.spouses.indexOf(person.id),
         1
       );
-      if(spouse != null) {
+      if (spouse != null) {
         await fetch(
           `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${
             spouse.id
