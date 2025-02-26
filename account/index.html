@@ -119,9 +119,62 @@
 
 
 
-      <div class="setting noShow" id="privacy">C</div>
-      <div class="setting noShow" id="account">D</div>
+      <div class="setting noShow" id="privacy">
+        <h3>Yo like options are important</h3>
+        <div>
+          <div>
+            <button class="button"  onclick="RES()">Download Your Data</button> 
+          </div>
+          
+        </div>
+      </div>
+
+      <div class="setting noShow" id="account" >  
+        <h2>Account</h2>
+        <h3>Yo like options are important</h3>
+        <div>
+          <div>
+            <button class="button"  onclick="logOut()">Log Out</button> 
+          </div>
+          <div>
+           <button class="button"  onclick="RES()">Reset Password</button> 
+         </div>
+         <div>
+           <button class="button"  onclick="RES()">Delete Account</button> 
+         </div>
+
+         <div class="box">
+          <a class="button" href="#popup1" ">Let me Pop up</a>
+        </div>
+         <div id="popup1" class="overlay" >
+           <div class="popup">
+            <h2>Reset Password</h2>
+            <a class="close" href="#">&times;</a>
+            <div class="content">
+              <p id="password_error" class="error"></p>
+              <p>Old Password</p>
+              <div>
+                <input class="overlay_input" type="password" id="old_password" name="old_password" placeholder="">
+              </div>
+              <p>New Password</p>
+              <div>
+                <input class="overlay_input" type="password" id="new_password" name="new_password" placeholder="">
+              </div>
+              <p>Confirm Passoword</p>
+              <div>
+                <input class="overlay_input" type="password" id="new_password_confirm" name="new_password_confirm" placeholder="">
+              </div>
+              <div>
+                <button class="button_two"  onclick="resetPassword()">Login</button> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 </body>
 <script src="account.js"></script>
+<script src="/graph/graph.js"></script>
+
 </html>
