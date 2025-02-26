@@ -49,6 +49,8 @@ ul {
     border-bottom: 2px solid var(--secondary-color);
     transition: color 0.3s ease, background-color 0.3s ease;
     font-size: 2vh;
+    text-decoration: none;
+    color: var(--text-color);
 }
   
 .hoverable.active {
@@ -116,4 +118,83 @@ ul {
 .checkbox {
     width: 50px;
     height: 30px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    visibility: hidden;
+    opacity: 0;
+  }
+  .overlay:target {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  .popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: var(--primary-color);
+    border-radius: 5px;
+    width: 20%;
+    position: relative;
+  }
+
+  .popup .close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    transition: all 200ms;
+    font-size: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #333;
+  }
+  .popup .close:hover {
+    color: #06D85F;
+  }
+  .popup .content {
+    max-height: 30%;
+    overflow: hidden;
+  }
+  .content{
+    color: var(--text-color);
+  }
+  .overlay_input{
+
+    padding-right: 100vw;
+
+    font-size: 16px;
+  }
+
+
+
+
+
+
+
+
+
+
+  .button_two {
+    padding-right: 100vw;
+
+    background-color: var(--bg-color);
+    border: none;
+    color: var(--text-color);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+.error {
+    color: red;
 }
