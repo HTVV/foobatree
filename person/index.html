@@ -1,92 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title></title>
-    <link rel="shortcut icon" href="/img/foobatreeicon.png" type="image/x-icon">
-</head>
+    <link
+      rel="shortcut icon"
+      href="/img/foobatreeicon.png"
+      type="image/x-icon"
+    />
+  </head>
 
-<body>
-    <div class="popup-overlay" id="popupOverlay">
-        <div class="popup1" id="popup1">
-        </div>
-        <div class="popup2" id="popup2" style="display: none;">
-            <div class="popup-content" id="popup2Content">
-                <p>Input name of person</p>
-                <input class="popup-input" type="text" id="focusInput">
-                <p></p>
-                <select name="focusPerson" id="selectFocus">
-                </select>
-                <p></p>
-                <button type="button" id="focuspersonsubmit" onclick=existingSubmit()>Select</button>
-            </div>
-        </div>
-        <div class="popup3" id="popup3">
-            <div class="popup-content" id="popup3Content"></div>
-        </div>
-        <div class="break"></div>
-        <button class="submit" id="submitButton" onclick="submitForm()">Submit</button>
+  <body>
+    <div class="error-bar" id="error-bar">
+      <p class="error-text" id="error-text"></p>
+      <div class="close-error" onclick="closeError()">&times;</div>
     </div>
+    <div class="popup-overlay" id="popupOverlay">
+      <div class="popup" id="popup" onclick=""></div>
+      <button class="submit" id="submitButton" onclick="submitForm()">
+        Submit
+      </button>
     </div>
     <div class="wrapper">
-        <div class="name-row" id="name-row">
-            <img src="/img/default_pic.png" alt="" class="profile-pic" id="profile-pic">
-            <div class="name-text" id="name-text" onclick="openDetailsPopup('name')"></div>
-            <div class="name-row-right-side">
-                <button class="deleteButton" onclick="deletePersonPopup()">DELETE</button>
-                <a href="/graph"><img src="/img/foobatreeicon.png" class="logo" title="Back to tree"></a>
-            </div>
+      <div class="name-row" id="name-row">
+        <img
+          src="/img/default_pic.png"
+          alt=""
+          class="profile-pic"
+          id="profile-pic"
+        />
+        <div
+          class="name-text"
+          id="name-text"
+          onclick="openDetailsPopup('name')"
+        ></div>
+        <div class="name-row-right-side">
+          <button class="deleteButton" onclick="deletePersonPopup()">
+            DELETE
+          </button>
+          <a href="/graph"
+            ><img
+              src="/img/foobatreeicon.png"
+              class="logo"
+              title="Back to tree"
+          /></a>
         </div>
-        <div class="details">
-            <p class="details-header" style="grid-area: 1/1/2/2">Birth</p>
-            <p class="details-header" style="grid-area: 2/1/3/2">Death</p>
-            <p class="details-header" style="grid-area: 3/1/4/2">Burial</p>
-            <div onclick="openDetailsPopup('birth')" class="details-container" id="birth-container" style="grid-area: 1/2/2/3;">
-                <div class="row">
-                    <p class="detail" id="birthDate"></p>
-                    <p class="detail" id="gender"></p>
-                </div>
-                <p class="detail" id="birthPlace"></p>
-            </div>
-            <div onclick="openDetailsPopup('death')" class="details-container" id="death-container" style="grid-area: 2/2/2/3">
-                <div class="row">
-                    <p class="detail" id="deathDate"></p>
-                    <p class="detail" id="deathCause"></p>
-                </div>
-                <p class="detail" id="deathPlace"></p>
-            </div>
-            <div onclick="openDetailsPopup('burial')" class="details-container" id="burial-container" style="grid-area: 3/2/4/3;">
-                <p class="detail" id="burialPlace"></p>
-            </div>
+      </div>
+      <div class="details">
+        <p class="details-header" style="grid-area: 1/1/2/2">Birth</p>
+        <p class="details-header" style="grid-area: 2/1/3/2">Death</p>
+        <p class="details-header" style="grid-area: 3/1/4/2">Burial</p>
+        <div
+          onclick="openDetailsPopup('birth')"
+          class="details-container"
+          id="birth-container"
+          style="grid-area: 1/2/2/3"
+        >
+          <div class="row">
+            <p class="detail" id="birthDate"></p>
+            <p class="detail" id="gender"></p>
+          </div>
+          <p class="detail" id="birthPlace"></p>
         </div>
-        <div class="relations">
-            <div class="relation-container" id="parents-container">
-                <p class="relation-header">Parents</p>
-            </div>
-            <div class="relation-container" id="spouses-container">
-                <p class="relation-header">Spouses</p>
-            </div>
-            <div class="relation-container" id="children-container">
-                <p class="relation-header" id="children-relation-header">Children</p>
-            </div>
+        <div
+          onclick="openDetailsPopup('death')"
+          class="details-container"
+          id="death-container"
+          style="grid-area: 2/2/2/3"
+        >
+          <div class="row">
+            <p class="detail" id="deathDate"></p>
+            <p class="detail" id="deathCause"></p>
+          </div>
+          <p class="detail" id="deathPlace"></p>
         </div>
-        <div class="writing">
-            <p id="writingText"></p>
-            <h4 class="text-edit-button" onclick="textPopup('writing')">Edit writing</h4>
+        <div
+          onclick="openDetailsPopup('burial')"
+          class="details-container"
+          id="burial-container"
+          style="grid-area: 3/2/4/3"
+        >
+          <p class="detail" id="burialPlace"></p>
         </div>
-        <div class="sources">
-            <p id="sourcesText"></p>
-            <h4 class="text-edit-button" onclick="textPopup('sources')">Edit sources</h4>
+      </div>
+      <div class="relations">
+        <div class="relation-container" id="parents-container">
+          <p class="relation-header">Parents</p>
         </div>
+        <div class="relation-container" id="spouses-container">
+          <p class="relation-header">Spouses</p>
+        </div>
+        <div class="relation-container" id="children-container">
+          <p class="relation-header" id="children-relation-header">Children</p>
+        </div>
+      </div>
+      <div class="writing">
+        <p id="writingText"></p>
+        <h4 class="text-edit-button" onclick="textPopup('writing')">
+          Edit writing
+        </h4>
+      </div>
+      <div class="sources">
+        <p id="sourcesText"></p>
+        <h4 class="text-edit-button" onclick="textPopup('sources')">
+          Edit sources
+        </h4>
+      </div>
     </div>
-</body>
-<link rel="preload" href="style.css" as="style" onload="this.rel='stylesheet'">
-<link href='/lib/utils.css' rel='stylesheet'>
-<script src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
-<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
-<script src="/lib/utils.js"></script>
-<script src="/lib/ft-date.js"></script>
-<script src="person.js"></script>
+  </body>
+  <link
+    rel="preload"
+    href="style.css"
+    as="style"
+    onload="this.rel='stylesheet'"
+  />
+  <link href="/lib/utils.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/minisearch@7.1.0/dist/umd/index.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css?family=Montserrat"
+    rel="stylesheet"
+  />
+  <script src="/lib/utils.js"></script>
+  <script src="/lib/ft-date.js"></script>
+  <script src="person.js"></script>
 </html>
