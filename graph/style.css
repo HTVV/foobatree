@@ -327,11 +327,12 @@ hr {
 }
 
 .account-popup {
+  top: -4vh;
   z-index: 11;
   display: none;
   background-color: var(--primary-color);
   padding: 1vw;
-  padding-top: 6vh;
+  padding-top: 12vh;
   border-radius: 1vh;
   position: absolute;
   flex-direction: column;
