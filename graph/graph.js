@@ -658,7 +658,7 @@ async function main(user) {
   renderFixed();
   setTimeout(() => {
     renderFixed();
-  }, 0);
+  }, 1);
 }
 
 //returns the person object from the tree based on id

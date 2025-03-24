@@ -18,3 +18,28 @@
     display: none;
     justify-content: center;
 }
+
+.error-bar {
+    z-index: 1000001;
+    width: 100%;
+    min-height: 12vh;
+    background-color: red;
+    position: fixed;
+    top: -20vh;
+    transition: all 1s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.error-text {
+    font-size: 200%;
+    padding-left: 2vh;
+}
+
+.close-error {
+    height: min-content;
+    font-size: 500%;
+    padding-right: 2vw;
+    cursor: pointer;
+}

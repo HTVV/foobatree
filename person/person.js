@@ -29,18 +29,55 @@ document.addEventListener("keydown", async function (e) {
     closePopupFunc();
   }
 });
-
+/*
 document.getElementById("focusInput").addEventListener("input", function (e) {
   search(tree);
 });
-
+*/
 function getCookie(name) {
   return localStorage.getItem(name);
   /* const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift(); */
 }
-
+async function setPopups() {
+  addPersonPopup = await (
+    await fetch("../data/popup/addPersonPopup.html")
+  ).text();
+}
+function openPopup(popupnum) {
+  console.log(popupnum)
+  switch (popupnum) {
+    //add parent
+    case 1:
+      type = "parents";
+      popupOverlay.style.display = "flex";
+      popup.innerHTML = addPersonPopup;
+      document.getElementById("popupHeader").textContent = "Add parent";
+      document.getElementById("submitButton").style.display = "block";
+      break;
+    //add spouse
+    case 2:
+      type = "spouse";
+      popupOverlay.style.display = "flex";
+      popup.innerHTML = addPersonPopup;
+      document.getElementById("popupHeader").textContent = "Add spouse";
+      document.getElementById("submitButton").style.display = "block";
+      break;
+    //add child
+    case 3:
+      type = "child";
+      popupOverlay.style.display = "flex";
+      popup.innerHTML =
+        `
+      <p>Select other parent</p>
+      <select name="otherParent" id="otherParentSelect"></select>` +
+        addPersonPopup;
+      document.getElementById("popupHeader").textContent = "Add child";
+      document.getElementById("submitButton").style.display = "block";
+      break;
+  }
+}
 //opens parent adding popup
 function openPopupFunc() {
   document.getElementById("popup1").innerHTML = addPersonPopup;
@@ -105,10 +142,10 @@ function openSpousePopup() {
 function openDetailsPopup(typeEdit) {
   type = "details";
   popupOverlay.style.display = "flex";
-  document.getElementById("popup3").style.display = "flex";
+  popup.style.display = "flex";
   if (typeEdit == "birth") {
-    document.getElementById("popup1").innerHTML = "";
-    document.getElementById("popup3Content").innerHTML = `
+    popup.innerHTML = `
+    <div class="popup-content">
         <h3>Change birth details</h3>
         <div class="dateInput popup-input">
     <p class="tohide1">Date of birth</p>
@@ -174,6 +211,7 @@ function openDetailsPopup(typeEdit) {
               person.status == "unknown" ? "checked" : ""
             }>Unknown</input>
         </div>
+        </div>
         `;
 
     requestAnimationFrame(() => {
@@ -199,8 +237,8 @@ function openDetailsPopup(typeEdit) {
     document.getElementById("birthYearInput2").value = person.birthDate.year2;
   }
   if (typeEdit == "death") {
-    document.getElementById("popup1").innerHTML = "";
-    document.getElementById("popup3Content").innerHTML = `
+    popup.innerHTML = `
+    <div class="popup-content">
         <h3>Change death details</h3>
         <div class="dateInput popup-input">
     <p class="tohide1">Date of death</p>
@@ -250,6 +288,7 @@ function openDetailsPopup(typeEdit) {
         <input class="popup-input" type="text" id="DeathPlaceInput" value="${person.deathPlace}">
         <p>Cause of death</p>
         <input class="popup-input" type="text" id="DeathCauseInput" value="${person.causeOfDeath}">
+        </div>
         `;
 
     requestAnimationFrame(() => {
@@ -275,14 +314,17 @@ function openDetailsPopup(typeEdit) {
     document.getElementById("deathYearInput2").value = person.deathDate.year2;
   }
   if (typeEdit == "burial") {
-    document.getElementById("popup3Content").innerHTML = `
+    popup.innerHTML = `
+    <div class="popup-content">
         <h3>Change burial details</h3>
         <p>Burial place</p>
         <input class="popup-input" type="text" id="BurialPlaceInput" value="${person.burialPlace}">
+        </div>
         `;
   }
   if (typeEdit == "name") {
-    document.getElementById("popup3Content").innerHTML = `
+    popup.innerHTML = `
+    <div class="popup-content">
         <h3>Change name details</h3>
         <p>First name(s)</p>
         <input class="popup-input" type="text" id="FirstNameInput" value="${
@@ -310,6 +352,7 @@ function openDetailsPopup(typeEdit) {
         }">
         <br></br>
         <img id="image-preview" style="width: 300px; max-height: 300px;">
+        </div>
         `;
 
     if (person.pic)
@@ -327,11 +370,13 @@ function openDetailsPopup(typeEdit) {
 function textPopup(typeEdit) {
   type = "text";
   popupOverlay.style.display = "flex";
-  document.getElementById("popup3").style.display = "flex";
+  popup.style.display = "flex";
   if (typeEdit == "writing") {
-    document.getElementById("popup3Content").innerHTML = `
+    popup.innerHTML = `
+    <div class="popup-content">
         <h3>Edit writing</h3>
         <textarea class="text-input" type="text" placeholder="" id="WritingInput" rows="20">
+        </div>
         `;
     console.log(person.writing);
     document.getElementById("WritingInput").value = person.writing
@@ -339,9 +384,11 @@ function textPopup(typeEdit) {
       .replaceAll("%89", "&");
   }
   if (typeEdit == "sources") {
-    document.getElementById("popup3Content").innerHTML = `
+    popup.innerHTML = `
+    <div class="popup-content">
         <h3>Edit sources</h3>
         <textarea class="text-input" type="text" placeholder="" id="SourcesInput" rows="20">
+        </div>
         `;
     document.getElementById("SourcesInput").value = person.sources
       .replaceAll("%79", "+")
@@ -349,17 +396,14 @@ function textPopup(typeEdit) {
   }
 }
 function closePopupFunc() {
-  document.getElementById("popupOverlay").style.display = "none";
-  document.getElementById("popup1").style.display = "none";
-  document.getElementById("popup2").style.display = "none";
-  document.getElementById("popup3").style.display = "none";
+  popupOverlay.style.display = "none";
 }
 async function submitForm() {
   if (type == "parents") {
     console.log("adding parent");
     if (!document.querySelector('input[name="maleFemale"]:checked')) {
       document.getElementById("error").textContent = "Please select gender";
-      document.getElementById("popup1").scrollIntoView();
+      popup.scroll({ top: 0, behavior: "smooth" });
       return 1;
     }
     const status = document.querySelector(
@@ -423,7 +467,7 @@ async function submitForm() {
       parent2Id: null,
       lore: lore,
     };
-
+    console.log(parent.status)
     if (person.parent1Id == null || person.parent1Id == "") {
       person.parent1Id = newUuid;
     } else {
@@ -442,11 +486,10 @@ async function submitForm() {
       );
     }
 
-    parent = JSON.stringify(parent);
     //parent
     fetch(
       `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${newUuid}&content=${encodeURI(
-        parent
+        JSON.stringify(parent)
       )}${requestEnd}`
     );
     //child
@@ -459,14 +502,18 @@ async function submitForm() {
     fetch(
       `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=test&content=${requestEnd}`
     );
-
+    //make the box appear
     document
       .querySelector("#parents-container")
       .querySelector(".add-button")
       .insertAdjacentHTML("beforebegin", personToRelativeLabel(parent));
+    if(person.parent1Id && person.parent2Id) {
+      document
+      .querySelector("#parents-container")
+      .querySelector(".add-button").remove()
+    }
   }
   if (type == "details") {
-    document.getElementById("popup1").innerHTML = "";
     //logic here is if the form exists, use it's vlaue, otherwise use the saved one
     if (document.getElementById("birthDayInput1")) {
       person.birthDate = new FtDate(
@@ -545,7 +592,6 @@ async function submitForm() {
     );
   }
   if (type == "text") {
-    console.log("YES");
     person.writing = (
       document.getElementById("WritingInput")
         ? document.getElementById("WritingInput").value
@@ -565,16 +611,21 @@ async function submitForm() {
         JSON.stringify(person)
       )}${requestEnd}`
     );
+
+    document.getElementById("writingText").textContent =
+      document.getElementById("WritingInput")
+        ? document.getElementById("WritingInput").value
+        : document.getElementById("writingText").textContent;
+
+    document.getElementById("sourcesText").textContent =
+      document.getElementById("SourcesInput")
+        ? document.getElementById("SourcesInput").value
+        : document.getElementById("sourcesText").textContent;
   }
   if (type == "spouse") {
     if (!document.querySelector('input[name="maleFemale"]:checked')) {
       document.getElementById("error").textContent = "Please select gender";
-      document.getElementById("popup1").scrollIntoView();
-      return 1;
-    }
-    if (!document.querySelector('input[name="maleFemale"]:checked')) {
-      document.getElementById("error").textContent = "Please select gender";
-      document.getElementById("popup1").scrollIntoView();
+      popup.scroll({ top: 0, behavior: "smooth" });
       return 1;
     }
     const status = document.querySelector(
@@ -665,14 +716,10 @@ async function submitForm() {
   if (type == "child") {
     if (!document.querySelector('input[name="maleFemale"]:checked')) {
       document.getElementById("error").textContent = "Please select gender";
-      document.getElementById("popup1").scroll({ top: 0, behavior: "smooth" });
+      popup.scroll({ top: 0, behavior: "smooth" });
       return 1;
     }
-    if (!document.querySelector('input[name="maleFemale"]:checked')) {
-      document.getElementById("error").textContent = "Please select gender";
-      document.getElementById("popup1").scrollIntoView();
-      return 1;
-    }
+
     const status = document.querySelector(
       'input[name="deadAlive"]:checked'
     ).value;
@@ -735,7 +782,6 @@ async function submitForm() {
       parent1Id: person.id,
       parent2Id: parent2,
     };
-
     var ele = document.getElementsByClassName("popup-input");
     for (var i = 0; i < ele.length; i++) {
       ele[i].value = "";
@@ -857,16 +903,24 @@ function randomUUID() {
 
 async function main() {
   console.log(treeUser);
-  person = await fetch(
-    `https://familytree.loophole.site/getProfile?token=${token}&profileUuid=${uuid}${requestEnd}`
-  ).then((personponse) => personponse.json());
+  try {
+    const response = await fetch(
+      `https://familytree.loophole.site/getProfile?token=${token}&profileUuid=${uuid}${requestEnd}`
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    person = await response.json();
+  } catch (error) {
+    showError(error);
+    return;
+  }
   person = person[0];
   document.title = person.name;
 
-  addPersonPopup = await (
-    await fetch("../data/popup/addPersonPopup.html")
-  ).text();
-  document.getElementById("popup1").innerHTML = addPersonPopup;
+  setPopups();
   document.getElementById("profile-pic").src = person.pic
     ? person.pic
     : document.getElementById("profile-pic").src;
@@ -1095,7 +1149,7 @@ async function showRelatives() {
       "parents-container"
     ).innerHTML += `<div class="row add-button" style="font-weight: 1000">
         <p style="font-size: 150%; align-content:center; margin: 0; margin-left: 5%;">+</p>
-        <p style="align-content:center; margin:0;" onclick="openPopupFunc()">ADD PARENT</p>
+        <p style="align-content:center; margin:0;" onclick="openPopup(1)">ADD PARENT</p>
         </div>`;
   } else if (person.parent2Id) {
     document.getElementById("parents-container").innerHTML +=
@@ -1104,14 +1158,14 @@ async function showRelatives() {
       "parents-container"
     ).innerHTML += `<div class="row add-button" style="font-weight: 1000">
         <p style="font-size: 150%; align-content:center; margin: 0; margin-left: 5%;">+</p>
-        <p style="align-content:center; margin:0;" onclick="openPopupFunc()">ADD PARENT</p>
+        <p style="align-content:center; margin:0;" onclick="openPopup(1)">ADD PARENT</p>
         </div>`;
   } else {
     document.getElementById(
       "parents-container"
     ).innerHTML += `<div class="row add-button" style="font-weight: 1000">
         <p style="font-size: 150%; align-content:center; margin: 0; margin-left: 5%;">+</p>
-        <p style="align-content:center; margin:0;" onclick="openPopupFunc()">ADD PARENT</p>
+        <p style="align-content:center; margin:0;" onclick="openPopup(1)">ADD PARENT</p>
         </div>`;
   }
 
@@ -1124,7 +1178,7 @@ async function showRelatives() {
     "spouses-container"
   ).innerHTML += `<div class="row add-button" style="font-weight: 1000">
         <p style="font-size: 150%; align-content:center; margin: 0; margin-left: 5%;">+</p>
-        <p style="align-content:center; margin:0;" onclick="openSpousePopup()">ADD SPOUSE</p>
+        <p style="align-content:center; margin:0;" onclick="openPopup(2)">ADD SPOUSE</p>
         </div>`;
 
   //children
@@ -1144,11 +1198,12 @@ async function showRelatives() {
     "children-container"
   ).innerHTML += `<div class="row add-button" style="font-weight: 1000">
         <p style="font-size: 150%; align-content:center; margin: 0; margin-left: 5%;">+</p>
-        <p style="align-content:center; margin:0;" onclick="openChildPopup()">ADD CHILD</p>
+        <p style="align-content:center; margin:0;" onclick="openPopup(3)">ADD CHILD</p>
         </div>`;
 }
 
 function personToRelativeLabel(person) {
+  console.log(person)
   return `<div class="relative" style="background-color: ${
     person.gender == "male" ? "#00c4f3" : "#ff72af"
   };">
@@ -1169,21 +1224,23 @@ function personToRelativeLabel(person) {
 function deleteConnectionPopup(id) {
   type = "deleteConnection";
   popupOverlay.style.display = "flex";
-  document.getElementById("popup3").style.display = "flex";
   document.getElementById("submitButton").style.display = "none";
-  document.getElementById("popup3Content").innerHTML = `
+  popup.innerHTML = `
+  <div class="popup-content">
     <h3>Are you sure you want to delete this connection?</h3>
     <button class="submit" id="deleteConnectionButton" style="background-color: red;"onclick="deleteConnection('${id}')">DELETE CONNECTION</button>
+    </div>
     `;
 }
 
 function deletePersonPopup() {
   popupOverlay.style.display = "flex";
-  document.getElementById("popup3").style.display = "flex";
   document.getElementById("submitButton").style.display = "none";
-  document.getElementById("popup3Content").innerHTML = `
+  popup.innerHTML = `
+  <div class="popup-content">
     <h3>Are you sure you want to DELETE this person forever?</h3>
     <button class="submit" id="deletePersonButton" style="background-color: red;"onclick="deletePerson()">DELETE PERSON</button>
+    </div>
     `;
 }
 
@@ -1311,7 +1368,7 @@ async function deletePerson() {
         spouse.spouses.indexOf(person.id),
         1
       );
-      if(spouse != null) {
+      if (spouse != null) {
         await fetch(
           `https://familytree.loophole.site/setProfile?token=${token}&profileUuid=${
             spouse.id
