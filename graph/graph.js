@@ -300,11 +300,21 @@ async function openPopup(popupNum) {
       popup.innerHTML = birthDaysPopup;
       document.getElementById("submitButton").style.display = "none";
       break;
-    }
+    //loading
+    case 8:
+      popupOverlay.style.display = "flex";
+      popup.style.display = "none";
+      document.getElementById("submitButton").style.display = "none";
+
+      popupOverlay.innerHTML += "<div class='loader' id='loader'></div>";
+      break;
+  }
 }
 //closes all popups
 function closePopupFunc() {
   popupOverlay.style.display = "none";
+  popup.style.display = "block";
+  document.getElementById("loader").outerHTML = "";
   if (document.getElementById("shareInput"))
     document.getElementById("shareInput").value = "";
 }
@@ -508,35 +518,57 @@ function infoStyle() {
 }
 function getBirthDays() {
   const birthDaysPopup = document.getElementById("birthDaysPopup");
-  birthDaysPopup.innerHTML = ""
+  birthDaysPopup.innerHTML = "";
 
   const today = new Date();
 
-  let filtered = data.filter(dude => dude.birthDate.modifier == "exact")
-  const  birthDayBoys = filtered.filter(dude => dude.birthDate.day1 == padDateString(today.getDate()) && dude.birthDate.month1 == today.getMonth())
+  let filtered = data.filter((dude) => dude.birthDate.modifier == "exact");
+  const birthDayBoys = filtered.filter(
+    (dude) =>
+      dude.birthDate.day1 == padDateString(today.getDate()) &&
+      dude.birthDate.month1 == today.getMonth()
+  );
   console.log(birthDayBoys);
 
-  years = [100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000]
-  const anniversaries = filtered.filter(dude => years.includes(today.getFullYear() - parseInt(dude.birthDate.year1)))
-  console.log(anniversaries)
+  years = [
+    100, 150, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000, 1100,
+    1200, 1300, 1400, 1500, 1600, 1700, 1800, 1900, 2000,
+  ];
+  const anniversaries = filtered.filter((dude) =>
+    years.includes(today.getFullYear() - parseInt(dude.birthDate.year1))
+  );
+  console.log(anniversaries);
 
-  if(birthDayBoys.length != 0) {
-    window.confetti({"particleCount": 80, "angle": 270, "spread": 180, origin: {"y": 0}}) 
-    birthDaysPopup.innerHTML += `<p>Today, the following people from your tree are celebrating their birthdays:</p>`
-    birthDayBoys.forEach(boy => {
-      birthDaysPopup.innerHTML +=`<h4>${boy.name}</h4><p>${personToLifespan(boy)}</p>`
-    })
-  } else if(anniversaries.length != 0) {
-    window.confetti({"particleCount": 15, "angle": 270, "spread": 180, origin: {"y": 0}}) 
+  if (birthDayBoys.length != 0) {
+    window.confetti({
+      particleCount: 80,
+      angle: 270,
+      spread: 180,
+      origin: { y: 0 },
+    });
+    birthDaysPopup.innerHTML += `<p>Today, the following people from your tree are celebrating their birthdays:</p>`;
+    birthDayBoys.forEach((boy) => {
+      birthDaysPopup.innerHTML += `<h4>${boy.name}</h4><p>${personToLifespan(
+        boy
+      )}</p>`;
+    });
+  } else if (anniversaries.length != 0) {
+    window.confetti({
+      particleCount: 15,
+      angle: 270,
+      spread: 180,
+      origin: { y: 0 },
+    });
     birthDaysPopup.innerHTML += `<p>Today, no one from your tree is celebrating their birthday.</p>
-    <p>However, the following people are celebrating their anniversaries this year:`
-    anniversaries.forEach(dude => {
-      birthDaysPopup.innerHTML +=`<h4>${dude.name}</h4><p>${personToLifespan(dude)}</p>`
-    })
+    <p>However, the following people are celebrating their anniversaries this year:`;
+    anniversaries.forEach((dude) => {
+      birthDaysPopup.innerHTML += `<h4>${dude.name}</h4><p>${personToLifespan(
+        dude
+      )}</p>`;
+    });
   } else {
-    birthDaysPopup.innerHTML += `<p>No one from your tree is having an important date right now.</p>`
+    birthDaysPopup.innerHTML += `<p>No one from your tree is having an important date right now.</p>`;
   }
-  
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -919,15 +951,18 @@ function idSetNode(uuid) {
     throw new Error("Thats not an id brother");
   }
   const person = idToData(uuid);
-
   g.setNode(uuid, {
     labelType: "html",
-    label: `<div style="min-height: 90px; width: 160px;">
+    label: `<div style="min-height: 90px; width: 160px;" onclick="handleKeyboardShortcuts(event, '${
+      person.id
+    }')">
     ${
       localStorage.getItem("show-pics") === "true"
         ? `<img style="width: 80%;  align-self: center; display: block; margin-left: auto;margin-right: auto;" src="${
-            person.pic ? person.pic : "https://media.istockphoto.com/id/1451587807/vector/user-profile-icon-vector-avatar-or-person-icon-profile-picture-portrait-symbol-vector.jpg?s=612x612&w=0&k=20&c=yDJ4ITX1cHMh25Lt1vI1zBn2cAKKAlByHBvPJ8gEiIg="
-          }"></img>`
+            person.pic
+              ? person.pic
+              : "https://media.istockphoto.com/id/1451587807/vector/user-profile-icon-vector-avatar-or-person-icon-profile-picture-portrait-symbol-vector.jpg?s=612x612&w=0&k=20&c=yDJ4ITX1cHMh25Lt1vI1zBn2cAKKAlByHBvPJ8gEiIg="
+          }">`
         : ""
     }
     <p onclick="openPerson('${person.id}', '${requestEnd}')">${
@@ -965,6 +1000,7 @@ function idSetNode(uuid) {
             ? "#" + rainbow.colorAt(personToInfoScore(person))
             : "pink")
     };`,
+    class: `${uuid}-node`,
   });
 }
 function removeButton(regex, id) {
@@ -1093,13 +1129,24 @@ function logOut() {
   window.location = "/";
 }
 
-async function openAll(id) {
-  const person = idToData(id);
+async function openAll(personId) {
+  const person = idToData(personId);
   console.log(person);
   if (person.parent1Id || person.parent2Id) {
-    graphParents(id);
+    graphParents(personId);
     if (person.parent1Id) await openAll(person.parent1Id);
     if (person.parent2Id) await openAll(person.parent2Id);
   }
   return 0;
+}
+
+async function handleKeyboardShortcuts(e, personId) {
+  if (e.altKey) {
+    openPopup(8);
+
+    setTimeout(() => {
+      openAll(personId);
+      closePopupFunc();
+    }, 1);
+  }
 }
