@@ -507,6 +507,9 @@ function infoStyle() {
   renderFixed();
 }
 function getBirthDays() {
+  const birthDaysPopup = document.getElementById("birthDaysPopup");
+  birthDaysPopup.innerHTML = ""
+
   const today = new Date();
 
   let filtered = data.filter(dude => dude.birthDate.modifier == "exact")
@@ -518,18 +521,20 @@ function getBirthDays() {
   console.log(anniversaries)
 
   if(birthDayBoys.length != 0) {
-    document.getElementById("birthDaysPopup").innerHTML += `<p>Today, the following people from your tree are celebrating their birthdays:</p>`
+    window.confetti({"particleCount": 80, "angle": 270, "spread": 180, origin: {"y": 0}}) 
+    birthDaysPopup.innerHTML += `<p>Today, the following people from your tree are celebrating their birthdays:</p>`
     birthDayBoys.forEach(boy => {
-      document.getElementById("birthDaysPopup").innerHTML +=`<h4>${boy.name}</h4><p>${personToLifespan(boy)}</p>`
+      birthDaysPopup.innerHTML +=`<h4>${boy.name}</h4><p>${personToLifespan(boy)}</p>`
     })
   } else if(anniversaries.length != 0) {
-    document.getElementById("birthDaysPopup").innerHTML += `<p>Today, no one from your tree is celebrating their birthday.</p>
+    window.confetti({"particleCount": 15, "angle": 270, "spread": 180, origin: {"y": 0}}) 
+    birthDaysPopup.innerHTML += `<p>Today, no one from your tree is celebrating their birthday.</p>
     <p>However, the following people are celebrating their anniversaries this year:`
     anniversaries.forEach(dude => {
-      document.getElementById("birthDaysPopup").innerHTML +=`<h4>${dude.name}</h4><p>${personToLifespan(dude)}</p>`
+      birthDaysPopup.innerHTML +=`<h4>${dude.name}</h4><p>${personToLifespan(dude)}</p>`
     })
   } else {
-    document.getElementById("birthDaysPopup").innerHTML += `<p>No one from your tree is having an important date right now.</p>`
+    birthDaysPopup.innerHTML += `<p>No one from your tree is having an important date right now.</p>`
   }
   
 }
