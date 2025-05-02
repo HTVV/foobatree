@@ -314,7 +314,7 @@ async function openPopup(popupNum) {
 function closePopupFunc() {
   popupOverlay.style.display = "none";
   popup.style.display = "block";
-  document.getElementById("loader").outerHTML = "";
+  if(document.getElementById("loader")) document.getElementById("loader").outerHTML = "";
   if (document.getElementById("shareInput"))
     document.getElementById("shareInput").value = "";
 }
