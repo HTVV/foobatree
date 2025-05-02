@@ -29,11 +29,9 @@ document.addEventListener("keydown", async function (e) {
     closePopupFunc();
   }
 });
-/*
-document.getElementById("focusInput").addEventListener("input", function (e) {
-  search(tree);
-});
-*/
+
+
+
 function getCookie(name) {
   return localStorage.getItem(name);
   /* const value = `; ${document.cookie}`;
@@ -43,6 +41,9 @@ function getCookie(name) {
 async function setPopups() {
   addPersonPopup = await (
     await fetch("../data/popup/addPersonPopup.html")
+  ).text();
+  selectExistingPopup = await (
+    await fetch("../data/popup/selectExistingPopup.html")
   ).text();
 }
 function openPopup(popupnum) {
@@ -76,7 +77,16 @@ function openPopup(popupnum) {
       document.getElementById("popupHeader").textContent = "Add child";
       document.getElementById("submitButton").style.display = "block";
       break;
-  }
+    //select existing
+    case 4:
+      popupOverlay.style.display = "flex";
+      popup.innerHTML = selectExistingPopup;
+      document.getElementById("submitButton").style.display = "none";
+      document.getElementById("focusInput").addEventListener("input", function (e) {
+        search(tree);
+      });
+      break;
+    }
 }
 //opens parent adding popup
 function openPopupFunc() {
@@ -817,11 +827,6 @@ async function submitForm() {
       .insertAdjacentHTML("beforebegin", personToRelativeLabel(child));
   }
   closePopupFunc();
-}
-function selectExisting() {
-  document.getElementById("popup1").style.display = "none";
-  document.getElementById("popup2").style.display = "block";
-  document.getElementById("submitButton").style.display = "none";
 }
 function existingSubmit() {
   //dude is the one being addedd, person is the one whos page is currently being viewed. amazing system :thumb:
