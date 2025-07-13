@@ -47,7 +47,7 @@ main();
 function create(data) {
   f3Chart = f3
     .createChart("#FamilyChart", data)
-    .setTransitionTime(10)
+    .setTransitionTime(750)
     .setCardXSpacing(250)
     .setCardYSpacing(150)
     .setSingleParentEmptyCard(false)
