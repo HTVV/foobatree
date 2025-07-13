@@ -66,7 +66,7 @@ async function auth() {
     console.log(data);
     localStorage.setItem("treeUser", "empty");
     /* document.cookie = `treeUser=empty;path=/` */
-    window.location.href = "./graph/";
+    window.location.href = "./tree/";
   }
 
   username = document.getElementById("username").value;
@@ -116,7 +116,7 @@ async function register() {
   localStorage.setItem("username", username);
   localStorage.setItem("treeUser", "empty");
 
-  window.location.href = "./graph/";
+  window.location.href = "./tree/";
 }
 
 function loginPage() {
