@@ -294,7 +294,6 @@
   white-space: nowrap;
   border-radius: 3px;
   padding: 0 5px;
-  word-break: break-word;
 }
 
 .f3 div.card-image-circle img {
@@ -373,6 +372,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  word-break: break-word;
 }
 
 .f3 div.mini-tree {
