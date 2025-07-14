@@ -6,13 +6,17 @@ let f3Chart;
 let f3Card;
 let f3EditTree;
 
-const mainPerson = localStorage.getItem("main");
+let mainPerson = localStorage.getItem("main");
 
 async function main() {
   const res = await fetch(
     `https://familytree.loophole.site/getTree?token=${token}`
   );
   data = await res.json();
+  if(!data.find(dude => dude.id == mainPerson)) {
+    mainPerson = data[0].id
+    localStorage.setItem("main", data[0].id)
+  }
   console.log(data);
 
   if (data.length == 0) {
@@ -60,7 +64,6 @@ function create(data) {
   f3Card = f3Chart
     .setCard(f3.CardHtml)
     .setOnCardUpdate(function (d) {
-      
       const person = d.data.data;
       const card_label = this.querySelector(".card-label");
       card_label.innerHTML = `
@@ -71,7 +74,7 @@ function create(data) {
         <div>${person.lore ? person.lore : ""}</div>
       `;
     })
-    .setCardDim({w:220,h:90,text_x:75,text_y:15,img_w:80,img_h:80,img_x:5,img_y:0})
+    .setCardDim({w:230,h:100,text_x:75,text_y:15,img_w:80,img_h:80,img_x:5,img_y:0})
     .setMiniTree(false)
     .setStyle("imageRect")
     .setOnHoverPathToMain();
@@ -120,7 +123,7 @@ function create(data) {
 
   f3EditTree.setEdit();
   f3Chart.updateTree({ initial: true });
-  //f3EditTree.open(f3Chart.getMainDatum());
+  f3EditTree.open(f3Chart.getMainDatum());
 
   f3Chart.updateTree({ initial: true });
 }

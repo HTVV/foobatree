@@ -1,6 +1,8 @@
 function personToLifespan(person) {
-  let birthDate = person.birthDate.split("-")[0] || "";
-  let deathDate = person.deathDate.split("-")[0] || "";
+  let birthDate = person.birthDate || "";
+  let deathDate = person.deathDate || "";
+  if(birthDate) birthDate = birthDate.split("-")[0]
+  if(deathDate) deathDate = deathDate.split("-")[0]
 
   if (!parseInt(birthDate)) birthDate = "";
   if (!parseInt(deathDate)) deathDate = "";
