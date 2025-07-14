@@ -1,25 +1,46 @@
 function personToLifespan(person) {
-  let birthDate = person.birthDate || "";
-  let deathDate = person.deathDate || "";
-  if(birthDate) birthDate = birthDate.split("-")[0]
-  if(deathDate) deathDate = deathDate.split("-")[0]
-
-  if (!parseInt(birthDate)) birthDate = "";
-  if (!parseInt(deathDate)) deathDate = "";
-
-  if (person.status == "alive") {
-    return `Living`;
+  birthDate = person.birthDate || "";
+  deathDate = person.deathDate || "";
+  if (typeof birthDate == "object") {
+    birthModifier = birthDate.modifier + " ";
+    if (birthModifier == "exact " || birthModifier == "between ")
+      birthModifier = "";
+    if (birthModifier == "circa ") birthModifier = "c. ";
+    deathModifier = deathDate.modifier + " ";
+    if (deathModifier == "exact " || deathModifier == "between ")
+      deathModifier = "";
+    if (deathModifier == "circa ") deathModifier = "c. ";
+    if (person.status == "alive") {
+      return `Living`;
+    }
+    if (person.deathDate.year1 != "" && person.birthDate.year1 != "") {
+      return `${birthModifier}${birthDate.year1} - ${deathModifier}${deathDate.year1}`;
+    }
+    if (person.birthDate != "") {
+      return `${birthDate.year1} - Deceased`;
+    }
+    if (person.deathDate != "") {
+      return ` - ${deathDate.year1}`;
+    }
+    return "Deceased";
+  } else {
+    if (person.status == "alive") {
+      return `Living`;
+    }
+    if (person.deathDate != "" && person.birthDate != "" && person.birthDate.slice(0, 4) != "unde" && person.deathDate.slice(0, 4)) {
+      return `${person.birthDate.slice(0, 4)} - ${person.deathDate.slice(
+        0,
+        4
+      )}`;
+    }
+    if (person.birthDate != "" && person.birthDate.slice(0, 4) != "unde") {
+      return `${person.birthDate.slice(0, 4)} - Deceased`;
+    }
+    if (person.deathDate != "" && person.deathDate.slice(0, 4) != "unde") {
+      return ` - ${person.deathDate.slice(0, 4)}`;
+    }
+    return "Deceased";
   }
-  if (deathDate != "" && birthDate != "") {
-    return `${birthDate} - ${deathDate}`;
-  }
-  if (birthDate != "") {
-    return `${birthDate} - ${person.status == "dead" ? "Deceased" : "Unknown"}`;
-  }
-  if (deathDate != "") {
-    return ` - ${deathDate}`;
-  }
-  return `${person.status == "dead" ? "Deceased" : "Unknown"}`;
 }
 
 function linkify(inputText) {

@@ -11,7 +11,7 @@ export function formInfoSetup(form_creator, closeCallback) {
 
     formContainer.innerHTML = formHtml;
     autosize.update(document.querySelectorAll("textarea"));
-    autosize(document.querySelectorAll("textarea"))
+    autosize(document.querySelectorAll("textarea"));
 
     setupEventListeners();
     return formContainer;
@@ -79,6 +79,34 @@ export function formInfoSetup(form_creator, closeCallback) {
     if (form_creator.getKinshipInfo) {
       const kinship_info = form_creator.getKinshipInfo();
       if (kinship_info) formContainer.appendChild(kinship_info);
+    }
+
+    if (document.getElementById("birth-date-modifier-select")) {
+      document
+        .getElementById("birth-date-modifier-select")
+        .addEventListener("change", function () {
+          if (this.value == "between") {
+            document.getElementsByClassName("birth2-inputs")[0].style.display =
+              "block";
+          } else {
+            document.getElementsByClassName("birth2-inputs")[0].style.display =
+              "none";
+          }
+        });
+    }
+
+    if (document.getElementById("death-date-modifier-select")) {
+      document
+        .getElementById("death-date-modifier-select")
+        .addEventListener("change", function () {
+          if (this.value == "between") {
+            document.getElementsByClassName("death2-inputs")[0].style.display =
+              "block";
+          } else {
+            document.getElementsByClassName("death2-inputs")[0].style.display =
+              "none";
+          }
+        });
     }
 
     function onCancel() {
@@ -273,6 +301,7 @@ function getHtml(form_creator) {
           </select>
         </div>`;
       } else if (field.type === "rel_reference") {
+        document;
         fields_html += `
         <div class="f3-form-field">
           <label>${field.label} - <i>${field.rel_label}</i></label>
@@ -282,13 +311,61 @@ function getHtml(form_creator) {
             placeholder="${field.label}">
         </div>`;
       } else if (field.type == "date") {
+        console.log()
         fields_html += `
         <div class="f3-form-field">
           <label>${field.label}</label>
-          <input type="${field.type}" 
-            name="${field.id}" 
-            value="${field.initial_value || ""}"
-            placeholder="${field.label}">
+          <select id="${field.id.slice(0, 5)}-date-modifier-select">
+      <option value="exact" ${field.initial_value.modifier == "exact" ? "selected" : ""}>Exact</option>
+      <option value="circa" ${field.initial_value.modifier == "circa" ? "selected" : ""}>Circa</option>
+      <option value="before" ${field.initial_value.modifier == "before" ? "selected" : ""}>Before</option>
+      <option value="after" ${field.initial_value.modifier == "after" ? "selected" : ""}>After</option>
+      <option value="between" ${field.initial_value.modifier == "between" ? "selected" : ""}>Between</option>
+    </select>
+    <br /><br />
+    <input
+      type="number"
+      id="${field.id.slice(0, 5)}DayInput1"
+      min="1"
+      max="31"
+      placeholder="DD"
+      value="${field.initial_value.day1}"
+    />
+    <input
+      type="number"
+      id="${field.id.slice(0, 5)}MonthInput1"
+      min="1"
+      max="12"
+      placeholder="MM"
+      value="${field.initial_value.month1}"
+    />
+    <input type="number" id="${field.id.slice(
+      0,
+      5
+    )}YearInput1" min="0" placeholder="YYYY" value="${field.initial_value.year1}"/>
+    <div class="${field.id.slice(0, 5)}2-inputs" style="display:${field.initial_value.modifier == "between" ? "block" : "none"};">
+      <p style="align-self: flex-start">to</p>
+      <input
+        type="number"
+        id="${field.id.slice(0, 5)}DayInput2"
+        min="1"
+        max="31"
+        placeholder="DD"
+        value="${field.initial_value.day2}"
+      />
+      <input
+        type="number"
+        id="${field.id.slice(0, 5)}MonthInput2"
+        min="1"
+        max="12"
+        placeholder="MM"
+        value="${field.initial_value.month2}"
+      />
+      <input type="number" id="${field.id.slice(
+        0,
+        5
+      )}YearInput2" min="0" placeholder="YYYY" value="${field.initial_value.year2}"/>
+    </div>
         </div>`;
       }
     });
@@ -319,6 +396,73 @@ function getHtml(form_creator) {
               )?.label || ""
             }</span>
           </div>`;
+        } else if (field.type === "date") {
+          if (!field.initial_value) return;
+          console.log(field.initial_value);
+          if (field.id.slice(0, 5) == "birth") {
+            birthDate = field.initial_value;
+            if (typeof birthDate == "object") {
+              birthModifier = birthDate.modifier + " ";
+              if (birthModifier == "exact ") birthModifier = "";
+              if (birthModifier == "between ") {
+                birthModifier = "";
+                fields_html += `
+                <div class="f3-info-field">
+                  <span class="f3-info-field-label">${field.label}</span>
+                  <span class="f3-info-field-value">Between ${cleanDateString(
+                    `${birthModifier}${birthDate.day1}-${birthDate.month1}-${birthDate.year1} and ${birthDate.day2}-${birthDate.month2}-${birthDate.year2}`
+                  )}</span>
+                </div>`;
+              } else {
+                if (birthModifier == "circa ") birthModifier = "c. ";
+                fields_html += `
+                <div class="f3-info-field">
+                  <span class="f3-info-field-label">${field.label}</span>
+                  <span class="f3-info-field-value">${cleanDateString(
+                    `${birthModifier}${birthDate.day1}-${birthDate.month1}-${birthDate.year1}`
+                  )}</span>
+                </div>`;
+              }
+            } else {
+              fields_html += `
+                <div class="f3-info-field">
+                  <span class="f3-info-field-label">${field.label}</span>
+                  <span class="f3-info-field-value">${field.initial_value}</span>
+                </div>`;
+            }
+          }
+          if (field.id.slice(0, 5) == "death") {
+            deathDate = field.initial_value;
+            if (typeof deathDate == "object") {
+              deathModifier = deathDate.modifier + " ";
+              if (deathModifier == "exact ") deathModifier = "";
+              if (deathModifier == "between ") {
+                deathModifier = "";
+                fields_html += `
+                <div class="f3-info-field">
+                  <span class="f3-info-field-label">${field.label}</span>
+                  <span class="f3-info-field-value">Between ${cleanDateString(
+                    `${deathModifier}${deathDate.day1}-${deathDate.month1}-${deathDate.year1} and ${deathDate.day2}-${deathDate.month2}-${deathDate.year2}`
+                  )}</span>
+                </div>`;
+              } else {
+                if (deathModifier == "circa ") deathModifier = "c. ";
+                fields_html += `
+                <div class="f3-info-field">
+                  <span class="f3-info-field-label">${field.label}</span>
+                  <span class="f3-info-field-value">${cleanDateString(
+                    `${deathModifier}${deathDate.day1}-${deathDate.month1}-${deathDate.year1}`
+                  )}</span>
+                </div>`;
+              }
+            } else {
+              fields_html += `
+                <div class="f3-info-field">
+                  <span class="f3-info-field-label">${field.label}</span>
+                  <span class="f3-info-field-value">${field.initial_value}</span>
+                </div>`;
+            }
+          }
         } else {
           fields_html += `
           <div class="f3-info-field">
@@ -374,5 +518,17 @@ function getHtml(form_creator) {
 
   function spaceDiv() {
     return `<div style="height: 24px;"></div>`;
+  }
+
+  //fixes dates e.g. when only year is given from "--1600" to "1600"
+  function cleanDateString(string) {
+    const split = string.split(" and ");
+    if (split.length > 1) {
+      let parta = split[0];
+      let partb = split[1];
+      partb = partb.replace(/^-+|-+$/g, "").replace(/(-)(?=-*\1)/g, "");
+      return parta + " and " + partb;
+    }
+    return string.replace(/^-+|-+$/g, "").replace(/(-)(?=-*\1)/g, "");
   }
 }

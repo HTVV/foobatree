@@ -1,3 +1,7 @@
 body {
   overflow-y: hidden;
 }
+
+.birth2-inputs, .death2-inputs {
+    display: none;
+}

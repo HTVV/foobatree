@@ -2,6 +2,7 @@ import { checkIfRelativesConnectedWithoutPerson } from "./checkPersonConnection.
 import { createTreeDataWithMainNode } from "./newPerson.js";
 import { getLinkRelOptions } from "./addRelative.linkRel.js";
 
+
 export function createForm({
   datum,
   store,
@@ -146,6 +147,27 @@ export function createForm({
   function submitFormChanges(e) {
     e.preventDefault();
     const form_data = new FormData(e.target);
+
+    //custom foobatree date system
+    datum.data.birthDate = new FtDate(
+        e.target.querySelector("#birthDayInput1").value,
+        e.target.querySelector("#birthMonthInput1").value,
+        e.target.querySelector("#birthYearInput1").value,
+        e.target.querySelector("#birth-date-modifier-select").value,
+        e.target.querySelector("#birthDayInput2").value,
+        e.target.querySelector("#birthMonthInput2").value,
+        e.target.querySelector("#birthYearInput2").value,
+    )
+    datum.data.deathDate = new FtDate(
+        e.target.querySelector("#deathDayInput1").value,
+        e.target.querySelector("#deathMonthInput1").value,
+        e.target.querySelector("#deathYearInput1").value,
+        e.target.querySelector("#death-date-modifier-select").value,
+        e.target.querySelector("#deathDayInput2").value,
+        e.target.querySelector("#deathMonthInput2").value,
+        e.target.querySelector("#deathYearInput2").value,
+    )
+    
     form_data.forEach((v, k) => (datum.data[k] = v));
     syncRelReference(datum, store.getData());
     if (datum.to_add) delete datum.to_add;
@@ -261,4 +283,17 @@ export function cleanupDataJson(data) {
 export function removeToAddFromData(data) {
   data.forEach((d) => (d.to_add ? removeToAdd(d, data) : d));
   return data;
+}
+
+class FtDate {
+  constructor(day1, month1, year1, modifier, day2, month2, year2) {
+    console.log(day1)
+    this.day1 = day1 || "";
+    this.month1 = month1 || "";
+    this.year1 = year1 || "";
+    this.modifier = modifier;
+    this.day2 = day2 || "";
+    this.month2 = month2 || "";
+    this.year2 = year2 || "";
+  }
 }
