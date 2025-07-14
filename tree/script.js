@@ -74,7 +74,7 @@ function create(data) {
         <div>${person.lore ? person.lore : ""}</div>
       `;
     })
-    .setCardDim({w:230,h:100,text_x:75,text_y:15,img_w:80,img_h:80,img_x:5,img_y:0})
+    .setCardDim({w:230,h:90,text_x:75,text_y:15,img_w:80,img_h:80,img_x:5,img_y:0})
     .setMiniTree(false)
     .setStyle("imageRect")
     .setOnHoverPathToMain();

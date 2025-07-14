@@ -129,9 +129,7 @@ export function CardHtml(props) {
   function getCardStyle() {
     let style = 'style="'
     if (props.card_dim.w || props.card_dim.h) {
-      style += `width: ${props.card_dim.w}px; min-height: ${props.card_dim.h}px;`
-      if (props.card_dim.height_auto) style += 'height: auto;'
-      else style += `height: ${props.card_dim.h}px;`
+      style += `min-width: ${props.card_dim.w}px; min-height: ${props.card_dim.h}px;`
     } else {
       return ''
     }
