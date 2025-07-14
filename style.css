@@ -55,7 +55,6 @@ h1 {
 .incorrect {
     color: #780000;
     font-weight: bold;
-    /*https://thedesigncreative.co.uk/why-you-shouldnt-use-vw-vh-or-px-for-font-sizing-a-comprehensive-guide/*/
     font-size: 3vh;
     margin: 0;
 }

@@ -6,7 +6,7 @@ let f3Chart;
 let f3Card;
 let f3EditTree;
 
-const mainPerson = localStorage.getItem("main")
+const mainPerson = localStorage.getItem("main");
 
 async function main() {
   const res = await fetch(
@@ -23,19 +23,20 @@ async function main() {
         children: [],
       },
       data: {
-        "First name(s)": "",
-        Patronym: "",
-        "Last name(s)": "",
-        "Date of birth": "",
-        "Place of birth": "",
-        "Date of death": "",
-        "Place of death": "",
-        "Place of burial": "",
-        Lore: "",
-        Writing: "",
-        Sources: "",
+        firstName: "",
+        patronym: "",
+        lastName: "",
+        ogName: "",
+        birthDate: "",
+        birthPlace: "",
+        deathDate: "",
+        deathCause: "",
+        deathPlace: "",
+        burialPlace: "",
+        lore: "",
+        writing: "",
+        sources: "",
         avatar: "",
-        gender: "",
       },
     });
   }
@@ -47,29 +48,31 @@ main();
 function create(data) {
   f3Chart = f3
     .createChart("#FamilyChart", data)
-    .setTransitionTime(750)
+    .setTransitionTime(500)
     .setCardXSpacing(250)
     .setCardYSpacing(150)
     .setSingleParentEmptyCard(false)
     .setShowSiblingsOfMain(false)
     .setOrientationVertical()
     .updateMainId(mainPerson ?? data[0].id)
+    .setShowSiblingsOfMain(true);
 
   f3Card = f3Chart
     .setCard(f3.CardHtml)
-    .setCardInnerHtmlCreator((d) => {
+    .setOnCardUpdate(function (d) {
+      
       const person = d.data.data;
-      return `<div class="card-inner" style="width: 200px; min-height: 80px; padding: 15px; border-radius: 5px; text-align: center;">
+      const card_label = this.querySelector(".card-label");
+      card_label.innerHTML = `
         <div>${person.firstName} ${person.patronym} ${person.lastName}${
         person.ogName ? ` (${person.ogName})` : ""
       }</div>
         <div>${personToLifespan(person)}</div>
         <div>${person.lore ? person.lore : ""}</div>
-        
-      </div>`;
+      `;
     })
-    .setCardDim({})
-    .setMiniTree(true)
+    .setCardDim({w:220,h:90,text_x:75,text_y:15,img_w:80,img_h:80,img_x:5,img_y:0})
+    .setMiniTree(false)
     .setStyle("imageRect")
     .setOnHoverPathToMain();
 
@@ -109,12 +112,15 @@ function create(data) {
       updateData(update);
       data = update;
     })
-    .setKinshipInfo({self_id: mainPerson ?? data[0].id, title: "Relationship to main", show_in_law: true})
+    .setKinshipInfo({
+      self_id: mainPerson ?? data[0].id,
+      title: "Relationship to main",
+      show_in_law: true,
+    });
 
   f3EditTree.setEdit();
-
   f3Chart.updateTree({ initial: true });
-  f3EditTree.open(f3Chart.getMainDatum());
+  //f3EditTree.open(f3Chart.getMainDatum());
 
   f3Chart.updateTree({ initial: true });
 }

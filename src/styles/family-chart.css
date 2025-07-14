@@ -119,6 +119,8 @@
   font-size: 14px;
   background: var(--background-color);
   color: currentColor;
+  resize: none;
+  font-family: 'Roboto', sans-serif;
 }
 
 .f3-form input[type="text"]:focus,

@@ -2,8 +2,8 @@ function personToLifespan(person) {
   let birthDate = person.birthDate.split("-")[0] || "";
   let deathDate = person.deathDate.split("-")[0] || "";
 
-  if(!parseInt(birthDate)) birthDate = ""
-  if(!parseInt(deathDate)) deathDate = ""
+  if (!parseInt(birthDate)) birthDate = "";
+  if (!parseInt(deathDate)) deathDate = "";
 
   if (person.status == "alive") {
     return `Living`;
@@ -45,5 +45,9 @@ function linkify(inputText) {
     '<a href="mailto:$1">$1</a>'
   );
 
-  return replacedText;
+  return replacedText
+    .replaceAll("%79", "+")
+    .replaceAll("%89", "&")
+    .replaceAll(/&lt;/g, "<")
+    .replaceAll(/&gt;/g, ">");
 }

@@ -1,4 +1,5 @@
 import * as icons from "../view/elements/Card.icons.js";
+import autosize from "https://unpkg.com/autosize@4.0.2/src/autosize.js";
 
 export function formInfoSetup(form_creator, closeCallback) {
   const formContainer = document.createElement("div");
@@ -9,9 +10,10 @@ export function formInfoSetup(form_creator, closeCallback) {
     const formHtml = getHtml(form_creator);
 
     formContainer.innerHTML = formHtml;
+    autosize.update(document.querySelectorAll("textarea"));
+    autosize(document.querySelectorAll("textarea"))
 
     setupEventListeners();
-
     return formContainer;
   }
 
@@ -23,7 +25,7 @@ export function formInfoSetup(form_creator, closeCallback) {
     cancel_btn.addEventListener("click", onCancel);
 
     const main_btn = form.querySelector(".f3-set-main-btn");
-    main_btn.addEventListener("click", setMain)
+    main_btn.addEventListener("click", setMain);
 
     const edit_btn = form.querySelector(".f3-edit-btn");
     if (edit_btn) edit_btn.addEventListener("click", onEdit);
@@ -86,12 +88,14 @@ export function formInfoSetup(form_creator, closeCallback) {
     }
 
     function setMain() {
-      form_creator.main = !form_creator.main
-      localStorage.setItem("main", form_creator.datum_id)
-      update()
+      form_creator.main = !form_creator.main;
+      localStorage.setItem("main", form_creator.datum_id);
+      update();
     }
 
     function onEdit() {
+      console.log(document.querySelectorAll("textarea"));
+
       form_creator.editable = !form_creator.editable;
       update();
     }
@@ -320,7 +324,9 @@ function getHtml(form_creator) {
           <div class="f3-info-field">
             <span class="f3-info-field-label">${field.label}</span>
             <span class="f3-info-field-value">${
-              field.link ? linkify(field.initial_value) : field.initial_value || ""
+              field.link
+                ? linkify(field.initial_value)
+                : field.initial_value || ""
             }</span>
           </div>`;
         }
