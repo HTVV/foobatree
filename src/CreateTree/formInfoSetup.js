@@ -400,9 +400,9 @@ function getHtml(form_creator) {
           if (!field.initial_value) return;
           console.log(field.initial_value);
           if (field.id.slice(0, 5) == "birth") {
-            birthDate = field.initial_value;
+            const birthDate = field.initial_value;
             if (typeof birthDate == "object") {
-              birthModifier = birthDate.modifier + " ";
+              let birthModifier = birthDate.modifier + " ";
               if (birthModifier == "exact ") birthModifier = "";
               if (birthModifier == "between ") {
                 birthModifier = "";
@@ -432,9 +432,9 @@ function getHtml(form_creator) {
             }
           }
           if (field.id.slice(0, 5) == "death") {
-            deathDate = field.initial_value;
+            const deathDate = field.initial_value;
             if (typeof deathDate == "object") {
-              deathModifier = deathDate.modifier + " ";
+              let deathModifier = deathDate.modifier + " ";
               if (deathModifier == "exact ") deathModifier = "";
               if (deathModifier == "between ") {
                 deathModifier = "";
