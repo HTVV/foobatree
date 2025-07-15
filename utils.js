@@ -1,4 +1,6 @@
 function personToLifespan(person) {
+  if(Object.keys(person).length == 1) return ""
+
   birthDate = person.birthDate || "";
   deathDate = person.deathDate || "";
   if (typeof birthDate == "object") {
@@ -23,7 +25,7 @@ function personToLifespan(person) {
       return ` - ${deathDate.year1}`;
     }
     return "Deceased";
-  } else {
+  } else  {
     if (person.status == "alive") {
       return `Living`;
     }

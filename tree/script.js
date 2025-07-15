@@ -164,9 +164,11 @@ function randomUUID() {
 
 function setup() {
   document.getElementById("dgedcom").addEventListener("click", async function (e) {
+    document.getElementById("ddrop").removeAttribute("open")
     downloadTextFile(await toGedcom(data), user ? `${user}'s_tree.ged` : "my_tree.ged")
   });
   document.getElementById("djson").addEventListener("click", function (e) {
+    document.getElementById("ddrop").removeAttribute("open")
     downloadTextFile(JSON.stringify(data), user ? `${user}'s_tree.json` : "my_tree.json")
   });
 }
