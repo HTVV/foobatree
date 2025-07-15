@@ -212,6 +212,7 @@
   padding-bottom: 1px;
   margin-bottom: 10px;
   min-height: 18px;
+  white-space: pre-wrap;
 }
 
 .f3-form-buttons {
@@ -373,6 +374,7 @@
   flex-direction: column;
   justify-content: center;
   word-break: break-word;
+  padding: 5px
 }
 
 .f3 div.mini-tree {

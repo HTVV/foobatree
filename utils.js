@@ -1,48 +1,37 @@
 function personToLifespan(person) {
-  if(Object.keys(person).length == 1) return ""
+  if (Object.keys(person).length == 1) return "";
 
   birthDate = person.birthDate || "";
   deathDate = person.deathDate || "";
-  if (typeof birthDate == "object") {
-    birthModifier = birthDate.modifier + " ";
-    if (birthModifier == "exact " || birthModifier == "between ")
-      birthModifier = "";
-    if (birthModifier == "circa ") birthModifier = "c. ";
-    deathModifier = deathDate.modifier + " ";
-    if (deathModifier == "exact " || deathModifier == "between ")
-      deathModifier = "";
-    if (deathModifier == "circa ") deathModifier = "c. ";
-    if (person.status == "alive") {
-      return `Living`;
+  birthModifier = birthDate.modifier + " ";
+  if (birthModifier == "exact " || birthModifier == "between ")
+    birthModifier = "";
+  if (birthModifier == "circa ") birthModifier = "c. ";
+  deathModifier = deathDate.modifier + " ";
+  if (deathModifier == "exact " || deathModifier == "between ")
+    deathModifier = "";
+  if (deathModifier == "circa ") deathModifier = "c. ";
+  if (person.status == "alive") {
+    if(birthDate.year1) {
+      return `Born ${birthModifier}${birthDate.year1}`
     }
-    if (person.deathDate.year1 != "" && person.birthDate.year1 != "") {
-      return `${birthModifier}${birthDate.year1} - ${deathModifier}${deathDate.year1}`;
-    }
-    if (person.birthDate != "") {
-      return `${birthDate.year1} - Deceased`;
-    }
-    if (person.deathDate != "") {
-      return ` - ${deathDate.year1}`;
-    }
-    return "Deceased";
-  } else  {
-    if (person.status == "alive") {
-      return `Living`;
-    }
-    if (person.deathDate != "" && person.birthDate != "" && person.birthDate.slice(0, 4) != "unde" && person.deathDate.slice(0, 4)) {
-      return `${person.birthDate.slice(0, 4)} - ${person.deathDate.slice(
-        0,
-        4
-      )}`;
-    }
-    if (person.birthDate != "" && person.birthDate.slice(0, 4) != "unde") {
-      return `${person.birthDate.slice(0, 4)} - Deceased`;
-    }
-    if (person.deathDate != "" && person.deathDate.slice(0, 4) != "unde") {
-      return ` - ${person.deathDate.slice(0, 4)}`;
-    }
-    return "Deceased";
+    return "Living"
   }
+  
+  const personStatus = (person.status == "dead") ? "Deceased" : "Unknown"
+
+  if(birthDate.year1 && deathDate.year1) {
+    return `${birthModifier}${birthDate.year1} - ${deathModifier}${deathDate.year1}`
+  }
+  if(birthDate.year1) {
+    return `${birthModifier} ${birthDate.year1} - ${personStatus}`
+  }
+  if(deathDate.year1) {
+    return `- ${deathModifier}${deathDate.year1}`
+  }
+
+  return personStatus
+
 }
 
 function linkify(inputText) {

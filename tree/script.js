@@ -24,32 +24,44 @@ async function main() {
   console.log(data);
 
   //change date format
-  if(data.some(obj => typeof obj.data.birthDate == "string")) {
-    for(let i = 0; i < data.length; i++){
-      if(typeof data[i].data.birthDate == "string") {
+  if (data.some((obj) => typeof obj.data.birthDate == "string")) {
+    for (let i = 0; i < data.length; i++) {
+      if (typeof data[i].data.birthDate == "string") {
         data[i].data.birthDate = new FtDate(
-          data[i].data.birthDate.split("-")[0] == "undefined" ? "" : data[i].data.birthDate.split("-")[2],
-          data[i].data.birthDate.split("-")[1] == "undefined" ? "" : data[i].data.birthDate.split("-")[1],
-          data[i].data.birthDate.split("-")[2] == "undefined" ? "" : data[i].data.birthDate.split("-")[0],
+          data[i].data.birthDate.split("-")[0] == "undefined"
+            ? ""
+            : data[i].data.birthDate.split("-")[2],
+          data[i].data.birthDate.split("-")[1] == "undefined"
+            ? ""
+            : data[i].data.birthDate.split("-")[1],
+          data[i].data.birthDate.split("-")[2] == "undefined"
+            ? ""
+            : data[i].data.birthDate.split("-")[0],
           "exact",
           "",
           "",
           ""
-        )
+        );
       }
-      if(typeof data[i].data.deathDate == "string") {
+      if (typeof data[i].data.deathDate == "string") {
         data[i].data.deathDate = new FtDate(
-          data[i].data.deathDate.split("-")[0] == "undefined" ? "" : data[i].data.deathDate.split("-")[2],
-          data[i].data.deathDate.split("-")[1] == "undefined" ? "" : data[i].data.deathDate.split("-")[1],
-          data[i].data.deathDate.split("-")[2] == "undefined" ? "" : data[i].data.deathDate.split("-")[0],
+          data[i].data.deathDate.split("-")[0] == "undefined"
+            ? ""
+            : data[i].data.deathDate.split("-")[2],
+          data[i].data.deathDate.split("-")[1] == "undefined"
+            ? ""
+            : data[i].data.deathDate.split("-")[1],
+          data[i].data.deathDate.split("-")[2] == "undefined"
+            ? ""
+            : data[i].data.deathDate.split("-")[0],
           "exact",
           "",
           "",
           ""
-        )
+        );
       }
     }
-    updateData(data)
+    updateData(data);
   }
 
   if (data.length == 0) {
@@ -92,7 +104,21 @@ function create(data) {
     .setShowSiblingsOfMain(false)
     .setOrientationVertical()
     .updateMainId(mainPerson ?? data[0].id)
-    .setShowSiblingsOfMain(true);
+    .setShowSiblingsOfMain(true)
+    .setSortChildrenFunction((a, b) =>{
+      console.log(b)
+      if(a.data.birthDate?.year1 > b.data.birthDate?.year1) return 1
+      if(a.data.birthDate?.year1 < b.data.birthDate?.year1) return -1
+
+      if(a.data.birthDate?.month1 > b.data.birthDate?.month1) return 1
+      if(a.data.birthDate?.month1 < b.data.birthDate?.month1) return -1
+
+      if(a.data.birthDate?.day1 > b.data.birthDate?.day1) return 1
+      if(a.data.birthDate?.day1 < b.data.birthDate?.day1) return -1
+
+      return 0
+    }
+    );
 
   f3Card = f3Chart
     .setCard(f3.CardHtml)
@@ -192,20 +218,30 @@ function randomUUID() {
 }
 
 function setup() {
-  document.getElementById("dgedcom").addEventListener("click", async function (e) {
-    document.getElementById("ddrop").removeAttribute("open")
-    downloadTextFile(await toGedcom(data), user ? `${user}'s_tree.ged` : "my_tree.ged")
-  });
+  document
+    .getElementById("dgedcom")
+    .addEventListener("click", async function (e) {
+      document.getElementById("ddrop").removeAttribute("open");
+      downloadTextFile(
+        await toGedcom(data),
+        user ? `${user}'s_tree.ged` : "my_tree.ged"
+      );
+    });
   document.getElementById("djson").addEventListener("click", function (e) {
-    document.getElementById("ddrop").removeAttribute("open")
-    downloadTextFile(JSON.stringify(data), user ? `${user}'s_tree.json` : "my_tree.json")
+    document.getElementById("ddrop").removeAttribute("open");
+    downloadTextFile(
+      JSON.stringify(data),
+      user ? `${user}'s_tree.json` : "my_tree.json"
+    );
   });
 }
 
 function downloadTextFile(text, name) {
-  const a = document.createElement('a');
+  const a = document.createElement("a");
   const type = name.split(".").pop();
-  a.href = URL.createObjectURL( new Blob([text], { type:`text/${type === "txt" ? "plain" : type}` }) );
+  a.href = URL.createObjectURL(
+    new Blob([text], { type: `text/${type === "txt" ? "plain" : type}` })
+  );
   a.download = name;
   a.click();
 }
