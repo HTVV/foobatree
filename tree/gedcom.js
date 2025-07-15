@@ -32,8 +32,8 @@ async function toGedcom(data) {
   }
 
   let famlist = [];
-let result = "";
-let mediaId = 0;
+  let result = "";
+  let mediaId = 0;
 
   result += `0 HEAD
 1 SOUR Foobatree
@@ -221,8 +221,8 @@ let mediaId = 0;
         .replaceAll(/\n/g, "\n2 CONT ");
       result += "\n";
     }
-    console.log(personRels)
-    console.log(person)
+    console.log(personRels);
+    console.log(person);
     if (personRels.spouses?.length > 0) {
       for (let j = 0; j < personRels.spouses.length; j++) {
         result += `1 FAMS @F${`${person.id}${personRels.spouses[j] ?? ""}`
@@ -279,10 +279,15 @@ let mediaId = 0;
 
     if (personData.avatar && personData.avatar != "undefined") {
       let type = "";
-      const res = await fetch(personData.avatar, {
-        method: "HEAD",
-      });
-      type = res.headers.get("Content-Type").split("/")[1];
+      let res = null
+      try {
+        res = await fetch(personData.avatar, {
+          method: "HEAD",
+        });
+      } catch (error) {
+        type = "png"
+      }
+      if(type == "") type = res.headers.get("Content-Type").split("/")[1];
 
       result += `1 OBJE @M${mediaId}@
 `;
@@ -336,5 +341,5 @@ let mediaId = 0;
 
   result += `0 TRLR`;
 
-  return result
+  return result;
 }
