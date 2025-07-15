@@ -1,21 +1,25 @@
 import f3 from "../src/index.js";
 
 const token = localStorage.getItem("token");
+const user = localStorage.getItem("username") ?? "";
 let data = null;
 let f3Chart;
 let f3Card;
 let f3EditTree;
+let popup;
 
 let mainPerson = localStorage.getItem("main");
 
 async function main() {
+  setup();
+
   const res = await fetch(
     `https://familytree.loophole.site/getTree?token=${token}`
   );
   data = await res.json();
-  if(!data.find(dude => dude.id == mainPerson)) {
-    mainPerson = data[0].id
-    localStorage.setItem("main", data[0].id)
+  if (!data.find((dude) => dude.id == mainPerson)) {
+    mainPerson = data[0].id;
+    localStorage.setItem("main", data[0].id);
   }
   console.log(data);
 
@@ -74,7 +78,16 @@ function create(data) {
         <div>${person.lore ? person.lore : ""}</div>
       `;
     })
-    .setCardDim({w:230,h:90,text_x:75,text_y:15,img_w:80,img_h:80,img_x:5,img_y:0})
+    .setCardDim({
+      w: 230,
+      h: 90,
+      text_x: 75,
+      text_y: 15,
+      img_w: 80,
+      img_h: 80,
+      img_x: 5,
+      img_y: 0,
+    })
     .setMiniTree(false)
     .setStyle("imageRect")
     .setOnHoverPathToMain();
@@ -147,4 +160,21 @@ function randomUUID() {
       (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
     ).toString(16)
   );
+}
+
+function setup() {
+  document.getElementById("dgedcom").addEventListener("click", async function (e) {
+    downloadTextFile(await toGedcom(data), user ? `${user}'s_tree.ged` : "my_tree.ged")
+  });
+  document.getElementById("djson").addEventListener("click", function (e) {
+    downloadTextFile(JSON.stringify(data), user ? `${user}'s_tree.json` : "my_tree.json")
+  });
+}
+
+function downloadTextFile(text, name) {
+  const a = document.createElement('a');
+  const type = name.split(".").pop();
+  a.href = URL.createObjectURL( new Blob([text], { type:`text/${type === "txt" ? "plain" : type}` }) );
+  a.download = name;
+  a.click();
 }

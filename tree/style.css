@@ -5,3 +5,54 @@ body {
 .birth2-inputs, .death2-inputs {
     display: none;
 }
+
+.corner-row {
+  position: absolute;
+  z-index: 10000;
+  top: 3vh;
+  left: 3vh;
+  display: flex;
+}
+
+#download {
+  color: white;
+  cursor: pointer;
+}
+
+/* Hide the triangle that appears next to the summary text */
+details > summary {
+  list-style: none;
+}
+/* Webkit browsers (Chrome, Safari, newer Edge) */
+details > summary::-webkit-details-marker {
+  display: none;
+}
+/* Firefox */
+details > summary::marker {
+  display: none;
+}
+/* Legacy Edge/IE (though Edge now uses Webkit) */
+details > summary::-o-details-marker {
+  display: none;
+}
+/* For older Firefox versions */
+details > summary::-moz-list-bullet {
+  list-style-type: none;
+}
+
+#download-ul {
+  width: 6vw;
+  padding: 0.2vh;
+  border-radius: 3px;
+  background-color: white;
+  text-align: center;
+}
+
+#download-ul > p {
+    cursor: pointer;
+    padding: 0.5vh;
+}
+
+#download-ul > p:hover {
+  background-color: rgb(224, 224, 224);
+}

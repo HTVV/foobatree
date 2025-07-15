@@ -8,8 +8,23 @@
     <script type="module" src="../src/index.js"></script>
     <link rel="stylesheet" href="../src/styles/family-chart.css" />
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
   </head>
   <body>
+    <div class="corner-row">
+      <details>
+        <summary>
+          <i class="fa fa-download" id="download" style="font-size: 36px"></i>
+        </summary>
+        <ul id="download-ul">
+          <p id="dgedcom">Gedcom</p>
+          <p id="djson">Json</p>
+        </ul>
+      </details>
+    </div>
     <div
       id="FamilyChart"
       class="f3"
@@ -24,4 +39,5 @@
   </body>
   <script type="module" src="script.js"></script>
   <script src="../utils.js"></script>
+  <script src="gedcom.js"></script>
 </html>

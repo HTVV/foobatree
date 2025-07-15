@@ -72,11 +72,6 @@ async function auth() {
   username = document.getElementById("username").value;
   password = document.getElementById("password").value;
 
-  /*
-    waiting on roope (?)
-    if(1 == 0){
-        document.getElementById("incorrect").textContent = "No more attempts"
-    }*/
 }
 async function register() {
   if (registerPassword1.value != registerPassword2.value) {
