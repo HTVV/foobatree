@@ -2,14 +2,15 @@ body {
   overflow-y: hidden;
 }
 
-.birth2-inputs, .death2-inputs {
-    display: none;
+.birth2-inputs,
+.death2-inputs {
+  display: none;
 }
 
 .corner-row {
   position: absolute;
   z-index: 10000;
-  top: 3vh;
+  bottom: 3vh;
   left: 3vh;
   display: flex;
 }
@@ -41,6 +42,8 @@ details > summary::-moz-list-bullet {
 }
 
 #download-ul {
+  position: absolute;
+  bottom: 100%;
   width: 6vw;
   padding: 0.2vh;
   border-radius: 3px;
@@ -49,8 +52,8 @@ details > summary::-moz-list-bullet {
 }
 
 #download-ul > p {
-    cursor: pointer;
-    padding: 0.5vh;
+  cursor: pointer;
+  padding: 0.5vh;
 }
 
 #download-ul > p:hover {

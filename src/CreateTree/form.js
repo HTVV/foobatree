@@ -287,7 +287,6 @@ export function removeToAddFromData(data) {
 
 class FtDate {
   constructor(day1, month1, year1, modifier, day2, month2, year2) {
-    console.log(day1)
     this.day1 = day1 || "";
     this.month1 = month1 || "";
     this.year1 = year1 || "";

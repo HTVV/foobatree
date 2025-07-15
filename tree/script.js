@@ -23,6 +23,35 @@ async function main() {
   }
   console.log(data);
 
+  //change date format
+  if(data.some(obj => typeof obj.data.birthDate == "string")) {
+    for(let i = 0; i < data.length; i++){
+      if(typeof data[i].data.birthDate == "string") {
+        data[i].data.birthDate = new FtDate(
+          data[i].data.birthDate.split("-")[0] == "undefined" ? "" : data[i].data.birthDate.split("-")[2],
+          data[i].data.birthDate.split("-")[1] == "undefined" ? "" : data[i].data.birthDate.split("-")[1],
+          data[i].data.birthDate.split("-")[2] == "undefined" ? "" : data[i].data.birthDate.split("-")[0],
+          "exact",
+          "",
+          "",
+          ""
+        )
+      }
+      if(typeof data[i].data.deathDate == "string") {
+        data[i].data.deathDate = new FtDate(
+          data[i].data.deathDate.split("-")[0] == "undefined" ? "" : data[i].data.deathDate.split("-")[2],
+          data[i].data.deathDate.split("-")[1] == "undefined" ? "" : data[i].data.deathDate.split("-")[1],
+          data[i].data.deathDate.split("-")[2] == "undefined" ? "" : data[i].data.deathDate.split("-")[0],
+          "exact",
+          "",
+          "",
+          ""
+        )
+      }
+    }
+    updateData(data)
+  }
+
   if (data.length == 0) {
     data.push({
       id: randomUUID(),
@@ -179,4 +208,16 @@ function downloadTextFile(text, name) {
   a.href = URL.createObjectURL( new Blob([text], { type:`text/${type === "txt" ? "plain" : type}` }) );
   a.download = name;
   a.click();
+}
+
+class FtDate {
+  constructor(day1, month1, year1, modifier, day2, month2, year2) {
+    this.day1 = day1 || "";
+    this.month1 = month1 || "";
+    this.year1 = year1 || "";
+    this.modifier = modifier;
+    this.day2 = day2 || "";
+    this.month2 = month2 || "";
+    this.year2 = year2 || "";
+  }
 }
