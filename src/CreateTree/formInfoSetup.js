@@ -316,11 +316,11 @@ function getHtml(form_creator) {
         <div class="f3-form-field">
           <label>${field.label}</label>
           <select id="${field.id.slice(0, 5)}-date-modifier-select">
-      <option value="exact" ${field.initial_value.modifier == "exact" ? "selected" : ""}>Exact</option>
-      <option value="circa" ${field.initial_value.modifier == "circa" ? "selected" : ""}>Circa</option>
-      <option value="before" ${field.initial_value.modifier == "before" ? "selected" : ""}>Before</option>
-      <option value="after" ${field.initial_value.modifier == "after" ? "selected" : ""}>After</option>
-      <option value="between" ${field.initial_value.modifier == "between" ? "selected" : ""}>Between</option>
+      <option value="exact" ${field.initial_value?.modifier == "exact" ? "selected" : ""}>Exact</option>
+      <option value="circa" ${field.initial_value?.modifier == "circa" ? "selected" : ""}>Circa</option>
+      <option value="before" ${field.initial_value?.modifier == "before" ? "selected" : ""}>Before</option>
+      <option value="after" ${field.initial_value?.modifier == "after" ? "selected" : ""}>After</option>
+      <option value="between" ${field.initial_value?.modifier == "between" ? "selected" : ""}>Between</option>
     </select>
     <br /><br />
     <input
@@ -329,7 +329,7 @@ function getHtml(form_creator) {
       min="1"
       max="31"
       placeholder="DD"
-      value="${field.initial_value.day1}"
+      value="${field.initial_value?.day1}"
     />
     <input
       type="number"
@@ -337,13 +337,13 @@ function getHtml(form_creator) {
       min="1"
       max="12"
       placeholder="MM"
-      value="${field.initial_value.month1}"
+      value="${field.initial_value?.month1}"
     />
     <input type="number" id="${field.id.slice(
       0,
       5
-    )}YearInput1" min="0" placeholder="YYYY" value="${field.initial_value.year1}"/>
-    <div class="${field.id.slice(0, 5)}2-inputs" style="display:${field.initial_value.modifier == "between" ? "block" : "none"};">
+    )}YearInput1" min="0" placeholder="YYYY" value="${field.initial_value?.year1}"/>
+    <div class="${field.id.slice(0, 5)}2-inputs" style="display:${field.initial_value?.modifier == "between" ? "block" : "none"};">
       <p style="align-self: flex-start">to</p>
       <input
         type="number"
@@ -351,7 +351,7 @@ function getHtml(form_creator) {
         min="1"
         max="31"
         placeholder="DD"
-        value="${field.initial_value.day2}"
+        value="${field.initial_value?.day2}"
       />
       <input
         type="number"
@@ -359,12 +359,12 @@ function getHtml(form_creator) {
         min="1"
         max="12"
         placeholder="MM"
-        value="${field.initial_value.month2}"
+        value="${field.initial_value?.month2}"
       />
       <input type="number" id="${field.id.slice(
         0,
         5
-      )}YearInput2" min="0" placeholder="YYYY" value="${field.initial_value.year2}"/>
+      )}YearInput2" min="0" placeholder="YYYY" value="${field.initial_value?.year2}"/>
     </div>
         </div>`;
       }
