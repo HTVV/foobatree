@@ -126,9 +126,6 @@ async function toGedcom(data) {
 
     if (
       personData.status == "dead" ||
-      (personData.deathDate &&
-        personData.deathDate != "undefined-undefined-undefined" &&
-        personData.deathDate != "--") ||
       personData.deathCause ||
       personData.burialPlace
     ) {

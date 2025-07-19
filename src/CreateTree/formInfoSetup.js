@@ -467,7 +467,7 @@ function getHtml(form_creator) {
           fields_html += `
           <div class="f3-info-field">
             <span class="f3-info-field-label">${field.label}</span>
-            <span class="f3-info-field-value">${
+            <span class="f3-info-field-value${(field.id == "writing" || field.id == "sources") ? " longText" : ""}">${
               field.link
                 ? linkify(field.initial_value)
                 : field.initial_value || ""

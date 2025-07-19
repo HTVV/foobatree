@@ -59,3 +59,7 @@ details > summary::-moz-list-bullet {
 #download-ul > p:hover {
   background-color: rgb(224, 224, 224);
 }
+
+.longText {
+  white-space: pre-wrap;
+}

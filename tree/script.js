@@ -177,6 +177,11 @@ function create(data) {
       { type: "text", label: "Picture (url)", id: "avatar" },
     ])
     .setEditFirst(false)
+    .setLinkExistingRelConfig({label: "TEST", linkRelLabel: function(d) {
+    return `${d.data.firstName} ${d.data.patronym} ${d.data.lastName}${
+        d.data.ogName ? ` (${d.data.ogName})` : ""
+      }`
+  }})
     .setCardClickOpen(f3Card)
     .setOnChange(() => {
       const update = f3EditTree.getStoreDataCopy();
