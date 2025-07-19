@@ -177,7 +177,7 @@ function create(data) {
       { type: "text", label: "Picture (url)", id: "avatar" },
     ])
     .setEditFirst(false)
-    .setLinkExistingRelConfig({label: "TEST", linkRelLabel: function(d) {
+    .setLinkExistingRelConfig({label: "Link existing relative", linkRelLabel: function(d) {
     return `${d.data.firstName} ${d.data.patronym} ${d.data.lastName}${
         d.data.ogName ? ` (${d.data.ogName})` : ""
       }`

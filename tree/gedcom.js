@@ -293,6 +293,7 @@ async function toGedcom(data) {
 1 FILE ${personData.avatar}
 2 FORM ${type}
 `.replace(/^\ +|\ +$|\ {2,}/g, " ");
+      mediaId += 1
     }
   }
 
