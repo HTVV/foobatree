@@ -89,43 +89,34 @@ async function toGedcom(data) {
         modifier == "after" ? (modifier = "AFT") : "";
         modifier == "between" ? (modifier = "BET") : "";
 
-        result += `2 DATE ${modifier} ${birthDate.day1 ?? ""} ${numToMonth(
-          birthDate.month1
-        )} ${birthDate.year1 ?? ""} ${
+        result += `2 DATE ${modifier} ${
+          birthDate.day1.replaceAll(/^0+/g, "") ?? ""
+        } ${numToMonth(birthDate.month1)} ${birthDate.year1 ?? ""}${
           modifier == "BET"
-            ? `AND ${birthDate.day2 ?? ""} ${numToMonth(birthDate.month2)} ${
-                birthDate.year2 ?? ""
-              }`
+            ? ` AND ${birthDate.day2.replaceAll(/^0+/g, "") ?? ""} ${numToMonth(
+                birthDate.month2
+              )} ${birthDate.year2 ?? ""}`
             : ""
-        }
-`.replace(/^\ +|\ +$|\ {2,}/g, " ");
-      } else if (
-        birthDate != "undefined-undefined-undefined" &&
-        personData.birthDate != "--"
-      ) {
-        result += `2 DATE ${
-          birthDate.split("-")[0] != "undefined" && birthDate.split("-")[0]
-            ? parseInt(birthDate.split("-")[0])
-            : ""
-        } ${
-          birthDate.split("-")[1] != "undefined"
-            ? numToMonth(birthDate.split("-")[1])
-            : ""
-        } ${
-          birthDate.split("-")[2] != "undefined" ? birthDate.split("-")[2] : ""
         }
 `.replace(/^\ +|\ +$|\ {2,}/g, " ");
       }
     }
-
-    if (result.slice(result.length - 5, result.length - 1) == "BIRT") {
-      result = result.substring(0, result.length - 1);
+    if (result.slice(result.length - 6, result.length - 2) == "DATE") {
+      result = result.substring(0, result.length - 9);
       result += ` Y
 `;
     }
 
+    if (personData.birthPlace && personData.birthPlace != "undefined") {
+      result += `2 PLAC ${personData.birthPlace}
+`.replace(/^\ +|\ +$|\ {2,}/g, " ");
+    }
+
     if (
       personData.status == "dead" ||
+      (personData.deathDate &&
+        personData.deathDate != "undefined-undefined-undefined" &&
+        personData.deathDate != "--") ||
       personData.deathCause ||
       personData.burialPlace
     ) {
@@ -139,7 +130,6 @@ async function toGedcom(data) {
     ) {
       const deathDate = personData.deathDate;
       if (typeof deathDate == "object") {
-        console.log("yep");
         let modifier = deathDate.modifier;
         modifier == "exact" ? (modifier = "") : "";
         modifier == "circa" ? (modifier = "ABT") : "";
@@ -147,33 +137,23 @@ async function toGedcom(data) {
         modifier == "after" ? (modifier = "AFT") : "";
         modifier == "between" ? (modifier = "BET") : "";
 
-        result += `2 DATE ${modifier} ${deathDate.day1 ?? ""} ${numToMonth(
-          deathDate.month1
-        )} ${deathDate.year1 ?? ""} ${
+        result += `2 DATE ${modifier} ${
+          deathDate.day1.replaceAll(/^0+/g, "") ?? ""
+        } ${numToMonth(deathDate.month1)} ${deathDate.year1 ?? ""}${
           modifier == "BET"
-            ? `AND ${deathDate.day2 ?? ""} ${numToMonth(deathDate.month2)} ${
-                deathDate.year2 ?? ""
-              }`
+            ? ` AND ${deathDate.day2.replaceAll(/^0+/g, "") ?? ""} ${numToMonth(
+                deathDate.month2
+              )} ${deathDate.year2 ?? ""}`
             : ""
-        }
-`.replace(/^\ +|\ +$|\ {2,}/g, " ");
-      } else if (
-        deathDate != "undefined-undefined-undefined" &&
-        deathDate != "--"
-      ) {
-        result += `2 DATE ${
-          deathDate.split("-")[0] != "undefined" && deathDate.split("-")[0]
-            ? parseInt(deathDate.split("-")[0])
-            : ""
-        } ${
-          deathDate.split("-")[1] != "undefined"
-            ? numToMonth(deathDate.split("-")[1])
-            : ""
-        } ${
-          deathDate.split("-")[2] != "undefined" ? deathDate.split("-")[2] : ""
         }
 `.replace(/^\ +|\ +$|\ {2,}/g, " ");
       }
+    }
+
+    if (result.slice(result.length - 6, result.length - 2) == "DATE") {
+      result = result.substring(0, result.length - 9);
+      result += ` Y
+`;
     }
 
     if (personData.deathPlace && personData.deathPlace != "undefined") {
@@ -184,12 +164,6 @@ async function toGedcom(data) {
     if (personData.deathCause) {
       result += `2 CAUS ${personData.deathCause}
 `.replace(/^\ +|\ +$|\ {2,}/g, " ");
-    }
-
-    if (result.slice(result.length - 5, result.length - 1) == "DEAT") {
-      result = result.substring(0, result.length - 1);
-      result += ` Y
-`;
     }
 
     if (personData.burialPlace) {
@@ -218,8 +192,7 @@ async function toGedcom(data) {
         .replaceAll(/\n/g, "\n2 CONT ");
       result += "\n";
     }
-    console.log(personRels);
-    console.log(person);
+
     if (personRels.spouses?.length > 0) {
       for (let j = 0; j < personRels.spouses.length; j++) {
         result += `1 FAMS @F${`${person.id}${personRels.spouses[j] ?? ""}`
@@ -276,15 +249,15 @@ async function toGedcom(data) {
 
     if (personData.avatar && personData.avatar != "undefined") {
       let type = "";
-      let res = null
+      let res = null;
       try {
         res = await fetch(personData.avatar, {
           method: "HEAD",
         });
       } catch (error) {
-        type = "png"
+        type = "png";
       }
-      if(type == "") type = res.headers.get("Content-Type").split("/")[1];
+      if (type == "") type = res.headers.get("Content-Type").split("/")[1];
 
       result += `1 OBJE @M${mediaId}@
 `;
@@ -293,7 +266,7 @@ async function toGedcom(data) {
 1 FILE ${personData.avatar}
 2 FORM ${type}
 `.replace(/^\ +|\ +$|\ {2,}/g, " ");
-      mediaId += 1
+      mediaId += 1;
     }
   }
 
@@ -338,6 +311,5 @@ async function toGedcom(data) {
   }
 
   result += `0 TRLR`;
-
   return result;
 }

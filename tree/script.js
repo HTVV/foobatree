@@ -134,7 +134,7 @@ function create(data) {
       `;
     })
     .setCardDim({
-      w: 230,
+      w: 235,
       h: 90,
       text_x: 75,
       text_y: 15,
@@ -250,6 +250,23 @@ function downloadTextFile(text, name) {
   a.download = name;
   a.click();
 }
+
+/* async function downloadPng() {
+  const canvas = await drawOnCanvas();
+  const blob = await canvasToBlob(canvas, 'image/png');
+  saveAs(blob, user ? `${user}'s_tree.png` : "my_tree.png");
+}
+
+async function downloadPdf() {
+  const canvas = await drawOnCanvas();
+  const doc = new jspdf({
+    orientation: canvas.width > canvas.height ? 'l' : 'p',
+    unit: 'pt',
+    format: [canvas.width, canvas.height],
+  });
+  doc.addImage(canvas, 'PNG', 0, 0, canvas.width, canvas.height, 'NONE');
+  doc.save(user ? `${user}'s_tree.pdf` : "my_tree.pdf");
+} */
 
 class FtDate {
   constructor(day1, month1, year1, modifier, day2, month2, year2) {

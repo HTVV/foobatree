@@ -311,16 +311,26 @@ function getHtml(form_creator) {
             placeholder="${field.label}">
         </div>`;
       } else if (field.type == "date") {
-        console.log()
+        console.log();
         fields_html += `
         <div class="f3-form-field">
           <label>${field.label}</label>
           <select id="${field.id.slice(0, 5)}-date-modifier-select">
-      <option value="exact" ${field.initial_value?.modifier == "exact" ? "selected" : ""}>Exact</option>
-      <option value="circa" ${field.initial_value?.modifier == "circa" ? "selected" : ""}>Circa</option>
-      <option value="before" ${field.initial_value?.modifier == "before" ? "selected" : ""}>Before</option>
-      <option value="after" ${field.initial_value?.modifier == "after" ? "selected" : ""}>After</option>
-      <option value="between" ${field.initial_value?.modifier == "between" ? "selected" : ""}>Between</option>
+      <option value="exact" ${
+        field.initial_value?.modifier == "exact" ? "selected" : ""
+      }>Exact</option>
+      <option value="circa" ${
+        field.initial_value?.modifier == "circa" ? "selected" : ""
+      }>Circa</option>
+      <option value="before" ${
+        field.initial_value?.modifier == "before" ? "selected" : ""
+      }>Before</option>
+      <option value="after" ${
+        field.initial_value?.modifier == "after" ? "selected" : ""
+      }>After</option>
+      <option value="between" ${
+        field.initial_value?.modifier == "between" ? "selected" : ""
+      }>Between</option>
     </select>
     <br /><br />
     <input
@@ -342,8 +352,12 @@ function getHtml(form_creator) {
     <input type="number" id="${field.id.slice(
       0,
       5
-    )}YearInput1" min="0" placeholder="YYYY" value="${field.initial_value?.year1}"/>
-    <div class="${field.id.slice(0, 5)}2-inputs" style="display:${field.initial_value?.modifier == "between" ? "block" : "none"};">
+    )}YearInput1" min="0" placeholder="YYYY" value="${
+          field.initial_value?.year1
+        }"/>
+    <div class="${field.id.slice(0, 5)}2-inputs" style="display:${
+          field.initial_value?.modifier == "between" ? "block" : "none"
+        };">
       <p style="align-self: flex-start">to</p>
       <input
         type="number"
@@ -364,7 +378,9 @@ function getHtml(form_creator) {
       <input type="number" id="${field.id.slice(
         0,
         5
-      )}YearInput2" min="0" placeholder="YYYY" value="${field.initial_value?.year2}"/>
+      )}YearInput2" min="0" placeholder="YYYY" value="${
+          field.initial_value?.year2
+        }"/>
     </div>
         </div>`;
       }
@@ -398,7 +414,6 @@ function getHtml(form_creator) {
           </div>`;
         } else if (field.type === "date") {
           if (!field.initial_value) return;
-          console.log(field.initial_value);
           if (field.id.slice(0, 5) == "birth") {
             const birthDate = field.initial_value;
             if (typeof birthDate == "object") {
@@ -467,11 +482,13 @@ function getHtml(form_creator) {
           fields_html += `
           <div class="f3-info-field">
             <span class="f3-info-field-label">${field.label}</span>
-            <span class="f3-info-field-value${(field.id == "writing" || field.id == "sources") ? " longText" : ""}">${
-              field.link
-                ? linkify(field.initial_value)
-                : field.initial_value || ""
-            }</span>
+            <span class="f3-info-field-value${
+              field.id == "writing" || field.id == "sources" ? " longText" : ""
+            }">${
+            field.link
+              ? linkify(field.initial_value)
+              : field.initial_value || ""
+          }</span>
           </div>`;
         }
       });
@@ -530,5 +547,37 @@ function getHtml(form_creator) {
       return parta + " and " + partb;
     }
     return string.replace(/^-+|-+$/g, "").replace(/(-)(?=-*\1)/g, "");
+  }
+
+  function numToMonth(num) {
+    num = parseInt(num);
+    switch (num) {
+      case 1:
+        return "January";
+      case 2:
+        return "February";
+      case 3:
+        return "March";
+      case 4:
+        return "April";
+      case 5:
+        return "May";
+      case 6:
+        return "June";
+      case 7:
+        return "July";
+      case 8:
+        return "August";
+      case 9:
+        return "September";
+      case 10:
+        return "October";
+      case 11:
+        return "November";
+      case 12:
+        return "December";
+      default:
+        return "";
+    }
   }
 }
