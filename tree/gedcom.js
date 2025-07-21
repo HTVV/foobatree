@@ -114,43 +114,45 @@ async function toGedcom(data) {
 
     if (
       personData.status == "dead" ||
-      (personData.deathDate &&
-        personData.deathDate != "undefined-undefined-undefined" &&
-        personData.deathDate != "--") ||
       personData.deathCause ||
       personData.burialPlace
     ) {
       result += `1 DEAT
 `;
-    }
-    if (
-      personData.deathDate &&
-      personData.deathDate != "undefined-undefined-undefined" &&
-      personData.deathDate != "--"
-    ) {
-      const deathDate = personData.deathDate;
-      if (typeof deathDate == "object") {
-        let modifier = deathDate.modifier;
-        modifier == "exact" ? (modifier = "") : "";
-        modifier == "circa" ? (modifier = "ABT") : "";
-        modifier == "before" ? (modifier = "BEF") : "";
-        modifier == "after" ? (modifier = "AFT") : "";
-        modifier == "between" ? (modifier = "BET") : "";
+      if (
+        personData.deathDate &&
+        personData.deathDate != "undefined-undefined-undefined" &&
+        personData.deathDate != "--"
+      ) {
+        const deathDate = personData.deathDate;
+        if (typeof deathDate == "object") {
+          let modifier = deathDate.modifier;
+          modifier == "exact" ? (modifier = "") : "";
+          modifier == "circa" ? (modifier = "ABT") : "";
+          modifier == "before" ? (modifier = "BEF") : "";
+          modifier == "after" ? (modifier = "AFT") : "";
+          modifier == "between" ? (modifier = "BET") : "";
 
-        result += `2 DATE ${modifier} ${
-          deathDate.day1.replaceAll(/^0+/g, "") ?? ""
-        } ${numToMonth(deathDate.month1)} ${deathDate.year1 ?? ""}${
-          modifier == "BET"
-            ? ` AND ${deathDate.day2.replaceAll(/^0+/g, "") ?? ""} ${numToMonth(
-                deathDate.month2
-              )} ${deathDate.year2 ?? ""}`
-            : ""
-        }
+          result += `2 DATE ${modifier} ${
+            deathDate.day1.replaceAll(/^0+/g, "") ?? ""
+          } ${numToMonth(deathDate.month1)} ${deathDate.year1 ?? ""}${
+            modifier == "BET"
+              ? ` AND ${
+                  deathDate.day2.replaceAll(/^0+/g, "") ?? ""
+                } ${numToMonth(deathDate.month2)} ${deathDate.year2 ?? ""}`
+              : ""
+          }
 `.replace(/^\ +|\ +$|\ {2,}/g, " ");
+        }
       }
     }
 
-    if (result.slice(result.length - 6, result.length - 2) == "DATE") {
+    if (
+      result.slice(result.length - 6, result.length - 2) == "DATE" &&
+      (personData.status == "dead" ||
+        personData.deathCause ||
+        personData.burialPlace)
+    ) {
       result = result.substring(0, result.length - 9);
       result += ` Y
 `;
