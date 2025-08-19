@@ -17,56 +17,61 @@ async function main() {
     `https://familytree.loophole.site/getTree?token=${token}`
   );
   data = await res.json();
-  if (!data.find((dude) => dude.id == mainPerson)) {
-    mainPerson = data[0].id;
-    localStorage.setItem("main", data[0].id);
-  }
   console.log(data);
-
-  //change date format
-  if (data.some((obj) => typeof obj.data.birthDate == "string")) {
-    for (let i = 0; i < data.length; i++) {
-      if (typeof data[i].data.birthDate == "string") {
-        data[i].data.birthDate = new FtDate(
-          data[i].data.birthDate.split("-")[0] == "undefined"
-            ? ""
-            : data[i].data.birthDate.split("-")[2],
-          data[i].data.birthDate.split("-")[1] == "undefined"
-            ? ""
-            : data[i].data.birthDate.split("-")[1],
-          data[i].data.birthDate.split("-")[2] == "undefined"
-            ? ""
-            : data[i].data.birthDate.split("-")[0],
-          "exact",
-          "",
-          "",
-          ""
-        );
-      }
-      if (typeof data[i].data.deathDate == "string") {
-        data[i].data.deathDate = new FtDate(
-          data[i].data.deathDate.split("-")[0] == "undefined"
-            ? ""
-            : data[i].data.deathDate.split("-")[2],
-          data[i].data.deathDate.split("-")[1] == "undefined"
-            ? ""
-            : data[i].data.deathDate.split("-")[1],
-          data[i].data.deathDate.split("-")[2] == "undefined"
-            ? ""
-            : data[i].data.deathDate.split("-")[0],
-          "exact",
-          "",
-          "",
-          ""
-        );
-      }
+  if (data.length != 0) {
+    if (!data.find((dude) => dude.id == mainPerson)) {
+      mainPerson = data[0].id;
+      localStorage.setItem("main", data[0].id);
     }
-    updateData(data);
+    
+
+    //change date format
+    if (data.some((obj) => typeof obj.data.birthDate == "string")) {
+      for (let i = 0; i < data.length; i++) {
+        if (typeof data[i].data.birthDate == "string") {
+          data[i].data.birthDate = new FtDate(
+            data[i].data.birthDate.split("-")[0] == "undefined"
+              ? ""
+              : data[i].data.birthDate.split("-")[2],
+            data[i].data.birthDate.split("-")[1] == "undefined"
+              ? ""
+              : data[i].data.birthDate.split("-")[1],
+            data[i].data.birthDate.split("-")[2] == "undefined"
+              ? ""
+              : data[i].data.birthDate.split("-")[0],
+            "exact",
+            "",
+            "",
+            ""
+          );
+        }
+        if (typeof data[i].data.deathDate == "string") {
+          data[i].data.deathDate = new FtDate(
+            data[i].data.deathDate.split("-")[0] == "undefined"
+              ? ""
+              : data[i].data.deathDate.split("-")[2],
+            data[i].data.deathDate.split("-")[1] == "undefined"
+              ? ""
+              : data[i].data.deathDate.split("-")[1],
+            data[i].data.deathDate.split("-")[2] == "undefined"
+              ? ""
+              : data[i].data.deathDate.split("-")[0],
+            "exact",
+            "",
+            "",
+            ""
+          );
+        }
+      }
+      updateData(data);
+    }
   }
 
   if (data.length == 0) {
+    const newId = randomUUID()
+    mainPerson = newId
     data.push({
-      id: randomUUID(),
+      id: newId,
       rels: {
         spouses: [],
         children: [],
@@ -90,6 +95,7 @@ async function main() {
     });
   }
   create(data);
+  
 }
 
 main();
@@ -105,20 +111,19 @@ function create(data) {
     .setOrientationVertical()
     .updateMainId(mainPerson ?? data[0].id)
     .setShowSiblingsOfMain(true)
-    .setSortChildrenFunction((a, b) =>{
-      console.log(b)
-      if(a.data.birthDate?.year1 > b.data.birthDate?.year1) return 1
-      if(a.data.birthDate?.year1 < b.data.birthDate?.year1) return -1
+    .setSortChildrenFunction((a, b) => {
+      console.log(b);
+      if (a.data.birthDate?.year1 > b.data.birthDate?.year1) return 1;
+      if (a.data.birthDate?.year1 < b.data.birthDate?.year1) return -1;
 
-      if(a.data.birthDate?.month1 > b.data.birthDate?.month1) return 1
-      if(a.data.birthDate?.month1 < b.data.birthDate?.month1) return -1
+      if (a.data.birthDate?.month1 > b.data.birthDate?.month1) return 1;
+      if (a.data.birthDate?.month1 < b.data.birthDate?.month1) return -1;
 
-      if(a.data.birthDate?.day1 > b.data.birthDate?.day1) return 1
-      if(a.data.birthDate?.day1 < b.data.birthDate?.day1) return -1
+      if (a.data.birthDate?.day1 > b.data.birthDate?.day1) return 1;
+      if (a.data.birthDate?.day1 < b.data.birthDate?.day1) return -1;
 
-      return 0
-    }
-    );
+      return 0;
+    });
 
   f3Card = f3Chart
     .setCard(f3.CardHtml)
@@ -177,11 +182,14 @@ function create(data) {
       { type: "text", label: "Picture (url)", id: "avatar" },
     ])
     .setEditFirst(false)
-    .setLinkExistingRelConfig({label: "Link existing relative", linkRelLabel: function(d) {
-    return `${d.data.firstName} ${d.data.patronym} ${d.data.lastName}${
-        d.data.ogName ? ` (${d.data.ogName})` : ""
-      }`
-  }})
+    .setLinkExistingRelConfig({
+      label: "Link existing relative",
+      linkRelLabel: function (d) {
+        return `${d.data.firstName} ${d.data.patronym} ${d.data.lastName}${
+          d.data.ogName ? ` (${d.data.ogName})` : ""
+        }`;
+      },
+    })
     .setCardClickOpen(f3Card)
     .setOnChange(() => {
       const update = f3EditTree.getStoreDataCopy();
