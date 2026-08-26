@@ -68,7 +68,8 @@ CardHtml.prototype.setOnCardClick = function(onCardClick) {
 }
 
 CardHtml.prototype.onCardClickDefault = function(e, d) {
-  this.store.updateMainId(d.data.id)
+  if(document.getElementById("changetext").classList.contains("yep")){this.store.updateMainId(d.data.id)}
+  
   this.store.updateTree({})
 }
 

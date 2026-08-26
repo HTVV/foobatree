@@ -14,7 +14,7 @@ async function main() {
   setup();
 
   const res = await fetch(
-    `https://familytree.loophole.site/getTree?token=${token}`
+    `https://familytree.loophole.site/getTree?token=${token}`,
   );
   data = await res.json();
   console.log(data);
@@ -23,7 +23,6 @@ async function main() {
       mainPerson = data[0].id;
       localStorage.setItem("main", data[0].id);
     }
-    
 
     //change date format
     if (data.some((obj) => typeof obj.data.birthDate == "string")) {
@@ -42,7 +41,7 @@ async function main() {
             "exact",
             "",
             "",
-            ""
+            "",
           );
         }
         if (typeof data[i].data.deathDate == "string") {
@@ -59,7 +58,7 @@ async function main() {
             "exact",
             "",
             "",
-            ""
+            "",
           );
         }
       }
@@ -68,8 +67,8 @@ async function main() {
   }
 
   if (data.length == 0) {
-    const newId = randomUUID()
-    mainPerson = newId
+    const newId = randomUUID();
+    mainPerson = newId;
     data.push({
       id: newId,
       rels: {
@@ -95,7 +94,6 @@ async function main() {
     });
   }
   create(data);
-  
 }
 
 main();
@@ -112,7 +110,6 @@ function create(data) {
     .updateMainId(mainPerson ?? data[0].id)
     .setShowSiblingsOfMain(true)
     .setSortChildrenFunction((a, b) => {
-      console.log(b);
       if (a.data.birthDate?.year1 > b.data.birthDate?.year1) return 1;
       if (a.data.birthDate?.year1 < b.data.birthDate?.year1) return -1;
 
@@ -132,8 +129,8 @@ function create(data) {
       const card_label = this.querySelector(".card-label");
       card_label.innerHTML = `
         <div>${person.firstName} ${person.patronym} ${person.lastName}${
-        person.ogName ? ` (${person.ogName})` : ""
-      }</div>
+          person.ogName ? ` (${person.ogName})` : ""
+        }</div>
         <div>${personToLifespan(person)}</div>
         <div>${person.lore ? person.lore : ""}</div>
       `;
@@ -226,7 +223,7 @@ function randomUUID() {
     (
       +c ^
       (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
-    ).toString(16)
+    ).toString(16),
   );
 }
 
@@ -237,15 +234,23 @@ function setup() {
       document.getElementById("ddrop").removeAttribute("open");
       downloadTextFile(
         await toGedcom(data),
-        user ? `${user}'s_tree.ged` : "my_tree.ged"
+        user ? `${user}'s_tree.ged` : "my_tree.ged",
       );
     });
   document.getElementById("djson").addEventListener("click", function (e) {
     document.getElementById("ddrop").removeAttribute("open");
     downloadTextFile(
       JSON.stringify(data),
-      user ? `${user}'s_tree.json` : "my_tree.json"
+      user ? `${user}'s_tree.json` : "my_tree.json",
     );
+  });
+  document.getElementById("changetext").addEventListener("click", (e) => {
+    console.log(e)
+    if (document.getElementById("changetext").classList.contains("yep")) {
+      document.getElementById("changetext").classList.remove("yep")
+    } else {
+      document.getElementById("changetext").classList.add("yep")
+    }
   });
 }
 
@@ -253,7 +258,7 @@ function downloadTextFile(text, name) {
   const a = document.createElement("a");
   const type = name.split(".").pop();
   a.href = URL.createObjectURL(
-    new Blob([text], { type: `text/${type === "txt" ? "plain" : type}` })
+    new Blob([text], { type: `text/${type === "txt" ? "plain" : type}` }),
   );
   a.download = name;
   a.click();
