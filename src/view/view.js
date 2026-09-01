@@ -19,7 +19,7 @@ export default function (tree, svg, Card, props = {}) {
   updateLinks(svg, tree, props);
 
   const tree_position = props.tree_position || "fit";
-  if (document.getElementById("changetext").classList.contains("yep") && false) {
+  if (document.getElementById("changetext").classList.contains("yep")) {
     if (props.initial)
       treeFit({
         svg,
